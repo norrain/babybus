@@ -28,7 +28,7 @@
 		     $.mobile.defaultPageTransition = 'none';  
 		     $.mobile.defaultDialogTransition = 'none';  
 		   //}  
-		});  
+		});     
 	</script> 
 	 <script src="include/jquery.mobile-1.4.2.min.js"></script>
 	 <script type='text/javascript' src='http://mianyang.dd100.net:8080/meetManager/dwr/interface/cbus.js'></script>
@@ -87,6 +87,8 @@
 
 
  <script type="text/javascript">
+ 		 DWREngine.setMethod(DWREngine.ScriptTag);
+	     cbus._path = "http://mianyang.dd100.net:8080/meetManager/dwr";
 	  	 cbus.getBusList(slist);
 	  	 function slist(list){
 	  	 	 var len = list.length;
