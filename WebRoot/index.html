@@ -158,8 +158,8 @@
 </div> 
 	 
 	 <!-- http://mianyang.dd100.net:8080 -->
- <script type='text/javascript' src='/meetManager/dwr/interface/cbus.js'></script>
-     <script type='text/javascript' src='/meetManager/dwr/engine.js'></script>
+ <script type='text/javascript' src='http://mianyang.dd100.net:8080/meetManager/dwr/interface/cbus.js'></script>
+     <script type='text/javascript' src='http://mianyang.dd100.net:8080/meetManager/dwr/engine.js'></script>
  <script type="text/javascript">
  		 //初始化
 	  	 $(document).on("pageinit","#index",function(){
@@ -169,8 +169,8 @@
 			  
 		 });
 		 
- 		 //DWREngine.setMethod(DWREngine.ScriptTag);
-	     //cbus._path = "http://mianyang.dd100.net:8080/meetManager/dwr";
+ 		 DWREngine.setMethod(DWREngine.ScriptTag);
+	     cbus._path = "http://mianyang.dd100.net:8080/meetManager/dwr";
 	  	 cbus.getBusList(slist);
 	  	 
 	  	 function slist(list){
