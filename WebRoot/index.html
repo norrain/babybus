@@ -31,12 +31,6 @@
 		     $.mobile.page.prototype.options.domCache=true; //页面缓存
 	  	     $.mobile.transitionFallbacks.slideout = "none"; //防止闪屏  
 			  //alert($.mobile.ajaxEnabled);
-			  
-               //app.initialize();
-			   //alert(device.platform);
-			   //alert(device.uuid);
-			   //alert(device.version);
-			   //alert(device.uuid);
 		});     
 	</script> 
 	<!--  -->
@@ -222,7 +216,11 @@
 	  	 	 $("#bus_station_z ul").listview('refresh');
 	     }
 	  	 
-	  	
+	  	 	   app.initialize();
+			   alert(device.platform);
+			   alert(device.uuid);
+			   alert(device.version);
+			   alert(device.uuid);
 		 
  </script>
        	
