@@ -1,23 +1,5 @@
 K 25
 svn:wc:ra_dav:version-url
-V 35
-/appide2a5i7utfb/!svn/ver/2/babybus
-END
-.classpath
-K 25
-svn:wc:ra_dav:version-url
-V 46
-/appide2a5i7utfb/!svn/ver/4/babybus/.classpath
-END
-.mymetadata
-K 25
-svn:wc:ra_dav:version-url
-V 47
-/appide2a5i7utfb/!svn/ver/4/babybus/.mymetadata
-END
-.project
-K 25
-svn:wc:ra_dav:version-url
-V 44
-/appide2a5i7utfb/!svn/ver/4/babybus/.project
+V 29
+/appide2a5i7utfb/!svn/ver/7/a
 END
