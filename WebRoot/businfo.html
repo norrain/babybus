@@ -16,23 +16,28 @@
 	 <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 	 <script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
 	-->  
-	 <link rel="stylesheet" href="include/jquery.mobile-1.4.2.min.css" />
+	<script src="include/jquery-1.8.3.min.js"></script>
+	 <script src="include/googleButton/google.fastbutton.js"></script>
+	<script src="include/googleButton/jquery.google.fastbutton.js"></script>
 	 <script>  
 	 	var myIP = "192.168.1.104:8080";
 	     //设置 必须引用在jqueryMobile 之前 
 		$(document).bind("mobileinit", function()  
 		{  
+			 $.mobile.ajaxEnabled = true;
 		     $.mobile.defaultPageTransition = 'none';  
 		     $.mobile.defaultDialogTransition = 'none';
+		     $.mobile.page.prototype.options.domCache=true; //页面缓存
+	  	     $.mobile.transitionFallbacks.slideout = "none"; //防止闪屏  
 		});     
-	</script>
-	 <script src="include/jquery-1.8.3.min.js"></script>
-	 <script src="include/jquery.mobile-1.2.1.min.js"></script>
-	 <script type='text/javascript' src='http://mianyang.dd100.net:8080/meetManager/dwr/interface/cbus.js'></script>
-     <script type='text/javascript' src='http://mianyang.dd100.net:8080/meetManager/dwr/engine.js'></script>
-  	
+	</script> 
+	<!--  -->
+	 <script src="include/jquery.mobile-1.4.2.min.js"></script>
+	 <link rel="stylesheet" href="include/jquery.mobile-1.4.2.min.css" />
+	 
   	
   	<style type="text/css">
+  		.ui-page { -webkit-backface-visibility: hidden; }
   		.actGotop{position:fixed;_position:absolute;bottom:15;right:10px;width:50px;height:50px;}
   		.pop.out.reverse{
 			 -webkit-transform:scale(.2);
@@ -41,7 +46,29 @@
 			 z-index:10;
 		}
   	</style>
-  
+  		
+  		<script type="text/javascript">
+  				
+  				var url = location.search; //获取url中"?"符后的字串 
+	  var theRequest = new Object(); 
+	 if (url.indexOf("?") != -1) { 
+	  var str = url.substr(1); 
+	  strs = str.split("&"); 
+	  for(var i = 0; i < strs.length; i ++) { 
+	      theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]); 
+	  } 
+	 } 
+	 
+	 var bid ="188lu"
+	 var bname = "哈哈";
+	 
+	 if(theRequest['bid']!=null&&theRequest['bid']!="")
+			bid = theRequest['bid'];
+	 if(theRequest['bname']!=null&&theRequest['bname']!="")
+	        bname = theRequest['bname'];
+  		
+  		//alert(bid+"==="+bname);
+  		</script>
   </head>
   
   <body >
@@ -52,31 +79,27 @@
  data-transition = "none"
  $(this).attr("bid")
   -->      	
-  
 
- 
-
-
-
+<!-- 站台信息 -->
 <div data-role="page" id="search_bus">
   <div data-role="header" data-position="fixed">
-	  <h1 id="bus_name">188路</h1><!-- data-icon="back" data-rel="back"  -->
-	   <a data-role="button" class="ui-btn-right" onclick="javascript:history.go(-1);" data-transition="none">返回</a>
+	  <h1 id="bus_name">188路</h1><!--  data-rel="back" -->
+	   <a id="bb" class="ui-btn-left"  data-icon="back" >返回</a>
    </div>
   <div data-role="tabs">
 	      <div data-role="navbar">
 		    <ul>
-		      <li><a href="#bus_station_z" data-ajax="true" class="ui-btn-active">上行</a></li>
+		      <li><a id="tab_sx" href="#bus_station_z" data-ajax="true" class="ui-btn-active">上行</a></li>
 		      <li><a href="#bus_station_f" data-ajax="true" >下行</a></li>
 		    </ul>
 		  </div>
-		  <div >
-		    <ul id="bus_station_z" data-role="listview" data-inset="true">
+		  <div id="bus_station_z"   style="margin-top:5px;">
+		    <ul data-role="listview" data-inset="true">
 		        <li><a href="#">正在加载...</a></li>
 		    </ul>
 		  </div>
-		   <div >
-		    <ul id="bus_station_f" data-role="listview" data-inset="true">
+		   <div id="bus_station_f"  style="margin-top:5px;">
+		    <ul data-role="listview" data-inset="true">
 		        <li><a href="#">正在加载...</a></li>
 		    </ul>
 		  </div>
@@ -85,6 +108,7 @@
 	   <h1>版权所有 |í、БābУ</h1>
 	 </div>
 </div> 
+
 	 
 	 
 	 <script type="text/javascript">
