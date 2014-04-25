@@ -10,12 +10,7 @@ function initAPP() {
 		location.href="include/welcome/wel.html";   //是第一次登录  就欢迎
 	}
 	
-		try {
-			document.addEventListener("backbutton",onBackKeyDown,false); 	
-		} catch (e) {
-			showAlert(e);
-		}
-		//document.addEventListener("deviceready", onDeviceReady, false);
+		 
 }
 
 //BackButton按钮  
@@ -30,6 +25,13 @@ function onMenuKeyDown(){
 function onSearchKeyDown() { 
 	//window.location="#page6";
 }
+
+
+document.addEventListener("deviceready", backKeyListener, false);
+
+function backKeyListener() {
+    document.addEventListener("backbutton", onBackKeyDown, false);
+} 
 
 
 function onDeviceReady(id) {
