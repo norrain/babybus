@@ -1,5 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<widget id="com.example.hello" version="0.0.1">        
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
+<widget xmlns     = "http://www.w3.org/ns/widgets"
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+        id        = "com.babybus.config.soft"
+        version   = "1.2.01">
+              
 	<name>DeathGirl babyBus!!!</name>        
 	<description>
 		我只是说这是个测试测试软件
