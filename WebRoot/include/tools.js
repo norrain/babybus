@@ -16,7 +16,10 @@ function initAPP() {
 //BackButton°´Å¥  
 function onBackKeyDown(){  
 	showAlert(location.href);
-	showAlert($.mobile.activePage.is('#page1'));
+	showAlert("index"+$.mobile.activePage.is('index.html'));
+	showAlert("sbus"+$.mobile.activePage.is('#search_bus'));
+	showAlert("index1"+$.mobile.activePage.is('index1.html'));
+	$.mobile.back();
 	//$.mobile.activePage.is('#page1')
 }  
 
