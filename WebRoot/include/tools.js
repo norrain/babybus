@@ -9,7 +9,7 @@ MobApp.DeviceReady = false;
 
 function initAPP() {
 	if(!localStorage.getItem('firstCheck')||localStorage.getItem('firstCheck')!="true"){
-		location.href="include/welcome/index.html";   //是第一次登录  就欢迎
+		location.href="include/welcome/wel.html";   //是第一次登录  就欢迎
 	}
 	
 	try {		
