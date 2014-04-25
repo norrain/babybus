@@ -15,14 +15,12 @@ function initAPP() {
 
 //BackButton按钮  
 function onBackKeyDown(){  
-	//showAlert(location.href);
+	showAlert(location.href);
 	//showAlert("index:"+$.mobile.activePage.is('index.html'));
 	//showAlert("sbus"+$.mobile.activePage.is('#search_bus'));
 	//showAlert("index1"+$.mobile.activePage.is('index1.html'));
 	if($.mobile.activePage.is('wel.html')||$.mobile.activePage.is('index.html')){
-		  showConfirm("您确定不再留一会儿啦？",function(b){
-		  	   showAlert(b);
-		  });
+		  showConfirm("您确定不再留一会儿啦？");
 	}else{
 		$.mobile.back();
 	}
