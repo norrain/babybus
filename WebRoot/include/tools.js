@@ -2,9 +2,7 @@ var isAndroid = (/android/gi).test(navigator.appVersion);
 var isIDevice = (/iphone|ipad/gi).test(navigator.appVersion);
 var isWebOS = (/webOS/gi).test(navigator.appVersion);
 
-var MobApp={};
-MobApp.version=1.39;
-MobApp.DeviceReady = false;
+var IsDeviceReady = false;
 
 
 function initAPP() {
@@ -37,8 +35,10 @@ function onSearchKeyDown() {
 function onDeviceReady(id) {
 	
 	showAlert("ddd");
-	if(MobApp.DeviceReady) return;
-	MobApp.DeviceReady=true;
+	if(IsDeviceReady) 
+		return;
+	
+	IsDeviceReady=true;
 	
 	
 	if(id==1) {
