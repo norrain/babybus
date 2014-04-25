@@ -34,20 +34,12 @@ function onSearchKeyDown() {
 
 function onDeviceReady(id) {
 	
-	showAlert("ddd");
+	showAlert("ddd"+id);
 	if(IsDeviceReady) 
 		return;
 	
 	IsDeviceReady=true;
 	
-	
-	if(id==1) {
-		MobApp.isApp=false;
-		console.log("您正在使用浏览器版！");		
-	}else{
-		MobApp.isApp=true;
-		console.log("您正在使用APP版！");		
-	}
 	
 	//添加按钮事件 
 	try {document.addEventListener("backbutton",onBackKeyDown,false); 	} catch (e) {alert();}
