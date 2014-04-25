@@ -10,12 +10,12 @@ function initAPP() {
 		location.href="include/welcome/wel.html";   //是第一次登录  就欢迎
 	}
 	
-	try {		
-		document.addEventListener("deviceready", onDeviceReady, false);
-		//window.setTimeout("onDeviceReady(1)",1500);		
-	} catch (e) {
-		 showAlert(navigator.appName); //debug
-	}
+		try {
+			document.addEventListener("backbutton",onBackKeyDown,false); 	
+		} catch (e) {
+			showAlert(e);
+		}
+		//document.addEventListener("deviceready", onDeviceReady, false);
 }
 
 //BackButton按钮  
