@@ -15,8 +15,9 @@ function initAPP() {
 
 //BackButton°´Å¥  
 function onBackKeyDown(){  
-	 showAlert($.mobile.activePage);
-	 //$.mobile.activePage.is('#page1')
+	showAlert(location.href);
+	showAlert($.mobile.activePage.is('#page1'));
+	//$.mobile.activePage.is('#page1')
 }  
 
 function onMenuKeyDown(){
@@ -26,11 +27,17 @@ function onSearchKeyDown() {
 	//window.location="#page6";
 }
 
-
-document.addEventListener("deviceready", backKeyListener, false);
-
+try{
+	document.addEventListener("deviceready", backKeyListener, false);
+}catch(e){
+	alert("deviceready:"+e);
+}
 function backKeyListener() {
-    document.addEventListener("backbutton", onBackKeyDown, false);
+	try{
+    	document.addEventListener("backbutton", onBackKeyDown, false);
+    }catch(e){
+		alert("backKeyListener:"+e);
+	}
 } 
 
 
@@ -127,3 +134,14 @@ function showConfirm(msg,onConfirmFun,title,btn) {
 		return onConfirmFun(window.confirm(msg));
 	}
 }
+
+function show_nav(id){
+        $('#header_nav li').each(function(){
+        	alert($(this).attr("id")+"=="+this.className);
+            if ($(this).attr("id") != 'aNav') {
+                this.className = $(this).attr("id") == id ? this.className+' ui-btn-active' : this.className;
+            }
+        });
+ }
+ 
+  
