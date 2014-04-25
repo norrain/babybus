@@ -22,6 +22,7 @@ function initAPP() {
 
 //BackButton按钮  
 function onBackKeyDown(){  
+	 showAlert($.mobile.activePage);
 	 //$.mobile.activePage.is('#page1')
 }  
 
@@ -34,10 +35,11 @@ function onSearchKeyDown() {
 
 
 function onDeviceReady(id) {
+	
+	showAlert("ddd");
 	if(MobApp.DeviceReady) return;
 	MobApp.DeviceReady=true;
 	
-	showAlert("ddd");
 	
 	if(id==1) {
 		MobApp.isApp=false;
@@ -48,7 +50,7 @@ function onDeviceReady(id) {
 	}
 	
 	//添加按钮事件 
-	//try {document.addEventListener("backbutton",onBackKeyDown,false); 	} catch (e) {}
+	try {document.addEventListener("backbutton",onBackKeyDown,false); 	} catch (e) {alert();}
 	//try {document.addEventListener("menubutton", onMenuKeyDown, false); } catch (e) {}
 	//try {document.addEventListener("searchbutton", onSearchKeyDown, false); } catch (e) {}
  
@@ -111,6 +113,7 @@ function showAlert(msg,title,btntext) {
 // 处理确认对话框返回的结果
 function onConfirm(button) {
 	alert('You selected button ' + button);
+	
 	return button==1;
 }
 	
