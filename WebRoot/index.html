@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
-    <title>会议列表</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>公交查询</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="default">
 	<meta name="format-detection" content="telephone=no">
 	 
+	<!-- 测试 用 --> 
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0"> 
 	 
-	 
-	 <script src="cordova.js"></script>
 	 <script src="include/jquery-1.8.3.min.js"></script>
 	 <script src="include/jquery.ba-hashchange.js"></script>
 	 <script src="include/tools.js"></script>
@@ -20,13 +22,14 @@
 		$(document).bind("mobileinit", function()  
 		{  
 			 $.mobile.ajaxEnabled = true;
-		     $.mobile.defaultPageTransition = 'none';  
-		     $.mobile.defaultDialogTransition = 'none';
+		     $.mobile.defaultPageTransition = 'slide';  
+		     $.mobile.defaultDialogTransition = 'flip';
 		     $.mobile.page.prototype.options.domCache=true; //页面缓存
 	  	     $.mobile.transitionFallbacks.slideout = "none"; //防止闪屏  
 			 
-			 
 			 //alert(isAndroid);
+			 
+			 //showAlert("哈哈试试","","");
 		});     
 	</script> 
 	
@@ -39,7 +42,7 @@
 	
   	
   	<style type="text/css">
-  		.ui-page { -webkit-backface-visibility: hidden; }
+  		.ui-page { -webkit-backface-visibility: hidden;}
   		.actGotop{position:fixed;_position:absolute;bottom:15;right:10px;width:50px;height:50px;}
   		.pop.out.reverse{
 			 -webkit-transform:scale(.2);
@@ -51,7 +54,7 @@
   
   </head>
   
-  <body >
+  <body onload="initAPP()">
  <!-- 
  
  data-rel: opens External 
@@ -73,7 +76,6 @@
     </ul>
   </nav>
   </div>
-  
   <div  data-role="content">
   		<div class="ui-field-contain">
 		    <label for="select-native-1">Basic:</label>
@@ -97,7 +99,7 @@
 </div> 
 
 <!-- 站台信息 -->
-<div data-role="page" id="search_bus">
+<div data-role="page" id="search_bus" data-dom-cache="false">
   <div data-role="header" data-position="fixed">
 	  <h1 id="bus_name">188路</h1><!--  data-rel="back" -->
 	   <a id="bb" class="ui-btn-left backButton"  data-icon="back" >返回</a>
@@ -146,7 +148,7 @@
 			       $.mobile.changePage("#search_bus");
 			    });
 			    $(".backButton").live("fastClick",function(e){
-			          $.mobile.back();
+			    	  $.mobile.back();
 			    }); 
 		 });
 		 
@@ -164,28 +166,13 @@
 	  	 	 	  $("#bus_list").append("<li><a href='javascript:;'  id='ID_"+obj.bid+"'  bname='"+obj.bname+"' bid='"+obj.bid+"'>"+obj.bname+"<span class='ui-li-count'>25</span></a></li>");
 	  	 		  //绑定事件
 	  	 		  $("#ID_"+obj.bid).fastClick(function(e){
-	  	 	 			 $.mobile.changePage("#search_bus");
-	  	 	 			 $("#bus_name").html($(this).attr("bname"));
-					     cbus.getBusStation($(this).attr("bid"),"",showR);
+	  	 	 			 $.mobile.changePage("index1.html");
+	  	 	 			 //$("#bus_name").html($(this).attr("bname"));
+					     //cbus.getBusStation($(this).attr("bid"),"",showR);
 				  });
 	  	 	 }
 	  	 	 
 	  	 	 $("#bus_list").listview('refresh');
-	  	 	 
-	  	 	 //$("#bus_list").append(str);
-	  	 	  
-	  	 	  //$('ul#bus_list').find("li").each(function(){
-	  	 	 		//$(this).fastClick(function(e){ 
-	  	 	 			// $.mobile.changePage("#search_bus");
-	  	 	 		 	 //$.mobile.changePage("#search_bus",'none', false, false);
-					     //$("#bus_name").html($(this).attr("bname"));
-					     //cbus.getBusStation($(this).attr("bid"),"",showR);
-					//});
-	  	 	 		 
-	  	 	 		//$(this).live("tap",function(){
-					     //$.mobile.changePage("#search_bus",'none', false, false);
-					//});
-	  	 	 //});
 	  	 }
 	  	 
 	   
@@ -196,19 +183,10 @@
 	  	 	 	  var obj = list[i];
 	  	 	 	  str +="<li><a>"+obj.st_name+"</li>";
 	  	 	 }
-	  	 	 
-	  	 	 //document.getElementById("bus_list").innerHTML = str;
 	  	 	 $("#bus_station_z ul").html("");
 	  	 	 $("#bus_station_z ul").append(str);
 	  	 	 $("#bus_station_z ul").listview('refresh');
 	     }
-	  	 
-	  	 	   //app.initialize();
-			   //alert(device.platform);
-			   //alert(device.uuid);
-			   //alert(device.version);
-			   //alert(device.uuid);
-		 
  </script>
        	
   </body>

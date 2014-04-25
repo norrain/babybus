@@ -2,4 +2,131 @@ var isAndroid = (/android/gi).test(navigator.appVersion);
 var isIDevice = (/iphone|ipad/gi).test(navigator.appVersion);
 var isWebOS = (/webOS/gi).test(navigator.appVersion);
 
+var MobApp={};
+MobApp.version=1.39;
+MobApp.DeviceReady = false;
 
+
+function initAPP() {
+	if(!localStorage.getItem('firstCheck')||localStorage.getItem('firstCheck')!="true"){
+		location.href="include/welcome/index.html";   //是第一次登录  就欢迎
+	}
+	
+	try {		
+		document.addEventListener("deviceready", onDeviceReady, false);
+		//window.setTimeout("onDeviceReady(1)",1500);		
+	} catch (e) {
+		 showAlert(navigator.appName); //debug
+	}
+}
+
+//BackButton按钮  
+function onBackKeyDown(){  
+	 //$.mobile.activePage.is('#page1')
+}  
+
+function onMenuKeyDown(){
+	//window.location="#page4";
+}
+function onSearchKeyDown() { 
+	//window.location="#page6";
+}
+
+
+function onDeviceReady(id) {
+	if(MobApp.DeviceReady) return;
+	MobApp.DeviceReady=true;
+	
+	showAlert("ddd");
+	
+	if(id==1) {
+		MobApp.isApp=false;
+		console.log("您正在使用浏览器版！");		
+	}else{
+		MobApp.isApp=true;
+		console.log("您正在使用APP版！");		
+	}
+	
+	//添加按钮事件 
+	//try {document.addEventListener("backbutton",onBackKeyDown,false); 	} catch (e) {}
+	//try {document.addEventListener("menubutton", onMenuKeyDown, false); } catch (e) {}
+	//try {document.addEventListener("searchbutton", onSearchKeyDown, false); } catch (e) {}
+ 
+	
+}
+
+
+
+
+//测试是否可以取到网络参数
+var Request = new Array();
+function loadQueryString(url) {
+	
+	var s = url.replace("#","&");
+	var n = s.indexOf("?");
+	if (n >= 0)
+		s = s.substring(n + 1);
+	var valuelist = s.split("&");
+	for (var i = 0; i < valuelist.length; i++) {
+		var pair = valuelist[i].split("=");
+		if (pair.length > 1) {
+			Request[pair[0].toLowerCase()] = pair[1];
+		};
+	};
+};
+
+if(window.location.href.indexOf("?")>0){
+	loadQueryString(window.location.href);	
+	notify=window.location.href;
+	//alert(notify);
+}
+
+
+function roundNumber(num) {
+	var dec = 3;
+	var result = Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
+	return result;
+}
+
+// 显示定制警告框
+function showAlert(msg,title,btntext) {
+	try{
+		if(!title) title="温馨提示";
+		if(!btntext) btntext="我知道了";
+		if(navigator.notification && navigator.notification.alert){
+   		navigator.notification.alert(
+			msg,  // 显示信息
+			alertDismissed, 
+			title,            // 标题
+			btntext            // 按钮名称
+		);
+		}else{
+			alert(":"+msg);
+		}
+	}catch(e){
+		alert("E:"+msg);
+	}	
+}
+
+// 处理确认对话框返回的结果
+function onConfirm(button) {
+	alert('You selected button ' + button);
+	return button==1;
+}
+	
+// 显示一个定制的确认对话框
+function showConfirm(msg,onConfirmFun,title,btn) {
+	if(!onConfirmFun) onConfirmFun=onConfirm;
+	if(!title) title='请选择：'
+	if(!btn) btn='确定,取消';
+	try{
+		return navigator.notification.confirm(
+		msg,  // 显示信息
+		onConfirmFun,    // 按下按钮后触发的回调函数，返回按下按钮的索引	
+		title,          // 标题
+		btn          // 按钮标签
+	);}
+	catch(e){
+		return onConfirmFun(window.confirm(msg));
+	}
+}
