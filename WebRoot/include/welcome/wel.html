@@ -133,11 +133,32 @@
             margin: 0;
         }
     </style>
+    <script src="../../cordova.js"></script>
      <script type="text/javascript" src="../jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="../iscroll.js"></script>
     <script type="text/javascript" src="welcome.js"></script>
     <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', loaded, false);   
+        document.addEventListener('DOMContentLoaded', loaded, false);
+        
+        //BackButton按钮  
+	function onBackKeyDown(){  
+	 	 navigator.app.exitApp();
+	}  
+
+ 
+		try{
+			document.addEventListener("deviceready", backKeyListener, false);
+		}catch(e){
+			alert("deviceready:"+e);
+		}
+		function backKeyListener() {
+			try{
+		    	document.addEventListener("backbutton", onBackKeyDown, false);
+		    }catch(e){
+				alert("backKeyListener:"+e);
+			}
+		} 
+           
     </script>
 </head>
 <body style="overflow: hidden;">

@@ -19,7 +19,8 @@ function onBackKeyDown(){
 	//showAlert("index:"+$.mobile.activePage.is('index.html'));
 	//showAlert("sbus"+$.mobile.activePage.is('#search_bus'));
 	//showAlert("index1"+$.mobile.activePage.is('index1.html'));
-	if($.mobile.activePage.is('wel.html')||$.mobile.activePage.is('index.html')){
+	if($.mobile.activePage.is('index.html')){
+		  showAlert("====");
 		  showConfirm("您确定不再留一会儿啦？");
 	}else{
 		$.mobile.back();
@@ -55,7 +56,6 @@ function onDeviceReady(id) {
 		return;
 	
 	IsDeviceReady=true;
-	
 	
 	//添加按钮事件 
 	try {document.addEventListener("backbutton",onBackKeyDown,false); 	} catch (e) {alert();}
