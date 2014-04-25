@@ -166,9 +166,9 @@
 	  	 	 	  $("#bus_list").append("<li><a href='javascript:;'  id='ID_"+obj.bid+"'  bname='"+obj.bname+"' bid='"+obj.bid+"'>"+obj.bname+"<span class='ui-li-count'>25</span></a></li>");
 	  	 		  //绑定事件
 	  	 		  $("#ID_"+obj.bid).fastClick(function(e){
-	  	 	 			 $.mobile.changePage("index1.html");
-	  	 	 			 //$("#bus_name").html($(this).attr("bname"));
-					     //cbus.getBusStation($(this).attr("bid"),"",showR);
+	  	 	 			 $.mobile.changePage("#search_bus");
+	  	 	 			 $("#bus_name").html($(this).attr("bname"));
+					     cbus.getBusStation($(this).attr("bid"),"",showR);
 				  });
 	  	 	 }
 	  	 	 
