@@ -1,22 +1,19 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
   <head>
     <title>会议列表</title>
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	
-	 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
-	 <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-	 <script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
-	-->  
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="default">
+	<meta name="format-detection" content="telephone=no">
+	 
+	 
+	 
+	 <script src="cordova.js"></script>
 	 <script src="include/jquery-1.8.3.min.js"></script>
+	 <script src="include/jquery.ba-hashchange.js"></script>
+	 <script src="include/tools.js"></script>
 	 <script>  
 	 	var myIP = "192.168.1.104:8080";
 	     //设置 必须引用在jqueryMobile 之前 
@@ -27,7 +24,9 @@
 		     $.mobile.defaultDialogTransition = 'none';
 		     $.mobile.page.prototype.options.domCache=true; //页面缓存
 	  	     $.mobile.transitionFallbacks.slideout = "none"; //防止闪屏  
-			  //alert($.mobile.ajaxEnabled);
+			 
+			 
+			 //alert(isAndroid);
 		});     
 	</script> 
 	
@@ -37,7 +36,7 @@
 	<link rel="stylesheet" href="include/jquery.mobile-1.4.2.min.css" />
 	<script src="include/jquery.mobile-1.4.2.min.js"></script>
 	 
-	 <script src="cordova.js"></script>
+	
   	
   	<style type="text/css">
   		.ui-page { -webkit-backface-visibility: hidden; }
@@ -67,36 +66,24 @@
   <h1>|í、БābУ 公交查询</h1>
   <nav data-role="navbar">
     <ul>
-      <li><a data-icon="home" data-transition="none" class="ui-btn-active">首页</a></li>
-      <li><a id="b_sb" href="index1.html" data-rel="dialog" data-transition="none" data-icon="search">数据库</a></li>
-      <li><a href="#email" data-rel="dialog" data-icon="grid" data-transition="none">邮件</a></li>
-      <li><a href="#phoneInfo" data-rel="dialog" data-icon="star" data-transition="none">关于手机</a></li>
+      <li><a data-icon="home"   class="ui-btn-active">首页</a></li>
+      <li><a href="index1.html" data-icon="star">数据库</a></li>
+      <li><a href="#email" data-rel="dialog" data-icon="grid" >邮件</a></li>
+      <li><a href="#phoneInfo" data-rel="dialog" data-icon="info" >关于手机</a></li>
     </ul>
   </nav>
   </div>
   
   <div  data-role="content">
   		<div class="ui-field-contain">
-    <label for="select-native-1">Basic:</label>
-    <select name="select-native-1" id="select-native-1" >
-        <option value="1">The 1st Option</option>
-        <option value="2">The 2nd Option</option>
-        <option value="3">The 3rd Option</option>
-        <option value="4">The 4th Option</option>
-          <option value="1">The 1st Option</option>
-        <option value="2">The 2nd Option</option>
-        <option value="3">The 3rd Option</option>
-        <option value="4">The 4th Option</option>
-          <option value="1">The 1st Option</option>
-        <option value="2">The 2nd Option</option>
-        <option value="3">The 3rd Option</option>
-        <option value="4">The 4th Option</option>
-          <option value="1">The 1st Option</option>
-        <option value="2">The 2nd Option</option>
-        <option value="3">The 3rd Option</option>
-        <option value="4">The 4th Option</option>
-    </select>
-</div>
+		    <label for="select-native-1">Basic:</label>
+		    <select name="select-native-1" id="select-native-1" >
+		        <option value="1">The 1st Option</option>
+		        <option value="2">The 2nd Option</option>
+		        <option value="3">The 3rd Option</option>
+		        <option value="4">The 4th Option</option>
+		    </select>
+		</div>
        <p style="text-align:center;color:grey;display:none;">成都市所有公交车列表</p>
        <ul id="bus_list" data-role="listview" data-autodividers="true" data-inset="true" data-filter="true" data-filter-placeholder="搜索公交路线">
 		    <li><a href="#">正在加载...</a></li>
@@ -165,7 +152,7 @@
 		 
  		 DWREngine.setMethod(DWREngine.ScriptTag);
 	     cbus._path = "http://mianyang.dd100.net:8080/meetManager/dwr";
-	  	 //cbus.getBusList(slist);
+	  	 cbus.getBusList(slist);
 	  	 
 	  	 function slist(list){
 	  	 	 var len = list.length;
@@ -174,7 +161,7 @@
 	  	 	 $("#bus_list").html("");
 	  	 	 for(var i=0;i<len;i++){
 	  	 	 	  var obj = list[i];
-	  	 	 	  $("#bus_list").append("<li id='ID_"+obj.bid+"'  bname='"+obj.bname+"' bid='"+obj.bid+"'><a>"+obj.bname+"<span class='ui-li-count'>25</span></a></li>");
+	  	 	 	  $("#bus_list").append("<li><a href='javascript:;'  id='ID_"+obj.bid+"'  bname='"+obj.bname+"' bid='"+obj.bid+"'>"+obj.bname+"<span class='ui-li-count'>25</span></a></li>");
 	  	 		  //绑定事件
 	  	 		  $("#ID_"+obj.bid).fastClick(function(e){
 	  	 	 			 $.mobile.changePage("#search_bus");
