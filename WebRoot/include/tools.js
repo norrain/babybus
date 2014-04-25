@@ -22,12 +22,12 @@ function onConfirmExit(button) {
 
 //BackButton按钮  
 function onBackKeyDown(){  
-	showAlert(location.href);
-	showAlert("index:"+$.mobile.activePage.is('index.html'));
-	showAlert("sbus"+$.mobile.activePage.is('#search_bus'));
-	showAlert("index1"+$.mobile.activePage.is('index1.html'));
-	if($.mobile.activePage.is('index.html')){
-		  showAlert("===");
+	//showAlert(location.href);
+	//showAlert(mobile.activePage);
+	//showAlert("index:"+$.mobile.activePage.is('#index'));
+	//showAlert(" sbus:"+$.mobile.activePage.is('#search_bus'));
+	//showAlert("index1"+$.mobile.activePage.is('index1.html'));
+	if($.mobile.activePage.is('#homePage')){
 		  showConfirm("您确定不再留一会儿啦？",onConfirmExit);
 	}else{
 		$.mobile.back();
