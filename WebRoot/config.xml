@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget id="com.example.hello" version="0.0.1">        
+	<name>DeathGirl babyBus!!!</name>        
+	<description>
+		我只是说这是个测试测试软件
+	</description>       
+	<author email="norrai@qq.com" href="http://www.norrain.net">张成刚</author>        
+	<content src="index.html" /> 
+	<preference name="fullscreen" value="true" />
+	<preference name="phonegap-version" value="3.3" />
+	<preference name="phonegap-version" value="landscape" />  <!-- 方向 default landscape portrait -->
+	<gap:splash src="splash.png" />
+	<icon src="icon.png"/>
+	
+	<access origin="*" />    
+</widget>

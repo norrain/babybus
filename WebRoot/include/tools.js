@@ -13,6 +13,13 @@ function initAPP() {
 		 
 }
 
+// 处理确认退出对话框返回的结果
+function onConfirmExit(button) {
+	 if(button){
+	 	 navigator.app.exitApp();
+	 }
+}
+
 //BackButton按钮  
 function onBackKeyDown(){  
 	showAlert(location.href);
@@ -20,8 +27,7 @@ function onBackKeyDown(){
 	//showAlert("sbus"+$.mobile.activePage.is('#search_bus'));
 	//showAlert("index1"+$.mobile.activePage.is('index1.html'));
 	if($.mobile.activePage.is('index.html')){
-		  showAlert("====");
-		  showConfirm("您确定不再留一会儿啦？");
+		  showConfirm("您确定不再留一会儿啦？",onConfirmExit);
 	}else{
 		$.mobile.back();
 	}
@@ -118,6 +124,8 @@ function showAlert(msg,title,btntext) {
 	}	
 }
 
+
+
 // 处理确认对话框返回的结果
 function onConfirm(button) {
 	alert('You selected button ' + button);
@@ -130,16 +138,16 @@ function showConfirm(msg,onConfirmFun,title,btn) {
 	if(!onConfirmFun) onConfirmFun=onConfirm;
 	if(!title) title='请选择：'
 	if(!btn) btn='确定,取消';
-	try{
-		return navigator.notification.confirm(
-		msg,  // 显示信息
-		onConfirmFun,    // 按下按钮后触发的回调函数，返回按下按钮的索引	
-		title,          // 标题
-		btn          // 按钮标签
-	);}
-	catch(e){
-		return onConfirmFun(window.confirm(msg));
-	}
+		try{
+			return navigator.notification.confirm(
+				msg,  // 显示信息
+				onConfirmFun,    // 按下按钮后触发的回调函数，返回按下按钮的索引	
+				title,          // 标题
+				btn          // 按钮标签
+				);
+		}catch(e){
+			return onConfirmFun(window.confirm(msg));
+		}
 }
 
 function show_nav(id){
