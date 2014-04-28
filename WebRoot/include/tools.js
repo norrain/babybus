@@ -6,21 +6,21 @@ var IsDeviceReady = false;
 
 
 function initAPP() {
-	if(!localStorage.getItem('firstCheck')||localStorage.getItem('firstCheck')!="true"){
-		location.href="include/welcome/wel.html";   //ÊÇµÚÒ»´ÎµÇÂ¼  ¾Í»¶Ó­
-	}
+	//if(!localStorage.getItem('firstCheck')||localStorage.getItem('firstCheck')!="true"){
+		//location.href="include/welcome/wel.html";   //æ˜¯ç¬¬ä¸€æ¬¡ç™»å½•  å°±æ¬¢è¿
+	//}
 	
 		 
 }
 
-// ´¦ÀíÈ·ÈÏÍË³ö¶Ô»°¿ò·µ»ØµÄ½á¹û
+// å¤„ç†ç¡®è®¤é€€å‡ºå¯¹è¯æ¡†è¿”å›çš„ç»“æœ
 function onConfirmExit(button) {
 	 if(button){
 	 	 navigator.app.exitApp();
 	 }
 }
 
-//BackButton°´Å¥  
+//BackButtonæŒ‰é’®  
 function onBackKeyDown(){  
 	//showAlert(location.href);
 	//showAlert(mobile.activePage);
@@ -28,7 +28,7 @@ function onBackKeyDown(){
 	//showAlert(" sbus:"+$.mobile.activePage.is('#search_bus'));
 	//showAlert("index1"+$.mobile.activePage.is('index1.html'));
 	if($.mobile.activePage.is('#homePage')){
-		  showConfirm("ÄúÈ·¶¨²»ÔÙÁôÒ»»á¶ùÀ²£¿",onConfirmExit);
+		  showConfirm("æ‚¨ç¡®å®šä¸å†ç•™ä¸€ä¼šå„¿å•¦ï¼Ÿ",onConfirmExit);
 	}else{
 		$.mobile.back();
 	}
@@ -47,6 +47,7 @@ try{
 }catch(e){
 	alert("deviceready:"+e);
 }
+
 function backKeyListener() {
 	try{
     	document.addEventListener("backbutton", onBackKeyDown, false);
@@ -64,7 +65,7 @@ function onDeviceReady(id) {
 	
 	IsDeviceReady=true;
 	
-	//Ìí¼Ó°´Å¥ÊÂ¼ş 
+	//æ·»åŠ æŒ‰é’®äº‹ä»¶ 
 	try {document.addEventListener("backbutton",onBackKeyDown,false); 	} catch (e) {alert();}
 	//try {document.addEventListener("menubutton", onMenuKeyDown, false); } catch (e) {}
 	//try {document.addEventListener("searchbutton", onSearchKeyDown, false); } catch (e) {}
@@ -75,7 +76,7 @@ function onDeviceReady(id) {
 
 
 
-//²âÊÔÊÇ·ñ¿ÉÒÔÈ¡µ½ÍøÂç²ÎÊı
+//æµ‹è¯•æ˜¯å¦å¯ä»¥å–åˆ°ç½‘ç»œå‚æ•°
 var Request = new Array();
 function loadQueryString(url) {
 	
@@ -105,17 +106,17 @@ function roundNumber(num) {
 	return result;
 }
 
-// ÏÔÊ¾¶¨ÖÆ¾¯¸æ¿ò
+// æ˜¾ç¤ºå®šåˆ¶è­¦å‘Šæ¡†
 function showAlert(msg,title,btntext) {
 	try{
-		if(!title) title="ÎÂÜ°ÌáÊ¾";
-		if(!btntext) btntext="ÎÒÖªµÀÁË";
+		if(!title) title="æ¸©é¦¨æç¤º";
+		if(!btntext) btntext="æˆ‘çŸ¥é“äº†";
 		if(navigator.notification && navigator.notification.alert){
    		navigator.notification.alert(
-			msg,  // ÏÔÊ¾ĞÅÏ¢
+			msg,  // æ˜¾ç¤ºä¿¡æ¯
 			alertDismissed, 
-			title,            // ±êÌâ
-			btntext            // °´Å¥Ãû³Æ
+			title,            // æ ‡é¢˜
+			btntext            // æŒ‰é’®åç§°
 		);
 		}else{
 			alert(":"+msg);
@@ -127,24 +128,24 @@ function showAlert(msg,title,btntext) {
 
 
 
-// ´¦ÀíÈ·ÈÏ¶Ô»°¿ò·µ»ØµÄ½á¹û
+// å¤„ç†ç¡®è®¤å¯¹è¯æ¡†è¿”å›çš„ç»“æœ
 function onConfirm(button) {
 	alert('You selected button ' + button);
 	
 	return button==1;
 }
 	
-// ÏÔÊ¾Ò»¸ö¶¨ÖÆµÄÈ·ÈÏ¶Ô»°¿ò
+// æ˜¾ç¤ºä¸€ä¸ªå®šåˆ¶çš„ç¡®è®¤å¯¹è¯æ¡†
 function showConfirm(msg,onConfirmFun,title,btn) {
 	if(!onConfirmFun) onConfirmFun=onConfirm;
-	if(!title) title='ÇëÑ¡Ôñ£º'
-	if(!btn) btn='È·¶¨,È¡Ïû';
+	if(!title) title='è¯·é€‰æ‹©ï¼š'
+	if(!btn) btn='ç¡®å®š,å–æ¶ˆ';
 		try{
 			return navigator.notification.confirm(
-				msg,  // ÏÔÊ¾ĞÅÏ¢
-				onConfirmFun,    // °´ÏÂ°´Å¥ºó´¥·¢µÄ»Øµ÷º¯Êı£¬·µ»Ø°´ÏÂ°´Å¥µÄË÷Òı	
-				title,          // ±êÌâ
-				btn          // °´Å¥±êÇ©
+				msg,  // æ˜¾ç¤ºä¿¡æ¯
+				onConfirmFun,    // æŒ‰ä¸‹æŒ‰é’®åè§¦å‘çš„å›è°ƒå‡½æ•°ï¼Œè¿”å›æŒ‰ä¸‹æŒ‰é’®çš„ç´¢å¼•	
+				title,          // æ ‡é¢˜
+				btn          // æŒ‰é’®æ ‡ç­¾
 				);
 		}catch(e){
 			return onConfirmFun(window.confirm(msg));

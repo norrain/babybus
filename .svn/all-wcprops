@@ -3,3 +3,21 @@ svn:wc:ra_dav:version-url
 V 29
 /appide2a5i7utfb/!svn/ver/7/a
 END
+.classpath
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/appide2a5i7utfb/!svn/ver/8/a/.classpath
+END
+.mymetadata
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/appide2a5i7utfb/!svn/ver/8/a/.mymetadata
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/appide2a5i7utfb/!svn/ver/8/a/.project
+END
