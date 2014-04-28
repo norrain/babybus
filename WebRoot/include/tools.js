@@ -155,14 +155,26 @@ function roundNumber(num) {
 }
 
 
-
-function show_nav(id){
+/**
+ * replaceAll 方法实现
+ * **/
+ function  replaceAll(Astr,AFindText,ARepText){  
+    var raRegExp = new RegExp(AFindText,"g");
+    
+	return Astr.replace(raRegExp,ARepText);
+ }
+ 
+function show_nav(navid){
         $('#header_nav li').each(function(){
-        	alert($(this).attr("id")+"=="+this.className);
-            if ($(this).attr("id") != 'aNav') {
-                this.className = $(this).attr("id") == id ? this.className+' ui-btn-active' : this.className;
-            }
+        		//alert(this.className);
+            	if(this.className.indexOf('ui-btn-active')!=-1){
+            		this.className = this.className.replaceAll(" ui-btn-active","");
+            	}
         });
+       //alert(document.getElementById(navid).className);
+       //var cn = document.getElementById(navid).className+"";
+//       /document.getElementById(navid).className = cn +" ui-btn-active";
+        //$("#"+navid).className = $("#"+navid).className+" ui-btn-active";
  }
 
  
