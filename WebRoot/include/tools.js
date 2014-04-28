@@ -46,6 +46,7 @@ function showConfirm(msg,onConfirmFun,title,btn) {
 				btn          // 按钮标签
 				);
 		}catch(e){
+			alert(e+"==========");
 			return onConfirmFun(window.confirm(msg));
 		}
 }
