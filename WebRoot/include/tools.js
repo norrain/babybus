@@ -23,7 +23,7 @@ function onConfirmExit(button) {
 //BackButton按钮  
 function onBackKeyDown(){  
 	showAlert(location.href);
-	showAlert(mobile.activePage);
+	showAlert($.mobile.activePage);
 	showAlert("index:"+$.mobile.activePage.is('#homePage'));
 	showAlert(" sbus:"+$.mobile.activePage.is('#search_bus'));
 	showAlert("index1"+$.mobile.activePage.is('index1.html'));
