@@ -5,18 +5,60 @@ var isWebOS = (/webOS/gi).test(navigator.appVersion);
 var IsDeviceReady = false;
 
 
+//显示loading
+function showLoading(){
+	//$.mobile.showPageLoadingMsg();
+	 $.mobile.loading('show', {  
+       text: '加载中...', //加载器中显示的文字
+       textVisible: true, //是否显示文字
+       theme: 'a',        //加载器主题样式a-e
+       textonly: false,   //是否只显示文字
+       html: ""//要显示的html内容，如图片等
+   });  
+} 
+//隐藏loading
+function hideLoading(){
+   //$.mobile.hidePageLoadingMsg();
+	$.mobile.loading('hide');  
+} 
+
+//退出
+function exitApp(){
+	onBackKeyDown();
+}
+
+//检查网络连接
+function checkConnection() {
+	var networkState =  navigator.network.connection.type;//navigator.connection.type;
+	var states = {};
+	states[Connection.UNKNOWN]  = 'Unknownconnection';//未知连接
+	states[Connection.ETHERNET] = 'Ethernet connection';//以太网
+	states[Connection.WIFI] = 'WiFi connection';//wifi
+	states[Connection.CELL_2G]  = 'Cell 2Gconnection';//2G
+	states[Connection.CELL_3G]  = 'Cell 3Gconnection';//3G
+	states[Connection.CELL_4G]  = 'Cell 4Gconnection';//4G
+	states[Connection.CELL] = 'Cell generic connection';//蜂窝网络
+	states[Connection.NONE] = 'No network connection';
+	
+	 if (networkState == Connection.NONE) {
+            showAlert('请连接网络', '没有网络连接');
+     }
+	 alert('Connection type: ' + states[networkState]);
+}
+checkConnection();
+
 // 显示定制警告框
 function showAlert(msg,title,btntext) {
 	try{
 		if(!title) title="温馨提示";
 		if(!btntext) btntext="我知道了";
 		if(navigator.notification && navigator.notification.alert){
-   		navigator.notification.alert(
-			msg,  // 显示信息
-			alertDismissed, 
-			title,            // 标题
-			btntext            // 按钮名称
-		);
+	   		navigator.notification.alert(
+				msg,  // 显示信息
+				alertDismissed, 
+				title,            // 标题
+				btntext            // 按钮名称
+			);
 		}else{
 			alert(msg);
 		}
@@ -35,6 +77,7 @@ function onConfirm(button) {
 	
 // 显示一个定制的确认对话框
 function showConfirm(msg,onConfirmFun,title,btn) {
+	//alert(msg+"--"+onConfirmFun+"--"+title+"---"+btn);
 	if(!onConfirmFun) onConfirmFun=onConfirm;
 	if(!title) title='请选择：'
 	if(!btn) btn='确定,取消';
@@ -46,9 +89,9 @@ function showConfirm(msg,onConfirmFun,title,btn) {
 				btn          // 按钮标签
 				);
 		}catch(e){
-			alert("error:不支持确认对话框");
+			showAlert("error:不支持确认对话框");
 			
-			return onConfirmFun(window.confirm(msg));
+			//return onConfirmFun(window.confirm(msg));
 		}
 }
 
@@ -60,10 +103,38 @@ function initAPP() {
 	//}
 }
 
+//模拟confirm
+
+var confirm = function (content, title, response) {
+    var html = "<div data-role='popup' id='mToast_confirm' data-theme='d' data-overlay-theme='b' style='max-width:340px;overflow:hidden;'><div class='ui-header ui-bar-a ui-corner-top'><h1 class='ui-title'>" + title + "</h1></div><div class='ui-content'><p></p>" + content + "<p></p><a data-role='button' data-inline='true' data-rel='back' data-mini='true'>取消</a><a id='mToast_confirm_response' data-role='button' data-theme='b' data-icon='check' data-inline='true' data-mini='true'>确定</a></div></div>",
+        previous = $(".ui-popup-active div[data-role=popup]"),
+        divConfirm = $("div#mToast_confirm");
+    previous.popup('close');
+    if (divConfirm.length > 0) {
+        divConfirm.remove();
+    }
+    divConfirm = $(html).appendTo("div[data-role=page]:first");
+    divConfirm.trigger('create')    // <-- 生成popup
+        .trigger('refresh')
+        .popup()
+        .find("#mToast_confirm_response").on('fastClick', function () {
+            divConfirm.popup('close');
+            previous.popup('open');
+            response();
+        });
+    divConfirm.popup('open');   // -->
+};
+
+confirm('are you sure?', 'Confirm', function () {
+    alert('sure');
+});
+
+
 // 处理确认退出对话框返回的结果
 function onConfirmExit(button) {
 	 if(button){
 	 	 navigator.app.exitApp();
+	 	 localStorage.removeItem("loginUser");
 	 }
 }
 
@@ -74,11 +145,11 @@ function onBackKeyDown(){
 	//showAlert("index:"+$.mobile.activePage.is('#homePage'));
 	//showAlert(" sbus:"+$.mobile.activePage.is('#search_bus'));
 	//showAlert("index1"+$.mobile.activePage.is('index1.html'));
-	if($.mobile.activePage.is('#homePage')){
+	if($.mobile.activePage.is('#homePage')||$.mobile.activePage.is('#loginPage')){
 		  //showAlert("===========");
-		  showConfirm("您确定不再留一会儿啦？",onConfirmExit);
+		 showConfirm("您确定不再多留一会儿啦？",onConfirmExit);
 	}else{
-		$.mobile.back();
+		 $.mobile.back();
 	}
 	//$.mobile.activePage.is('#page1')
 }  
@@ -107,7 +178,7 @@ function backKeyListener() {
 
 function onDeviceReady(id) {
 	
-	showAlert("ddd"+id);
+	//showAlert("ddd"+id);
 	if(IsDeviceReady) 
 		return;
 	

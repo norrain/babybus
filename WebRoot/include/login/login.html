@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <title>登录</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="default">
+	<meta name="format-detection" content="telephone=no">
+	 
+	<!-- 测试 用 -->
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0"> 
+	 
+	 
+	 
+	 <script src="../jquery-1.8.3.min.js"></script>
+	<script src="../googleButton/google.fastbutton.js"></script>
+	<script src="../googleButton/jquery.google.fastbutton.js"></script>
+	 <script src="../tools.js" charset="utf-8"></script>
+	<link rel="stylesheet" href="../jquery.mobile-1.4.2.min.css" />
+	<script src="../jquery.mobile-1.4.2.min.js"></script>
+  	
+  	<style type="text/css">
+  		#header{-webkit-transform:translate3d(0,0,0);}
+  		.ui-page { 
+		   backface-visibility:hidden; 
+		   -webkit-backface-visibility:hidden;
+		   -moz-backface-visibility:hidden;
+		}
+  		.actGotop{position:fixed;_position:absolute;bottom:15;right:10px;width:50px;height:50px;}
+  		.pop.out.reverse{
+			 -webkit-transform:scale(.2);
+			 opacity:0;
+			 -webkit-animation-name:null;
+			 z-index:10;
+		}
+  	</style>
+  
+  </head>
+  
+  <body>
+  
+       	
+<div data-role="page" id="loginPage" >
+  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
+  <h1>系统登录</h1>
+   <a id="login_out" class="ui-btn-right"  data-icon="delete" >退出</a>
+  </div>
+  <div data-role="content">
+        <div class="form_wrap" id="wrapper_login">
+            <form id="form_main">
+                <div id="err_info"></div>
+                <div class="input_group">
+                    <label class="input_label">邮箱</label>
+                    <input id="username" class="text" type="email" autocapitalize="off"/>
+                </div>
+                <div class="input_group">
+                    <label class="input_label">密码</label>
+                    <input id="password" class="text" type="password"/>
+                </div>
+
+                 <a id="loginBtn" data-role="button"  data-icon="check">登&nbsp;录</a>
+                <div id="reg" class="reg_btn">
+                	<!-- 
+                    <a href="#register">还没有帐号？立即注册</a>
+                     -->
+                </div>
+            </form>
+        </div>
+  </div>
+   
+   <div data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false">
+	   <h1>版权所有 |í、БābУ</h1>
+	 </div>
+</div> 
+ 
+
+
+	 
+<!-- http://mianyang.dd100.net:8080 -->
+<script type='text/javascript' src='/meetManager/dwr/interface/cbus.js'></script>
+<script type='text/javascript' src='/meetManager/dwr/engine.js'></script>
+<script type="text/javascript">
+ 		  $( document ).on( "pagecreate", "#loginPage", function() {
+   				$("#login_out").fastClick(function(e){
+	  	 	 		 exitApp();		 
+			    });
+			    
+			    $("#loginBtn").fastClick(function(e){
+	  	 	 	    // alert("登录");
+	  	 	 	      window.localStorage.setItem("loginUser", "aaa");	 
+	  	 	 	     location.href = "../../index.html";
+	  	 	 	     return;
+			    });
+		  });
+</script>
+  
+</html>

@@ -18,6 +18,9 @@
 		 if(!localStorage.getItem('firstCheck')||localStorage.getItem('firstCheck')!="true"){
 			location.href="include/welcome/wel.html";   //是第一次登入  就欢迎
 			return;
+		 }else if(!localStorage.getItem('loginUser')||localStorage.getItem('loginUser')==""){
+		 	location.href="include/login/login.html";   //是第一次登入  就欢迎
+			return;
 		 }
 	 </script>
 	 
@@ -25,27 +28,26 @@
 	 <script src="include/jquery-1.8.3.min.js"></script>
 	<script src="include/googleButton/google.fastbutton.js"></script>
 	<script src="include/googleButton/jquery.google.fastbutton.js"></script>
+	<script src="include/template.js"></script>
 	 <script src="include/tools.js" charset="utf-8"></script>
 	 <script>  
 	     //设置 必须引用在jqueryMobile 之前 
 		$(document).bind("mobileinit", function()  
 		{  
-			 $.mobile.ajaxEnabled = false;
+			 $.mobile.ajaxEnable = true;
 		     $.mobile.defaultPageTransition = 'none';   //slideup
 		     $.mobile.defaultDialogTransition = 'none'; //slide
-		     $.mobile.page.prototype.options.domCache=true; //页面缓存
-	  	     $.mobile.transitionFallbacks.slideout = "none"; //防止闪屏
+	  	     $.mobile.transitionFallbacks.slideout = "none"; //转场失败则用none防止闪屏
+	  	     $.mobile.page.prototype.options.domCache=true; //页面缓存
 	  	     $.mobile.buttonMarkup.hoverDelay = false; 
-			 
 			 //alert(isAndroid);
-			 
 			 //showAlert("哈哈试试","ddd","ffffff");
 		});     
 	</script> 
 	
 	<!--  -->
-	<link rel="stylesheet" href="include/jquery.mobile-1.4.2.min.css" />
 	<script src="include/jquery.mobile-1.4.2.min.js"></script>
+	<link rel="stylesheet" href="include/jquery.mobile-1.4.2.min.css" />
 	 
 	
   	
@@ -80,6 +82,7 @@
 <div data-role="page" id="homePage" >
   <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
   <h1>|í、БābУ 公交查询</h1>
+   <a id="loginExit" class="ui-btn-right"  data-icon="delete">注销</a>
   </div>
   <div  data-role="content">
   		<div class="ui-field-contain">
@@ -112,6 +115,7 @@
 
 <!-- 站台信息 -->
 <div data-role="page" id="search_bus" data-dom-cache="false">
+<div id="myCont">
   <div data-role="header" data-position="fixed" data-tap-toggle="false">
 	  <h1 id="bus_name">188路</h1><!--  data-rel="back" -->
 	   <a id="bb" class="ui-btn-left backButton"  data-icon="back">返回</a>
@@ -134,21 +138,31 @@
 		    </ul>
 		  </div>
     </div>
+  </div>
      <div data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false">
 	   <h1>版权所有 |í、БābУ</h1>
 	 </div>
 </div> 
 
+<script id="stationInfo" type="text/html">
+      <%for(i = 0; i < rows.length; i ++) {%>
+          <li><a>条目内容 <%=i + 1%>:<%=rows[i].st_name %></a></li>
+      <%}%>
+</script>
 
 	 
 	 <!-- http://mianyang.dd100.net:8080 -->
- <script type='text/javascript' src='http://mianyang.dd100.net:8080/meetManager/dwr/interface/cbus.js'></script>
-<script type='text/javascript' src='http://mianyang.dd100.net:8080/meetManager/dwr/engine.js'></script>
+ <script type='text/javascript' src='http://192.168.1.105:8080/meetManager/dwr/interface/cbus.js'></script>
+<script type='text/javascript' src='http://192.168.1.105:8080/meetManager/dwr/engine.js'></script>
  <script type="text/javascript">
  		 //初始化
 	  	 $(document).on("pageinit","#homePage",function(){
 			    $("#homePage").live("swipeleft",function(){
-			       $.mobile.changePage("#search_bus");
+			        //$.mobile.changePage("#search_bus");
+			        showLoading();
+			    });
+			    $("#loginExit").fastClick(function(){
+			         exitApp();
 			    });
 		 });
 		  $(document).on("pageshow",function(){
@@ -156,7 +170,7 @@
 		  });
 		 
  		 DWREngine.setMethod(DWREngine.ScriptTag);
-	     cbus._path = "http://mianyang.dd100.net:8080/meetManager/dwr";
+	     cbus._path = "http://192.168.1.105:8080/meetManager/dwr";
 	  	 cbus.getBusList(slist);
 	  	 
 	  	 function slist(list){
@@ -167,28 +181,47 @@
 	  	 	 for(var i=0;i<len;i++){
 	  	 	 	  var obj = list[i];
 	  	 	 	  $("#bus_list").append("<li><a href='javascript:;'  id='ID_"+obj.bid+"'  bname='"+obj.bname+"' bid='"+obj.bid+"'>"+obj.bname+"<span class='ui-li-count'>25</span></a></li>");
-	  	 		  //绑定事件
-	  	 		  $("#ID_"+obj.bid).fastClick(function(e){
+	  	 		  //绑定点击事件
+	  	 		   $("#ID_"+obj.bid).fastClick(function(e){
 	  	 	 			 $.mobile.changePage("#search_bus");
 	  	 	 			 $("#bus_name").html($(this).attr("bname"));
-					     cbus.getBusStation($(this).attr("bid"),"",showR);
-				  });
+					     cbus.getBusStation($(this).attr("bid"),"正向",showRZ);
+					     cbus.getBusStationJson($(this).attr("bid"),"反",showRF);
+				   });
+				   //绑定长按事件
+				   $("#ID_"+obj.bid).on("taphold",function(){
+					      alert($(this).attr("bid"));
+					});
 	  	 	 }
 	  	 	 
 	  	 	 $("#bus_list").listview('refresh');
 	  	 }
 	  	 
-	   
-	     function showR(list){
+	    
+	     function showRZ(list){
 	     	var len = list.length;
 	  	 	 var str ="";
 	  	 	 for(var i=0;i<len;i++){
 	  	 	 	  var obj = list[i];
-	  	 	 	  str +="<li><a>"+obj.st_name+"</li>";
+	  	 	 	  str +="<li><a>"+obj.st_name+"</a></li>";
 	  	 	 }
 	  	 	 $("#bus_station_z ul").html("");
 	  	 	 $("#bus_station_z ul").append(str);
 	  	 	 $("#bus_station_z ul").listview('refresh');
+	     }
+	     function showRF(resstr){
+	     	/*
+	     	 var data = {
+				rows : [
+					{id:'201405061703276091712660',sid:'26829',st_direct:'正向',st_name:'团结桥',st_sort:'1',bid:'wenjiang203luzhongke'},
+					{id:'201405061703276097564781',sid:'26830',st_direct:'正向',st_name:'李家板桥',st_sort:'2',bid:'wenjiang203luzhongke'}
+				 ]
+			 }*/
+			//var s = "{rows : [{id:'201405061703276091712660',sid:'26829',st_direct:'正向',st_name:'团结桥',st_sort:'1',bid:'wenjiang203luzhongke'},{id:'201405061703276097564781',sid:'26830',st_direct:'正向',st_name:'李家板桥',st_sort:'2',bid:'wenjiang203luzhongke'}]}";
+			 var data = (new Function('return ' + resstr))();// eval("("+resstr+")");;
+	     	 var html = template.render('stationInfo',data);
+	     	 $("#bus_station_f ul").html(html);
+	     	 $("#bus_station_f ul").listview('refresh');
 	     }
  </script>
  
@@ -208,12 +241,14 @@
 <div data-role="page" id="phoneDb">
   <div data-role="header" data-position="fixed">
 	  <h1 id="bus_name">phoneDb</h1><!--   -->
-	   <a id="bb_1" class="ui-btn-left backButton"  data-icon="back" >返回</a>
+	   <a id="bb_1" class="ui-btn-left backButton"  data-icon="back" data-shadow="false">返回</a>
    </div>
   <div data-role="content">
 	      phoneDb
   </div>
 </div> 
+
+
 
   </body>
   
