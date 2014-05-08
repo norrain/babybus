@@ -99,7 +99,8 @@
 	     	if(userInfo==null){
 	     		showAlert("用户名或密码不正确 ");
 	     	}else{
-	     		showAlert(userInfo);
+	     		//showAlert(userInfo);
+	     		window.localStorage.setItem("loginUserInfo",userInfo);
 	     		location.href="../../index.html";
 	     	}
 	     }
