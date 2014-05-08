@@ -2,16 +2,16 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.babybus.config.soft"
-        version   = "1.2.01">
+        id        = "com.wjzb.config.soft"
+        version   = "1.1.01">
               
-	<name>babyBus</name>        
+	<name>温江教育技术装备管理</name>        
 	<description>
-		我只是说这是个测试测试软件
+		 温江教育技术装备管理
 	</description>       
 	<author email="norrai@qq.com" href="http://www.norrain.net">张成刚</author>        
 	<content src="index.html" />
-	 <preference name="loglevel" value="DEBUG" />
+	<preference name="loglevel" value="DEBUG" />
 	<preference name="fullscreen" value="true" />
 	<preference name="phonegap-version" value="3.3.0" />
 	<preference name="orientation" value="default" />  <!-- 方向 default landscape portrait -->

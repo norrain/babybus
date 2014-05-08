@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
-    <title>公交查询</title>
+    <title>装备管理</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 	<meta name="apple-mobile-web-app-capable" content="yes">
@@ -81,26 +81,12 @@
        	
 <div data-role="page" id="homePage" >
   <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
-  <h1>|í、БābУ 公交查询</h1>
-   <a id="loginExit" class="ui-btn-right"  data-icon="delete">注销</a>
+    <h1>教育装备管理</h1>
+    <a id="loginExit" class="ui-btn-right"  data-icon="delete">注销</a>
   </div>
-  <div  data-role="content">
-  		<div class="ui-field-contain">
-		    <label for="select-native-1">Basic:</label>
-		    <select name="select-native-1" id="select-native-1" >
-		        <option value="1">The 1st Option</option>
-		        <option value="2">The 2nd Option</option>
-		        <option value="3">The 3rd Option</option>
-		        <option value="4">The 4th Option</option>
-		    </select>
-		</div>
-       <p style="text-align:center;color:grey;display:none;">成都市所有公交车列表</p>
-       <ul id="bus_list" data-role="listview" data-autodividers="true" data-inset="true" data-filter="true" data-filter-placeholder="搜索公交路线">
-		    <li><a href="#">正在加载...</a></li>
-	   </ul>
-	  <div class="actGotop"><a href="javascript:;" title="返回顶部">顶部</a></div>
+  <div data-role="content">
+  		 
   </div>
-   
    <div data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false">
          <div data-role="navbar">
 		    <ul id="header_nav">
@@ -113,111 +99,33 @@
   </div>
 </div> 
 
-<!-- 站台信息 -->
-<div data-role="page" id="search_bus" data-dom-cache="false">
-<div id="myCont">
-  <div data-role="header" data-position="fixed" data-tap-toggle="false">
-	  <h1 id="bus_name">188路</h1><!--  data-rel="back" -->
-	   <a id="bb" class="ui-btn-left backButton"  data-icon="back">返回</a>
-   </div>
-  <div data-role="tabs">
-	      <div data-role="navbar">
-		    <ul>
-		      <li><a id="tab_sx" href="#bus_station_z" data-ajax="true" class="ui-btn-active">上行</a></li>
-		      <li><a href="#bus_station_f" data-ajax="true" >下行</a></li>
-		    </ul>
-		  </div>
-		  <div id="bus_station_z"   style="margin-top:5px;">
-		    <ul data-role="listview" data-inset="true">
-		        <li><a href="#">正在加载...</a></li>
-		    </ul>
-		  </div>
-		   <div id="bus_station_f"  style="margin-top:5px;">
-		    <ul data-role="listview" data-inset="true">
-		        <li><a href="#">正在加载...</a></li>
-		    </ul>
-		  </div>
-    </div>
-  </div>
-     <div data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false">
-	   <h1>版权所有 |í、БābУ</h1>
-	 </div>
-</div> 
-
-<script id="stationInfo" type="text/html">
+<script id="mes_all" type="text/html">
+	<ul data-role="listview" data-autodividers="false" data-inset="false" data-filter="false" data-filter-placeholder="搜索公交路线">
       <%for(i = 0; i < rows.length; i ++) {%>
           <li><a>条目内容 <%=i + 1%>:<%=rows[i].st_name %></a></li>
       <%}%>
+	</ul>
 </script>
-
 	 
-	 <!-- http://mianyang.dd100.net:8080 -->
- <script type='text/javascript' src='http://192.168.1.105:8080/meetManager/dwr/interface/cbus.js'></script>
-<script type='text/javascript' src='http://192.168.1.105:8080/meetManager/dwr/engine.js'></script>
- <script type="text/javascript">
+ <script type='text/javascript' src='http://192.168.1.107:8080/AWJEQ/dwr/interface/jyzb.js'></script>
+ <script type='text/javascript' src='http://192.168.1.107:8080/AWJEQ/dwr/engine.js'></script>
+ 
+<script type="text/javascript">
  		 //初始化
 	  	 $(document).on("pageinit","#homePage",function(){
-			    $("#homePage").live("swipeleft",function(){
-			        //$.mobile.changePage("#search_bus");
-			        showLoading();
-			    });
 			    $("#loginExit").fastClick(function(){
 			         exitApp();
 			    });
 		 });
-		  $(document).on("pageshow",function(){
-			   //show_nav("homeNav");  
-		  });
 		 
  		 DWREngine.setMethod(DWREngine.ScriptTag);
-	     cbus._path = "http://192.168.1.105:8080/meetManager/dwr";
-	  	 cbus.getBusList(slist);
+	     jyzb._path = "http://192.168.1.107:8080/AWJEQ/dwr";
+	  	 jyzb.getBusList(slist);
 	  	 
 	  	 function slist(list){
-	  	 	 var len = list.length;
-	  	 	 var str ="";
 	  	 	 
-	  	 	 $("#bus_list").html("");
-	  	 	 for(var i=0;i<len;i++){
-	  	 	 	  var obj = list[i];
-	  	 	 	  $("#bus_list").append("<li><a href='javascript:;'  id='ID_"+obj.bid+"'  bname='"+obj.bname+"' bid='"+obj.bid+"'>"+obj.bname+"<span class='ui-li-count'>25</span></a></li>");
-	  	 		  //绑定点击事件
-	  	 		   $("#ID_"+obj.bid).fastClick(function(e){
-	  	 	 			 $.mobile.changePage("#search_bus");
-	  	 	 			 $("#bus_name").html($(this).attr("bname"));
-					     cbus.getBusStation($(this).attr("bid"),"正向",showRZ);
-					     cbus.getBusStationJson($(this).attr("bid"),"反",showRF);
-				   });
-				   //绑定长按事件
-				   $("#ID_"+obj.bid).on("taphold",function(){
-					      alert($(this).attr("bid"));
-					});
-	  	 	 }
-	  	 	 
-	  	 	 $("#bus_list").listview('refresh');
 	  	 }
-	  	 
-	    
-	     function showRZ(list){
-	     	var len = list.length;
-	  	 	 var str ="";
-	  	 	 for(var i=0;i<len;i++){
-	  	 	 	  var obj = list[i];
-	  	 	 	  str +="<li><a>"+obj.st_name+"</a></li>";
-	  	 	 }
-	  	 	 $("#bus_station_z ul").html("");
-	  	 	 $("#bus_station_z ul").append(str);
-	  	 	 $("#bus_station_z ul").listview('refresh');
-	     }
 	     function showRF(resstr){
-	     	/*
-	     	 var data = {
-				rows : [
-					{id:'201405061703276091712660',sid:'26829',st_direct:'正向',st_name:'团结桥',st_sort:'1',bid:'wenjiang203luzhongke'},
-					{id:'201405061703276097564781',sid:'26830',st_direct:'正向',st_name:'李家板桥',st_sort:'2',bid:'wenjiang203luzhongke'}
-				 ]
-			 }*/
-			//var s = "{rows : [{id:'201405061703276091712660',sid:'26829',st_direct:'正向',st_name:'团结桥',st_sort:'1',bid:'wenjiang203luzhongke'},{id:'201405061703276097564781',sid:'26830',st_direct:'正向',st_name:'李家板桥',st_sort:'2',bid:'wenjiang203luzhongke'}]}";
 			 var data = (new Function('return ' + resstr))();// eval("("+resstr+")");;
 	     	 var html = template.render('stationInfo',data);
 	     	 $("#bus_station_f ul").html(html);
@@ -225,32 +133,7 @@
 	     }
  </script>
  
- 
-<!-- 设备信息 -->
-<div data-role="page" id="phoneInfo">
-  <div data-role="header" data-position="fixed">
-	  <h1 id="bus_name">我的手机信息</h1><!--   -->
-	   <a id="bb_1" class="ui-btn-left backButton"  data-icon="back" >返回</a>
-   </div>
-  <div data-role="content">
-	      ddddddddd
-  </div>
-</div> 
-
-<!--  -->
-<div data-role="page" id="phoneDb">
-  <div data-role="header" data-position="fixed">
-	  <h1 id="bus_name">phoneDb</h1><!--   -->
-	   <a id="bb_1" class="ui-btn-left backButton"  data-icon="back" data-shadow="false">返回</a>
-   </div>
-  <div data-role="content">
-	      phoneDb
-  </div>
-</div> 
-
-
-
-  </body>
+ </body>
   
   <script type="text/javascript">
 	  $(".backButton").bind("fastClick",function(e){

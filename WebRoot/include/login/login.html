@@ -45,7 +45,7 @@
        	
 <div data-role="page" id="loginPage" >
   <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
-  <h1>系统登录</h1>
+  <h1>装备管理登录</h1>
    <a id="login_out" class="ui-btn-right"  data-icon="delete" >退出</a>
   </div>
   <div data-role="content">
@@ -53,7 +53,7 @@
             <form id="form_main">
                 <div id="err_info"></div>
                 <div class="input_group">
-                    <label class="input_label">邮箱</label>
+                    <label class="input_label">用户名</label>
                     <input id="username" class="text" type="email" autocapitalize="off"/>
                 </div>
                 <div class="input_group">
@@ -72,29 +72,37 @@
   </div>
    
    <div data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false">
-	   <h1>版权所有 |í、БābУ</h1>
+	   <h1>版权所有 四川海图</h1>
 	 </div>
 </div> 
  
 
 
 	 
-<!-- http://mianyang.dd100.net:8080 -->
-<script type='text/javascript' src='/meetManager/dwr/interface/cbus.js'></script>
-<script type='text/javascript' src='/meetManager/dwr/engine.js'></script>
+<script type='text/javascript' src='http://192.168.1.107:8080/AWJEQ/dwr/interface/jyzb.js'></script>
+<script type='text/javascript' src='http://192.168.1.107:8080/AWJEQ/dwr/engine.js'></script>
+ 
 <script type="text/javascript">
- 		  $( document ).on( "pagecreate", "#loginPage", function() {
-   				$("#login_out").fastClick(function(e){
-	  	 	 		 exitApp();		 
-			    });
-			    
-			    $("#loginBtn").fastClick(function(e){
-	  	 	 	    // alert("登录");
-	  	 	 	      window.localStorage.setItem("loginUser", "aaa");	 
-	  	 	 	     location.href = "../../index.html";
-	  	 	 	     return;
-			    });
+		
+		 $("#loginBtn").fastClick(function(){
+			     var uid = $("#username").val();
+	     	 	 var upwd = $("#password").val();
+	     	 
+	     	 	 jyzb.loginJysb(uid,upwd,showrLoginRes);
 		  });
+			
+		 DWREngine.setMethod(DWREngine.ScriptTag);
+	     jyzb._path = "http://192.168.1.107:8080/AWJEQ/dwr";
+	   
+	     
+	     function showrLoginRes(userInfo){
+	     	if(userInfo==null){
+	     		showAlert("用户名或密码不正确 ");
+	     	}else{
+	     		showAlert(userInfo);
+	     		location.href="../../index.html";
+	     	}
+	     }
 </script>
   
 </html>
