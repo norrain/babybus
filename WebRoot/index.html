@@ -1,310 +1,79 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <title>装备管理</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="default">
-	<meta name="format-detection" content="telephone=no">
-	 
-	<!-- 测试 用 -->
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0"> 
-	 
-	 
-	 <script type="text/javascript">
-		 if(!localStorage.getItem('firstCheck')||localStorage.getItem('firstCheck')!="true"){
-			location.href="include/welcome/wel.html";   //是第一次登入  就欢迎
-			return;
-		 }else if(!localStorage.getItem('loginUserInfo')||localStorage.getItem('loginUserInfo')==""){
-		 	location.href="include/login/login.html";   //是第一次登入  就欢迎
-			return;
-		 }
-	 </script>
-	 
-	 <script src="cordova.js"></script>
-	 <script src="include/jquery-1.8.3.min.js"></script>
-	<script src="include/googleButton/google.fastbutton.js"></script>
-	<script src="include/googleButton/jquery.google.fastbutton.js"></script>
-	<script src="include/template.js"></script>
-	 <script src="include/tools.js" charset="utf-8"></script>
-	 <script>  
-	     //设置 必须引用在jqueryMobile 之前 
-		$(document).bind("mobileinit", function()  
-		{  
-			 $.mobile.ajaxEnable = true;
-		     $.mobile.defaultPageTransition = 'slide';   //slideup
-		     $.mobile.defaultDialogTransition = 'none'; //slide
-	  	     $.mobile.transitionFallbacks.slideout = "none"; //转场失败则用none防止闪屏
-	  	     $.mobile.page.prototype.options.domCache=true; //页面缓存
-	  	     $.mobile.buttonMarkup.hoverDelay = false; 
-			 //alert(isAndroid);
-			 //showAlert("哈哈试试","ddd","ffffff");
-		});     
-	</script> 
-	
-	<!--  -->
-	<script src="include/jquery.mobile-1.4.2.min.js"></script>
-	<link rel="stylesheet" href="include/jquery.mobile-1.4.2.min.css" />
-	 
-	 <link type="text/css" href="include/datebox/jqm-datebox.min.css" rel="stylesheet" /> 
-	<script type="text/javascript" src="include/datebox/jqm-datebox.core.min.js"></script>
-	<script type="text/javascript" src="include/datebox/jqm-datebox.mode.calbox.min.js"></script>
-	
-  	
-  	<style type="text/css">
-  		#header{-webkit-transform:translate3d(0,0,0);}
-  		.ui-page { 
-		   backface-visibility:hidden; 
-		   -webkit-backface-visibility:hidden;
-		   -moz-backface-visibility:hidden;
-		}
-  		.actGotop{position:fixed;_position:absolute;bottom:15;right:10px;width:50px;height:50px;}
-  		.pop.out.reverse{
-			 -webkit-transform:scale(.2);
-			 opacity:0;
-			 -webkit-animation-name:null;
-			 z-index:10;
-		}
-  	</style>
-  
-  </head>
-  
-  <body>
-  
-  
-<div data-role="page" id="messagePage" >
-  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
-    <h1>教育装备管理</h1>
-    <a id="loginExit" class="ui-btn-right"  data-icon="delete">注销</a>
-  </div>
-  <div class="content" style="">
-  	  	
-  	  	 <div data-role="tabs">
-		      <div data-role="navbar"  data-inset="true">
-				    <ul>
-				      <li><a href="#tab_msg_all" data-ajax="false" class="ui-btn-active">全部</a></li>
-				      <li><a href="#tab_msg_kgj" data-ajax="false" >开关机</a></li>
-				      <li><a href="#tab_msg_wx" data-ajax="false" >维修</a></li>
-				    </ul>
-			  </div>
-			  <div id="tab_msg_all"   style="margin-top:5px;">
-			    	<ul data-role="listview" data-autodividers="false" data-inset="false" data-filter="false" data-filter-placeholder="搜索公交路线">
-			    		<li><a>fffffff</a></li>
-			    	</ul>
-			  </div>
-			  <div id="tab_msg_kgj"  style="margin-top:5px;">
-			     
-			  </div>
-			  <div id="tab_msg_wx"  style="margin-top:5px;">
-			        
-			  </div>
-   	    </div>
-  	  	
-  </div>
-   <div data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false">
-         <div data-role="navbar">
-		    <ul>
-		      <li><a data-icon="alert" class="ui-btn-active ui-state-persist">消息</a></li>
-		      <li><a href="#shutdownPage" data-icon="eye">远程关机</a></li>
-		      <li><a href="#repairPage"  data-icon="grid" >设备维修</a></li>
-		      <li><a href="#setupPage"  data-icon="gear" >设置</a></li>
-		    </ul>
-		  </div>
-   </div>
-</div> 
+<html>
+<head>
+    <title>DXWorkout</title>
+        
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-tap-highlight" content="no" /> 
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
-<script id="templ_message" type="text/html">
-      <%for(i = 0; i < rows.length; i ++) {%>
-          <li><a>条目内容 <%=i + 1%>:<%=rows[i].st_name %></a></li>
-      <%}%>
-</script>
+    <!-- Framework -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <!--<![endif]-->
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.0.0.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/globalize/0.1.1/globalize.min.js"></script>
+    <script type="text/javascript" src="cordova.js?h=418e29c1a49a06a9fc52eb14841c6325"></script>
 
+    <script type="text/javascript" src="http://cdn3.devexpress.com/jslib/13.2.9/js/dx.all.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/13.2.9/css/dx.common.css" />
+    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/13.2.9/css/dx.ios.default.css" />
+    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/13.2.9/css/dx.android.holo-dark.css" />
+    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/13.2.9/css/dx.win8.black.css" />
+    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/13.2.9/css/dx.tizen.white.css" />
+    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/13.2.9/css/dx.generic.light.css" />
 
+    <!-- App -->
+    <link rel="stylesheet" type="text/css" href="index.css?h=a31585fb8ed92c0fb89f2375b6582f56" />
+    <script type="text/javascript" src="app.config.js?h=17ab4564bd3df9cb08010013f8fdeecb"></script> 
+    <script type="text/javascript" src="index.js?h=0da415804fa3fdb3f137d3eaddfe016d"></script>
 
+    <script type="text/javascript" src="js/userDataLocal.js?h=c9b515a209c8a95afb326c6e7ea5bf26"></script>
+    <script type="text/javascript" src="js/sampleData.js?h=0edfac55e4e31546e17c761bce0eab38"></script>
+    
+    <script type="text/javascript" src="viewModels/setViewModel.js?h=4758907fbb4417ea1280b8610745532c"></script>
+    <script type="text/javascript" src="viewModels/exerciseViewModel.js?h=c20269b62c567d6eb33403d6984b0fd9"></script>
+    <script type="text/javascript" src="viewModels/workoutViewModel.js?h=7823fbf98fbb92817826a7580627aa7a"></script>
+     
+    <!-- Layouts -->
+    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/13.2.9/layouts/SlideOut/SlideOutLayout.css" />
+    <link rel="dx-template" type="text/html" href="layouts/SlideOut/SlideOutLayout.html?h=f7abd00453cf6700a107a7dc5d8df8c8" />
+    <script type="text/javascript" src="http://cdn3.devexpress.com/jslib/13.2.9/layouts/SlideOut/SlideOutLayout.js"></script>
 
-<!-- 维修列表 -->
-<div data-role="page" id="repairPage" >
-  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
-    <h1>设备维修</h1>
-    <a href="#repairAddPage" id="addRepair" class="ui-btn-right"  data-icon="plus">添加维修</a>
-  </div>
-  <div data-role=content class="ui-content">
-  	   <ul data-split-icon="delete" style="padding-top:5px;" id="list_wx" data-role="listview" data-inset="false"></ul>
-  </div>
-   <div data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false">
-         <div data-role="navbar">
-		    <ul>
-		      <li><a href="#messagePage" data-icon="alert" >消息</a></li>
-		      <li><a href="#shutdownPage" data-icon="eye">远程关机</a></li>
-		      <li><a data-icon="grid" class="ui-btn-active ui-state-persist">设备维修</a></li>
-		      <li><a href="#setupPage" data-icon="gear" >设置</a></li>
-		    </ul>
-		  </div>
-   </div>
-</div> 
-<!-- 
-	<a href="javascript:alert('删除');" data-rel="popup" data-position-to="window" data-transition="pop">删除</a>
- -->
-<script id="templ_wx" type="text/html">
-      <%for(i = 0; i < rows.length; i ++) {%>
-		  <li data-role="list-divider"><%=rows[i].gg %><span class="ui-li-count"><%=rows[i].savetm %></span></li>
-          <li>
-			<a>
-				 <img src="img/album-bb.jpg">
-    			 <h2><%=rows[i].xh %></h2>
- 				 <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
-				 <span class="ui-li-count">2</span>
-			</a>
-          </li>
-      <%}%>
-</script>
-	
-<!-- 添加维修 -->
-<div data-role="page" id="repairAddPage" >
-  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
-    <h1>添加维修设备</h1>
-    <a class="ui-btn-left backButton" data-icon="back">返回</a>
-    <a class="ui-btn-right" data-icon="plus">添加</a>
-  </div>
-  <div class="content" class="ui-content">
-		    <ul  data-role="listview" data-inset="false">
-		    	<li class="ui-field-contain">
-		            <p><label for="name2">服务维修商:四川虹信电子有限公司</label></p>
-		            <p><label for="name2">联系电话:<a href="tel:400-900-9384">400-900-9384</a></label></p>
-		        </li>
-		        <li class="ui-field-contain">
-		            <label for="name2">设备类别:</label>
-		            <select name="eqtype">
-		                <option value="1">服务器</option>
-		                <option value="1">办公电脑</option>
-		                <option value="1">多媒体</option>
-		            </select>
-		        </li>
-		         <li class="ui-field-contain">
-		            <label for="name2">设备型号:</label>
-		            <input type="text" name="name2" id="name2" value="" data-clear-btn="true">
-		        </li>
-		        <li class="ui-field-contain">
-		            <label for="textarea2">设备编号:</label>
-		            <input type="text" name="name2" id="name2" value="" data-clear-btn="true">
-		        </li>
-		        <li class="ui-field-contain">
-		            <label for="textarea2">限时完成:</label>
-		            <input name="mode1" id="mode1" type="text" data-role="datebox" data-options='{"mode":"calbox", "useNewStyle":true}' />
-		        </li>
-		        <li class="ui-field-contain">
-		            <label for="flip2">是否设为提醒:</label>
-		            <select name="flip2" id="flip2" data-role="slider">
-		                <option value="off"  selected="selected">否</option>
-		                <option value="on">是</option>
-		            </select>
-		        </li>
-		        <li class="ui-field-contain">
-		            <label for="name2">故障类别:</label>
-		            <select name="eqtype">
-		                <option value="1">死机</option>
-		                <option value="2">蓝屏</option>
-		                <option value="3">其它</option>
-		            </select>
-		        </li>
-		        <li class="ui-field-contain">
-		            <label for="name2">故障详细:</label>
-		             <textarea cols="40" rows="8" name="textarea2" id="textarea2"></textarea>
-		        </li>
-		        <li class="ui-body ui-body-b">
-		              <button type="submit" class="ui-btn ui-corner-all ui-btn-a">确定提交</button>
-		        </li>
-		    </ul>
-  </div>
-   <div data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false">
-         <div data-role="navbar">
-		    <ul>
-		      <li><a href="#messagePage" data-icon="alert" >消息</a></li>
-		      <li><a href="#shutdownPage" data-icon="eye">远程关机</a></li>
-		      <li><a data-icon="grid" class="ui-btn-active ui-state-persist">设备维修</a></li>
-		      <li><a href="#setupPage" data-icon="gear" >设置</a></li>
-		    </ul>
-		  </div>
-   </div>
-</div> 
+    <!-- Views -->
+    <script type="text/javascript" src="views/Home.js?h=47eaee16cdb6e1d95b791853f83f99bd"></script>
+    <link rel="dx-template" type="text/html" href="views/Home.html?h=bba8211114842ab06d041938885898b4"/>
 
+    <script type="text/javascript" src="views/Exercise.js?h=c2bd30dc0d0fef7ccbfa605df9482c28"></script>
+    <link rel="dx-template" type="text/html" href="views/Exercise.html?h=7ad60f65057871a80cc75344df884548"/>
 
+    <script type="text/javascript" src="views/Results.js?h=6f2df5267d566321cc3ebfa08dacf8ef"></script>
+    <link rel="dx-template" type="text/html" href="views/Results.html?h=b18d41ad22fecf4c6efb7c000558a7cb"/>
 
+    <script type="text/javascript" src="views/Log.js?h=f763b8ab1c99201de765f965fb654d78"></script>
+    <link rel="dx-template" type="text/html" href="views/Log.html?h=c41c651ed92a41d022393292aa1f058f"/>
 
-<!-- 添加维修 -->
-<div data-role="page" id="setupPage" >
-  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
-      <h1>设置</h1>
-  </div>
-  <div class="content" class="ui-content">
-		   dddddddd
-  </div>
-   <div data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false">
-         <div data-role="navbar">
-		    <ul>
-		      <li><a href="#messagePage" data-icon="alert" >消息</a></li>
-		      <li><a href="#shutdownPage" data-icon="eye">远程关机</a></li>
-		      <li><a  href="#repairPage"  data-icon="grid">设备维修</a></li>
-		      <li><a data-icon="gear"  class="ui-btn-active ui-state-persist" >设置</a></li>
-		    </ul>
-		  </div>
-   </div>
-</div> 
- 
- 
-	 
- <script type='text/javascript' src='http://192.168.1.107:8080/AWJEQ/dwr/interface/jyzb.js'></script>
- <script type='text/javascript' src='http://192.168.1.107:8080/AWJEQ/dwr/engine.js'></script>
- 
-<script type="text/javascript">
-		 DWREngine.setMethod(DWREngine.ScriptTag);
-	     jyzb._path = "http://192.168.1.107:8080/AWJEQ/dwr";
-	     
- 		 //初始化
-	  	 $(document).on("pageinit","#messagePage",function(){
-			    $("#loginExit").fastClick(function(){
-			         exitApp();
-			    });
-			    $(".sbnav").fastClick(function(){
-			        
-			    });
-		 });
-		  //初始化
-	  	 $(document).on("pageshow","#repairPage",function(){
-			     getAllRepairEQ();
-		 });
-		 
-	  	 //jyzb.getAllMessage();
-	  	 
-	  	 /*
-	  	 * 所有维修设备
-	  	 */
-	  	 function getAllRepairEQ(){
-	  	 	if($("#list_wx").html()==''){
-		  	 	var userInfoStr =  window.localStorage.getItem("loginUserInfo");
-		  	 	var data = (new Function('return ' + userInfoStr))();
-		  	 	showLoading();
-		  	 	jyzb.getAllRepairEQ(data.schoolno,showRepairEQ);
-		  	}
-	  	 }
-	  	 
-	     function showRepairEQ(resstr){
-			 var data = (new Function('return ' + resstr))();// eval("("+resstr+")");;
-	     	 var html = template.render('templ_wx',data);
-	     	 $("#list_wx").html(html);
-	     	 $("#list_wx").listview('refresh');
-	     	 hideLoading();
-	     }
- </script>
- 
- </body>
-  
-  <script type="text/javascript">
-	  $(".backButton").bind("fastClick",function(e){
-		  $.mobile.back();
-	  });
-  </script>
+    <script type="text/javascript" src="views/GoalGraphs.js?h=b3d2104257c04a3fc04f8a797ef8dad1"></script>
+    <link rel="dx-template" type="text/html" href="views/GoalGraphs.html?h=cc370e6d61dfb140875ccd40811cf5bc"/>
+
+    <script type="text/javascript" src="views/WeightGraphs.js?h=673a978fc7f498bb626f3b38452e81d3"></script>
+    <link rel="dx-template" type="text/html" href="views/WeightGraphs.html?h=95fc709317d681b0659ec42c81095c5f"/>
+
+    <script type="text/javascript" src="views/Settings.js?h=60e0dc9298328f74bb416dd4b7ec430b"></script>
+    <link rel="dx-template" type="text/html" href="views/Settings.html?h=d63129387f46c13ea799847006941d6c"/>
+
+    <script type="text/javascript" src="views/List.js?h=296472973a8955047a29015c961d8aaa"></script>
+    <link rel="dx-template" type="text/html" href="views/List.html?h=7fdd6771193688f1909e93dd6cc65150"/>
+</head>
+<body>
+    <div id="viewport" class="dx-viewport"></div>
+</body>
 </html>
+
