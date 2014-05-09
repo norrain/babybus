@@ -1,79 +1,528 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>DXWorkout</title>
-        
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="msapplication-tap-highlight" content="no" /> 
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<html lang="zh-CN">
+  <head>
+    <title>装备管理</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="default">
+	<meta name="format-detection" content="telephone=no">
+	 
+	<!-- 测试 用 -->
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0"> 
+	 
+	 
+	 <script type="text/javascript">
+		 if(!localStorage.getItem('firstCheck')||localStorage.getItem('firstCheck')!="true"){
+			location.href="include/welcome/wel.html";   //是第一次登入  就欢迎
+			return;
+		 }else if(!localStorage.getItem('loginUserInfo')||localStorage.getItem('loginUserInfo')==""){
+		 	location.href="include/login/login.html";   //是第一次登入  就欢迎
+			return;
+		 }
+		 var userInfoStr =  window.localStorage.getItem("loginUserInfo");
+		 var userInfo = (new Function('return ' + userInfoStr))();
+	 </script>
+	 
+	 <script src="cordova.js"></script>
+	 <script src="include/jquery-1.8.3.min.js"></script>
+	<script src="include/googleButton/google.fastbutton.js"></script>
+	<script src="include/googleButton/jquery.google.fastbutton.js"></script>
+	<script src="include/template.js"></script>
+	 <script src="include/tools.js" charset="utf-8"></script>
+	 <script>  
+	     //设置 必须引用在jqueryMobile 之前 
+		$(document).bind("mobileinit", function()  
+		{  
+			 $.mobile.ajaxEnable = true;
+		     $.mobile.defaultPageTransition = 'none';   //slideup
+		     $.mobile.defaultDialogTransition = 'none'; //slide
+	  	     $.mobile.transitionFallbacks.slideout = "none"; //转场失败则用none防止闪屏
+	  	     $.mobile.page.prototype.options.domCache=true; //页面缓存
+	  	     $.mobile.buttonMarkup.hoverDelay = false; 
+			 //alert(isAndroid);
+			 //showAlert("哈哈试试","ddd","ffffff");
+		});     
+	</script> 
+	
+	<!--  -->
+	<script src="include/jquery.mobile-1.4.2.min.js"></script>
+	<link rel="stylesheet" href="include/jquery.mobile-1.4.2.min.css" />
+	 
+	 <link type="text/css" href="include/datebox/jqm-datebox.min.css" rel="stylesheet" /> 
+	<script type="text/javascript" src="include/datebox/jqm-datebox.core.min.js"></script>
+	<script type="text/javascript" src="include/datebox/jqm-datebox.mode.calbox.min.js"></script>
+	
+	<script type="text/javascript">
+		function onBackKeyDown(){  
+			var mainPage = new Array();
+			mainPage[0] = "#messagePage";
+			mainPage[1] = "#shutdownPage";
+			mainPage[2] = "#repairPage";
+			mainPage[3] = "#setupPage";
+			
+			for(var i=0;i<mainPage.length;i++){
+				if($.mobile.activePage.is(mainPage[i])){
+					showConfirm("您确定不再多留一会儿啦？",onConfirmExit);
+					return;
+				}
+			}
+			 $.mobile.back();
+		}  
+	</script>
+  	
+  	<style type="text/css">
+  		#header{-webkit-transform:translate3d(0,0,0);}
+  		.ui-page { 
+		   backface-visibility:hidden; 
+		   -webkit-backface-visibility:hidden;
+		   -moz-backface-visibility:hidden;
+		}
+  		.actGotop{position:fixed;_position:absolute;bottom:15;right:10px;width:50px;height:50px;}
+  		.pop.out.reverse{
+			 -webkit-transform:scale(.2);
+			 opacity:0;
+			 -webkit-animation-name:null;
+			 z-index:10;
+		}
+		div .center {
+			position:absolute;
+			top: 30%;
+			width: 100%;
+		}
+  	</style>
+   
+  
+  </head>
+  
+  <body>
+  
+  
+<div data-role="page" id="messagePage" >
+  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
+    <h1>教育装备管理</h1>
+    <a id="loginExit" class="ui-btn-right"  data-icon="delete">注销</a>
+  </div>
+  <div class="content" style="">
+  	  	 <div data-role="tabs">
+		      <div data-role="navbar"  data-inset="true">
+				    <ul>
+				      <li><a href="#tab_msg_wx" class="ui-btn-active" data-ajax="false" >维修设备</a></li>
+				      <li><a href="#tab_msg_kgj" data-ajax="false" >开关机</a></li>
+				    </ul>
+			  </div>
+			  <div id="tab_msg_kgj"  style="margin-top:5px;">
+			     	<ul id="list_mes_kgj" data-role="listview" data-autodividers="false" data-inset="true" data-filter="false"></ul>
+			  </div>
+			  <div id="tab_msg_wx"  style="margin-top:5px;">
+			        <ul id="list_mes_wx" data-role="listview" data-autodividers="false" data-inset="true" data-filter="false"></ul>
+			  </div>
+   	    </div>
+  	  	
+  </div>
+   <div data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false">
+         <div data-role="navbar">
+		    <ul>
+		      <li><a data-icon="alert" class="ui-btn-active ui-state-persist">消息</a></li>
+		      <li><a href="#shutdownPage" data-icon="cloud">设备列表</a></li>
+		      <li><a href="#repairPage"  data-icon="grid" >设备维修</a></li>
+		      <li><a href="#setupPage"  data-icon="info" >关于我们</a></li>
+		    </ul>
+		  </div>
+   </div>
+</div> 
 
-    <!-- Framework -->
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <![endif]-->
-    <!--[if gte IE 9]><!-->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <!--<![endif]-->
-    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.0.0.js"></script>
-    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/globalize/0.1.1/globalize.min.js"></script>
-    <script type="text/javascript" src="cordova.js?h=418e29c1a49a06a9fc52eb14841c6325"></script>
+<script id="templ_message_wx" type="text/html">
+      <%for(i = 0; i < rows.length; i ++) {%>
+          <li>
+			 <a>
+				 <h1><%=rows[i].xh %>(<span style='font-size:10px;'><%=rows[i].curtip %></span>)</h1>
+				 <p><%=rows[i].savetm %></p>
+			 </a>
+          </li>
+      <%}%>
+</script>
+<script id="templ_message_kgj" type="text/html">
+      <%for(i = 0; i < rows.length; i ++) {%>
+          <li><a><%=i + 1%>:<%=rows[i].xh %></a></li>
+      <%}%>
+</script>
 
-    <script type="text/javascript" src="http://cdn3.devexpress.com/jslib/13.2.9/js/dx.all.js"></script>
-    
-    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/13.2.9/css/dx.common.css" />
-    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/13.2.9/css/dx.ios.default.css" />
-    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/13.2.9/css/dx.android.holo-dark.css" />
-    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/13.2.9/css/dx.win8.black.css" />
-    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/13.2.9/css/dx.tizen.white.css" />
-    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/13.2.9/css/dx.generic.light.css" />
 
-    <!-- App -->
-    <link rel="stylesheet" type="text/css" href="http://phonejs.devexpress.com/Demos/DXWorkout/index.css?h=a31585fb8ed92c0fb89f2375b6582f56" />
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/app.config.js?h=17ab4564bd3df9cb08010013f8fdeecb"></script> 
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/index.js?h=0da415804fa3fdb3f137d3eaddfe016d"></script>
+<!-- 设备列表 -->
+<div data-role="page" id="shutdownPage" >
+  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
+    <h1 id="label_eq">全部设备列表</h1>
+    <div class="ui-btn-right">
+    <select id="eq_list_type" data-native-menu="true" data-mini="true" data-inline="true" data-icon="carat-d"  data-iconpos="notext" >
+	<option selected="selected" value="">全部</option>
+	<option value="多媒体电脑">多媒体电脑</option>
+	<option value="服务器">服务器</option>
+	<option value="办公电脑">办公电脑</option>
+	<option value="数字展台">数字展台</option>
+	<option value="一体机">一体机</option>
+	</select>
+	</div>
+    <a id="freshEqList" class="ui-btn-left"  data-icon="refresh">刷新</a>
+  </div>
+  <div data-role=content class="ui-content">
+  	   <ul data-split-icon="delete" data-autodividers="false" style="padding-top:5px;" id="list_eq" data-role="listview" data-inset="false"></ul>
+  </div>
+   <div data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false">
+         <div data-role="navbar">
+		    <ul>
+		      <li><a href="#messagePage" data-icon="alert" >消息</a></li>
+		      <li><a  data-icon="cloud" class="ui-btn-active ui-state-persist">设备列表</a></li>
+		      <li><a href="#repairPage" data-icon="grid" >设备维修</a></li>
+		      <li><a href="#setupPage" data-icon="info" >关于我们</a></li>
+		    </ul>
+		  </div>
+   </div>
+</div> 
 
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/js/userDataLocal.js?h=c9b515a209c8a95afb326c6e7ea5bf26"></script>
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/js/sampleData.js?h=0edfac55e4e31546e17c761bce0eab38"></script>
-    
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/viewModels/setViewModel.js?h=4758907fbb4417ea1280b8610745532c"></script>
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/viewModels/exerciseViewModel.js?h=c20269b62c567d6eb33403d6984b0fd9"></script>
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/viewModels/workoutViewModel.js?h=7823fbf98fbb92817826a7580627aa7a"></script>
-     
-    <!-- Layouts -->
-    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/13.2.9/layouts/SlideOut/SlideOutLayout.css" />
-    <link rel="dx-template" type="text/html" href="http://phonejs.devexpress.com/Demos/DXWorkout/layouts/SlideOut/SlideOutLayout.html?h=f7abd00453cf6700a107a7dc5d8df8c8" />
-    <script type="text/javascript" src="http://cdn3.devexpress.com/jslib/13.2.9/layouts/SlideOut/SlideOutLayout.js"></script>
+<!-- 设备列表hold -->
+<div data-role="dialog"  id="eqlist_hold" >
+  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
+    <h1>选择您要的操作?</h1>
+  </div>
+  <div data-role=content class="ui-content">
+  		<center>
+          <a id="eqlist_hold_wx" data-role="button"   data-icon="grid">维修设备</a>
+          <a id="eqlist_hold_gj"  data-role="button"  data-icon="delete">远程关机</a>
+          <a id="eqlist_hold_check"  data-role="button"  data-icon="star">查看详细</a>
+           <a class="backButton" id="eqlist_hold_back"  data-role="button"  data-icon="back">取消返回</a>
+      </center>
+  </div>
+</div> 
 
-    <!-- http://phonejs.devexpress.com/Demos/DXWorkout/views -->
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/http://phonejs.devexpress.com/Demos/DXWorkout/views/Home.js?h=47eaee16cdb6e1d95b791853f83f99bd"></script>
-    <link rel="dx-template" type="text/html" href="http://phonejs.devexpress.com/Demos/DXWorkout/views/Home.html?h=bba8211114842ab06d041938885898b4"/>
+<script type="text/javascript">
+		var _hold_eq_id ,_hold_eq_gg,_hold_eq_xh,_hold_eq_no;
+		$("#list_eq li").live("taphold",function(){
+			 //$.mobile.changePage("#eqlist_hold");
+		});
+		$("#list_eq li").live("tap",function(){
+			 $.mobile.changePage("#eqlist_hold");
+			_hold_eq_id =  $(this).attr("id");
+			alert(_hold_eq_id);
+		});
+</script>
 
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/views/Exercise.js?h=c2bd30dc0d0fef7ccbfa605df9482c28"></script>
-    <link rel="dx-template" type="text/html" href="http://phonejs.devexpress.com/Demos/DXWorkout/views/Exercise.html?h=7ad60f65057871a80cc75344df884548"/>
+<script id="templ_list_eq" type="text/html">
+      <%for(i = 0; i < rows.length; i ++) {%>
+          <li id="<%=rows[i].equipno %>" gg="<%=rows[i].gg %>" xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>" >
+			<a>
+				 <img src="img/album-bb.jpg">
+    			 <h2><%=rows[i].gg %></h2>
+ 				 <p><strong><%=rows[i].xh %></strong></p>
+				 <span class="ui-li-count"><%=i+1%></span>
+				 <p class="ui-li-aside"><%=rows[i].estate %>|<%=rows[i].curstate %></p>
+			</a>
+          </li>
+      <%}%>
+</script>
 
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/views/Results.js?h=6f2df5267d566321cc3ebfa08dacf8ef"></script>
-    <link rel="dx-template" type="text/html" href="http://phonejs.devexpress.com/Demos/DXWorkout/views/Results.html?h=b18d41ad22fecf4c6efb7c000558a7cb"/>
 
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/views/Log.js?h=f763b8ab1c99201de765f965fb654d78"></script>
-    <link rel="dx-template" type="text/html" href="http://phonejs.devexpress.com/Demos/DXWorkout/views/Log.html?h=c41c651ed92a41d022393292aa1f058f"/>
 
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/views/GoalGraphs.js?h=b3d2104257c04a3fc04f8a797ef8dad1"></script>
-    <link rel="dx-template" type="text/html" href="http://phonejs.devexpress.com/Demos/DXWorkout/views/GoalGraphs.html?h=cc370e6d61dfb140875ccd40811cf5bc"/>
+<!-- 维修列表 -->
+<div data-role="page" id="repairPage" >
+  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
+    <h1>设备维修</h1>
+    <a id="refRepair" class="ui-btn-left"  data-icon="refresh">刷新</a>
+    <a href="#repairAddPage" id="addRepair" class="ui-btn-right"  data-icon="plus">添加维修</a>
+  </div>
+  <div data-role=content class="ui-content">
+  	   <ul data-split-icon="delete" style="padding-top:5px;" id="list_wx" data-role="listview" data-inset="false"></ul>
+  </div>
+   <div data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false">
+         <div data-role="navbar">
+		    <ul>
+		      <li><a href="#messagePage" data-icon="alert" >消息</a></li>
+		      <li><a href="#shutdownPage" data-icon="cloud">设备列表</a></li>
+		      <li><a data-icon="grid" class="ui-btn-active ui-state-persist">设备维修</a></li>
+		      <li><a href="#setupPage" data-icon="info" >关于我们</a></li>
+		    </ul>
+		  </div>
+   </div>
+</div> 
+<!-- 
+	<a href="javascript:alert('删除');" data-rel="popup" data-position-to="window" data-transition="pop">删除</a>
+	<img src="img/album-bb.jpg">
+ -->
+<script id="templ_wx" type="text/html">
+      <%for(i = 0; i < rows.length; i ++) {%>
+		  <li data-role="list-divider"><%=rows[i].xh %>(<span style="font-size:10px;"><%=rows[i].curtip%></span>)<span class="ui-li-count"><%=rows[i].savetm %></span></li>
+          <li>
+			<a>
+    			 <h2><%=rows[i].gg %></h2>
+ 				 <p><strong>故障类型:<%=rows[i].gztype%></strong></p>
+				 <p><%=rows[i].gzdetail%></p>
+				 <span class="ui-li-count"><%=i+1%></span>
+			</a>
+          </li>
+      <%}%>
+</script>
+	
+<!-- 添加维修 -->
+<div data-role="page" id="repairAddPage" >
+  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
+    <h1>添加维修设备</h1>
+    <a class="ui-btn-left backButton" data-icon="back">返回</a>
+    <a id="ap_submit_top" class="ui-btn-right" data-icon="plus">添加</a>
+  </div>
+  <div class="content" class="ui-content">
+  	<form name="_ap_form">
+		    <ul  data-role="listview" data-inset="false">
+		    	<li class="ui-field-contain">
+		            <p><label for="name2">服务维修商:四川虹信电子有限公司</label></p>
+		            <p><label for="name2">联系电话:<a href="tel:400-900-9384">400-900-9384</a></label></p>
+		        </li>
+		        <li class="ui-field-contain">
+		            <label for="_ap_eqtype">设备类别:</label>
+		            <select name="_ap_eqtype" id="_ap_eqtype">
+		                <option value="服务器">服务器</option>
+		                <option value="办公电脑">办公电脑</option>
+		                <option value="多媒体电脑">多媒体电脑</option>
+		            </select>
+		        </li>
+		         <li class="ui-field-contain">
+		            <label for="name2">设备型号:</label>
+		            <input type="text" name="name2" id="_ap_xh" value="" data-clear-btn="true">
+		        </li>
+		        <li class="ui-field-contain">
+		            <label for="textarea2">设备编号:</label>
+		            <input type="text" name="name2" id="_ap_eqno" value="" data-clear-btn="true">
+		        </li>
+		        <li class="ui-field-contain">
+		            <label for="textarea2">限时完成:</label>
+		            <input name="mode1" id="_ap_limittime" type="text" data-role="datebox" data-options='{"mode":"calbox", "useNewStyle":true}' />
+		        </li>
+		        <li class="ui-field-contain">
+		            <label for="_ap_ccwx">是否设为提醒:</label>
+		            <select name="_ap_ccwx" id="_ap_ccwx" data-role="slider">
+		                <option value="否"  selected="selected">否</option>
+		                <option value="是">是</option>
+		            </select>
+		        </li>
+		        <li class="ui-field-contain">
+		            <label for="_ap_gztype">故障类别:</label>
+		            <select name="_ap_gztype" id="_ap_gztype">
+		                <option value="1">死机</option>
+		                <option value="2">蓝屏</option>
+		                <option value="3">其它</option>
+		            </select>
+		        </li>
+		        <li class="ui-field-contain">
+		            <label for="_ap_gzdetail">故障详细:</label>
+		             <textarea cols="40" rows="8" name="_ap_gzdetail" id="_ap_gzdetail"></textarea>
+		        </li>
+		        <li class="ui-body ui-body-b">
+		              <button id="ap_submit" type="submit" class="ui-btn ui-corner-all ui-btn-a">确定提交</button>
+		        </li>
+		    </ul>
+		  </form>
+  </div>
+   <div data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false">
+         <div data-role="navbar">
+		    <ul>
+		      <li><a href="#messagePage" data-icon="alert" >消息</a></li>
+		      <li><a href="#shutdownPage" data-icon="cloud">设备列表</a></li>
+		      <li><a data-icon="grid" class="ui-btn-active ui-state-persist">设备维修</a></li>
+		      <li><a href="#setupPage" data-icon="gear" >设置</a></li>
+		    </ul>
+		  </div>
+   </div>
+</div> 
 
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/views/WeightGraphs.js?h=673a978fc7f498bb626f3b38452e81d3"></script>
-    <link rel="dx-template" type="text/html" href="http://phonejs.devexpress.com/Demos/DXWorkout/views/WeightGraphs.html?h=95fc709317d681b0659ec42c81095c5f"/>
 
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/views/Settings.js?h=60e0dc9298328f74bb416dd4b7ec430b"></script>
-    <link rel="dx-template" type="text/html" href="http://phonejs.devexpress.com/Demos/DXWorkout/views/Settings.html?h=d63129387f46c13ea799847006941d6c"/>
 
-    <script type="text/javascript" src="http://phonejs.devexpress.com/Demos/DXWorkout/views/List.js?h=296472973a8955047a29015c961d8aaa"></script>
-    <link rel="dx-template" type="text/html" href="http://phonejs.devexpress.com/Demos/DXWorkout/views/List.html?h=7fdd6771193688f1909e93dd6cc65150"/>
-</head>
-<body>
-    <div id="viewport" class="dx-viewport"></div>
-</body>
+
+<!-- 关于我们 -->
+<div data-role="page" id="setupPage" >
+  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
+      <h1>关于我们</h1>
+  </div>
+  <div class="content" class="ui-content">
+		   
+		 <div class="center">
+		 	<center>
+		 <!-- 
+		   		<img src="img/album-bb.jpg"/>
+		   	 -->
+		   	<p>客服电话:  <a href="tel:028-85284600">(+86)028-85284600</a></p>
+		    <p>四川海图电子科技 版权所有</p>
+		    <p>copyright @2014-2014 </p>
+		    <p> CNCHAT.ALL Rights Reserved</p>
+		    </center>
+		</div>   
+		   
+  </div>
+   <div data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false">
+         <div data-role="navbar">
+		    <ul>
+		      <li><a href="#messagePage" data-icon="alert" >消息</a></li>
+		      <li><a href="#shutdownPage" data-icon="cloud">设备列表</a></li>
+		      <li><a  href="#repairPage"  data-icon="grid">设备维修</a></li>
+		      <li><a data-icon="info"  class="ui-btn-active ui-state-persist" >关于我们</a></li>
+		    </ul>
+		  </div>
+   </div>
+</div> 
+ 
+ 
+	 
+ <script type='text/javascript' src='http://192.168.1.104:8080/AWJEQ/dwr/interface/jyzb.js'></script>
+ <script type='text/javascript' src='http://192.168.1.104:8080/AWJEQ/dwr/engine.js'></script>
+ 
+<script type="text/javascript">
+		 DWREngine.setMethod(DWREngine.ScriptTag);
+	     jyzb._path = "http://192.168.1.104:8080/AWJEQ/dwr";
+	     
+ 		 //初始化
+	  	 $(document).on("pageinit","#messagePage",function(){
+			   getAllMessage();
+		 });
+		  //初始化
+	  	 $(document).on("pageshow","#repairPage",function(){
+			     getAllRepairEQ();
+		 });
+		 //初始化
+	  	 $(document).on("pageshow","#shutdownPage",function(){
+			     getAllEQList();
+		 });
+		 
+	  	 //jyzb.getAllMessage();
+	  	 
+	  	  /*
+	  	 * 所有消息
+	  	 */
+	  	 var message_ref = false;
+	  	 function getAllMessage(){
+	  	 	showLoading();
+	  	 	if($("#list_mes_wx").html()==''||message_ref){
+		  	 	jyzb.getMessage(userInfo.schoolno,"wx",showMesListWX);
+		  	}
+	  	 	if($("#list_mes_kgj").html()==''||message_ref){
+		  	 	jyzb.getMessage(userInfo.schoolno,"kgj",showMesListKGJ);
+		  	}
+	  	 }
+	  	 function showMesListWX(resstr){
+	  	 	 var data = (new Function('return ' + resstr))();
+	     	 var html = template.render('templ_message_wx',data);
+	     	 $("#list_mes_wx").html(html);
+	     	 $("#list_mes_wx").listview('refresh');
+	     	 hideLoading();
+	     	 message_ref = false;
+	  	 }
+	  	 function showMesListKGJ(resstr){
+	  	 	 var data = (new Function('return ' + resstr))();
+	     	 var html = template.render('templ_message_kgj',data);
+	     	 $("#list_mes_kgj").html(html);
+	     	 $("#list_mes_kgj").listview('refresh');
+	     	 hideLoading();
+	     	 message_ref = false;
+	  	 }
+	  	 
+	  	 /*
+	  	 * 所有设备
+	  	 */
+	  	 var eqlist_ref = false;
+	  	 function getAllEQList(){
+	  	 	var eqlist_type = $("#eq_list_type").val();
+	  	 	if(eqlist_type!="")
+	  	 		$("#label_eq").html(eqlist_type);
+	  	 		
+	  	 	if($("#list_eq").html()==''||eqlist_ref){
+		  	 	showLoading();
+		  	 	jyzb.getAllEQ(userInfo.schoolno,eqlist_type,showListEQ);
+		  	}
+	  	 }
+	  	 function showListEQ(resstr){
+	  	 	 var data = (new Function('return ' + resstr))();
+	     	 var html = template.render('templ_list_eq',data);
+	     	 $("#list_eq").html(html);
+	     	 $("#list_eq").listview('refresh');
+	     	 hideLoading();
+	     	 eqlist_ref = false;
+	  	 }
+	  	 
+	  	 /*
+	  	 * 所有维修设备
+	  	 */
+	  	 var rp_ref = false;
+	  	 function getAllRepairEQ(){
+	  	 	if($("#list_wx").html()==''||rp_ref){
+		  	 	showLoading();
+		  	 	jyzb.getAllRepairEQ(userInfo.schoolno,showRepairEQ);
+		  	}
+	  	 }
+	  	 
+	     function showRepairEQ(resstr){
+			 var data = (new Function('return ' + resstr))();// eval("("+resstr+")");;
+	     	 var html = template.render('templ_wx',data);
+	     	 $("#list_wx").html(html);
+	     	 $("#list_wx").listview('refresh');
+	     	 hideLoading();
+	     	 rp_ref = false;
+	     }
+	     
+	     function addRepairEQ(){
+	     	 var EDEQNO = "10293";
+	     	 var eqtype = $("#_ap_eqtype").val();
+	     	 var xh = $("#_ap_xh").val();
+	     	 var ccwx = $("#_ap_ccwx").val();
+	     	 var limittime = $("#_ap_limittime").val();
+	     	 var eqno = $("#_ap_eqno").val();
+	     	 var gztype = $("#_ap_gztype").val();
+	     	 var gzdetail = $("#_ap_gzdetail").val();
+	     	 
+	     	// alert(eqtype+"=="+xh+"=="+eqno+"=="+ccwx+"=="+limittime+"=="+gztype+"=="+gzdetail);
+	     	if(xh==""||gzdetail==""){
+	     		showAlert("请先把信息填写完整后再进行报修");
+	     	}else{
+	     		jyzb.addRepairEQ(EDEQNO,eqtype,xh,ccwx,limittime,eqno,gztype,gzdetail,userInfo.empid,userInfo.schoolno,showAddRPRes);
+	    	}
+	     }
+	     function showAddRPRes(r){
+	     	 if(r=="true"){
+	     	 	document.forms._ap_form.reset();
+	     	 	//showAlert("添加成功");
+	     	 	$.mobile.back();
+	     	 	rp_ref = true;
+	     	 	getAllRepairEQ(); //刷新列表
+	     	 }else{
+	     	 	showAlert("添加失败");
+	     	 }
+	     }
+ </script>
+ 
+ </body>
+  
+  <script type="text/javascript">
+  	   $("#loginExit").fastClick(function(){
+			         exitApp();
+	   });
+	   $(".backButton").bind("fastClick",function(e){
+		  $.mobile.back();
+	  });
+	   $("#ap_submit").fastClick(function(){
+			 addRepairEQ();
+	   });
+	   $("#ap_submit_top").fastClick(function(){
+			 addRepairEQ();
+	   });
+	   $("#refRepair").fastClick(function(){
+			rp_ref = true;
+	     	getAllRepairEQ(); //刷新列表
+	   });
+	   $("#freshEqList").fastClick(function(){
+			eqlist_ref = true;
+	     	getAllEQList()(); //刷新列表
+	   });
+	   $("#eq_list_type").change(function(){
+			eqlist_ref = true;
+	     	getAllEQList(); //刷新列表
+	   });
+  </script>
 </html>
-
