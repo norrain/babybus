@@ -11,6 +11,66 @@ y = y.replace(/(M+|d+|h+|m+|s+)/g,function(v) {return ((v.length>1?"0":"")+eval(
 return y.replace(/(y+)/g,function(v) {return x.getFullYear().toString().slice(-v.length)}); 
 } 
 
+//全局配置
+var global={
+	WEBSITE:"http://xxx.com/"
+}
+
+//localStorage缓存
+var ls = {
+	setItem : function (key,value){
+		localStorage.setItem(key,value)
+	},
+	getItem : function(key){
+		return localStorage.getItem(key)
+	}
+}
+
+//sessionStorage缓存
+var ss = {
+	setItem : function (key,value){
+		sessionStorage.setItem(key,value)
+	},
+	getItem : function(key){
+		return sessionStorage.getItem(key)
+	}
+}
+
+//页面刷新
+function pageRefresh(){
+	$.mobile.pageContainer.trigger("create");
+}
+
+//加载底部菜单
+function createFooter(page,id){
+	var footerUrl = page.attr("data-footer");
+	if (footerUrl) {
+		var footerHtml = '';
+		if (!footerHtml) {
+			footerHtml = urlLoadContent(footerUrl);
+			ss.setItem(footerUrl, footerHtml);
+		}
+
+		page.append(footerHtml);
+		if(id=='indexPage'){
+			var btnState =page.find('a[data-icon="home"]');
+			btnState.attr("class","ui-btn-active");
+		}else if(id=='subPage'){
+			var btnState =page.find('a[data-icon="search"]');
+			btnState.attr("class","ui-btn-active");
+		}
+	}
+}
+
+//转到页
+function goTo(page) {
+	showLoading();
+	$.mobile.changePage(page, {
+		transition : "slide"
+	});
+}
+
+
 //显示loading
 function showLoading(){
 	//$.mobile.showPageLoadingMsg();
@@ -54,23 +114,16 @@ function checkConnection() {
 //checkConnection();
 
 // 显示定制警告框
-function showAlert(msg,title,btntext) {
-	try{
-		if(!title) title="温馨提示";
-		if(!btntext) btntext="我知道了";
-		if(navigator.notification && navigator.notification.alert){
-	   		navigator.notification.alert(
-				msg,  // 显示信息
-				alertDismissed, 
-				title,            // 标题
-				btntext            // 按钮名称
-			);
-		}else{
-			alert(msg);
-		}
-	}catch(e){
-		alert("Error:"+msg);
-	}	
+function showAlert(msg) {
+	
+	$.mobile.loading('show', {  
+       text: msg, //加载器中显示的文字
+       textVisible: true, //是否显示文字
+       theme: 'b',        //加载器主题样式a-e
+       textonly: true,   //是否只显示文字
+       html: ""//要显示的html内容，如图片等
+   });  
+	setTimeout(hideLoading, 2000);	 
 }
 
 
@@ -81,52 +134,10 @@ function onConfirm(button) {
 	return button==1;
 }
 
-
-window.do_confirm = function(str, config, cb) {
-        if (typeof config == 'function') {
-            cb = config;
-            config = {};
-        }
-        var title = config['title'] || '教育装备管理',
-            choice = config['choice'] || ["取消","确定"];
-
-        if(isAndroid || isIDevice) {
-            navigator.notification.confirm(str, cb, title, choice);
-        } else {
-            alert("貌似不支持");
-        }
-    }
-do_confirm.OK = 2;
-do_confirm.CANCEL = 1;
-
-
-
-do_confirm('要取消关注吗', {title: '取消关注', choice: '否,是'},
-                function(choice) {
-                if (choice == do_confirm.OK) {
-                     alert(choice);
-                }
-});
-
     
 // 显示一个定制的确认对话框
 function showConfirm(msg,onConfirmFun,title,btn) {
-	//alert(msg+"--"+onConfirmFun+"--"+title+"---"+btn);
-	if(!onConfirmFun) onConfirmFun=onConfirm;
-	if(!title) title='请选择：'
-	if(!btn) btn='确定,取消';
-		try{
-			return navigator.notification.confirm(
-				msg,  // 显示信息
-				onConfirmFun,    // 按下按钮后触发的回调函数，返回按下按钮的索引	
-				title,          // 标题
-				btn          // 按钮标签
-				);
-		}catch(e){
-			showAlert("error:不支持确认对话框");
-			
-			//return onConfirmFun(window.confirm(msg));
-		}
+	 
 }
 
 //模拟confirm
@@ -151,11 +162,6 @@ var confirm = function (content, title, response) {
     divConfirm.popup('open');   // -->
 };
 
-/***
-confirm('are you sure?', 'Confirm', function () {
-    alert('sure');
-});
-**/
 
 // 处理确认退出对话框返回的结果
 function onConfirmExit(button) {
@@ -167,86 +173,13 @@ function onConfirmExit(button) {
 
 //msg：提示内容，time:吐司延迟消失时间第(可以不写，不写默认1500毫秒延迟)
 function Toast(msg, duration) {
-	duration = isNaN(duration) ? 3000 : duration;
-	var m = document.createElement('div');
-	m.innerHTML = msg;
-	m.style.cssText = "width:60%; min-width:150px; background:#000; opacity:0.5; height:40px; color:#fff; line-height:40px; text-align:center; border-radius:5px; position:fixed; top:70%; left:20%; z-index:999999; font-weight:bold;";
-	document.body.appendChild(m);
-	setTimeout(function() {
-		var d = 0.5;
-		m.style.webkitTransition = '-webkit-transform ' + d
-				+ 's ease-in, opacity ' + d + 's ease-in';
-		m.style.opacity = '0';
-		setTimeout(function() {
-			document.body.removeChild(m)
-		}, d * 1000);
-	}, duration);
+	showAlert(msg);
 }
 
-
-//BackButton按钮  
-function onBackKeyDown(){  
-	 alert("退回键");
-	 var mainPage = new Array();
-	 mainPage[0] = "#messagePage";
-     mainPage[1] = "#shutdownPage";
-     mainPage[2] = "#repairPage";
-	 mainPage[3] = "#setupPage";
-	
-	 alert($.mobile.activePage);
-	 for(var i=0;i<mainPage.length;i++){
-		 if($.mobile.activePage.is(mainPage[i])){
-		 	 alert("==");
-			 showConfirm("您确定不再多留一会儿啦？",onConfirmExit);
-			 return;
-	     }
-	 }
-	 $.mobile.back();
- }  
  
 
-function onMenuKeyDown(){
-	//window.location="#page4";
-}
-function onSearchKeyDown() { 
-	//window.location="#page6";
-}
 
-try{
-	document.addEventListener("deviceready", backKeyListener, false);
-}catch(e){
-	alert("deviceready:"+e);
-}
-
-function backKeyListener() {
-	try{
-    	document.addEventListener("backbutton", onBackKeyDown, false);
-    }catch(e){
-		alert("backKeyListener:"+e);
-	}
-} 
-
-
-function onDeviceReady(id) {
-	
-	//showAlert("ddd"+id);
-	if(IsDeviceReady) 
-		return;
-	
-	IsDeviceReady=true;
-	
-	//添加按钮事件 
-	try {document.addEventListener("backbutton",onBackKeyDown,false); 	} catch (e) {alert();}
-	//try {document.addEventListener("menubutton", onMenuKeyDown, false); } catch (e) {}
-	//try {document.addEventListener("searchbutton", onSearchKeyDown, false); } catch (e) {}
- 
-	
-}
-
-
-
-
-//测试是否可以取到网络参数
+//取到网络参数
 var Request = new Array();
 function loadQueryString(url) {
 	
@@ -270,33 +203,126 @@ if(window.location.href.indexOf("?")>0){
 }
 
 
+//=================一些JS数据方法=============================
+
+//数字约分
 function roundNumber(num) {
 	var dec = 3;
 	var result = Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
 	return result;
 }
 
-
-/**
- * replaceAll 方法实现
- * **/
+ // replaceAll 方法实现
  function  replaceAll(Astr,AFindText,ARepText){  
     var raRegExp = new RegExp(AFindText,"g");
     
 	return Astr.replace(raRegExp,ARepText);
  }
  
-function show_nav(navid){
-        $('#header_nav li').each(function(){
-        		//alert(this.className);
-            	if(this.className.indexOf('ui-btn-active')!=-1){
-            		this.className = this.className.replaceAll(" ui-btn-active","");
-            	}
-        });
-       //alert(document.getElementById(navid).className);
-       //var cn = document.getElementById(navid).className+"";
-//       /document.getElementById(navid).className = cn +" ui-btn-active";
-        //$("#"+navid).className = $("#"+navid).className+" ui-btn-active";
- }
+ // 通过url加载html内容
+var urlLoadContent = function(url) {
+	var content = "";
+	$.ajax({
+		url : url,
+		type : 'GET',
+		dataType : "html",
+		async : false,
+		success : function(html, textStatus, xhr) {
+			content = html;
+		},
+		error : function(xhr, textStatus, errorThrown) {
+			content = "";
+		}
+	});
+	return content;
+};
 
+//json数据转换
+function toObject(value){
+	return $.parseJSON(value);
+}
+
+function toJson(value){
+	return JSON.parse(value);
+}
+
+function toString(value){
+	return JSON.stringify(value);
+}
+
+//在浏览器上显示组装路径
+function showUrl(url){
+	document.write(url);
+}
  
+
+ // =========================PhoneGap==================================
+
+// 等待加载PhoneGap
+document.addEventListener("deviceready", onDeviceReady, false);
+// PhoneGap加载完毕
+function onDeviceReady() {
+	// 按钮事件
+	document.addEventListener("backbutton", eventBackButton, false); // 返回键
+	document.addEventListener("menubutton", eventMenuButton, false); // 菜单键
+	document.addEventListener("searchbutton", eventSearchButton, false); // 搜索键
+}
+
+// 返回键
+function eventBackButton() {
+	if ($.mobile.activePage.is('#indexPage')) {
+		showAlert('再点击一次退出!');
+		document.removeEventListener("backbutton", eventBackButton, false); // 注销返回键
+		document.addEventListener("backbutton", exitApp, false);// 绑定退出事件
+		// 3秒后重新注册
+		var intervalID = window.setInterval(function() {
+			window.clearInterval(intervalID);
+			document.removeEventListener("backbutton", exitApp, false); // 注销返回键
+			document.addEventListener("backbutton", eventBackButton, false); // 返回键
+		}, 3000);
+	}else {
+	    //navigator.app.backHistory();
+	    $.mobile.back();
+	}
+}
+
+function exitApp() {
+	navigator.app.exitApp();
+}
+
+// 菜单键
+function eventMenuButton() {
+	myAlert('点击了菜单按钮!');
+	//goTo('menu.html');
+}
+// 搜索键
+function eventSearchButton() {
+	myAlert('点击了搜索按钮!');
+}
+
+/**
+ * 检查网络情况
+ * @returns {Boolean}
+ */
+function checkConnection() {
+	var networkState = navigator.network.connection.type;
+	if (networkState == Connection.NONE) {
+		navigator.notification.confirm('请确认网络连接已开启,并重试', showAlert, '提示',
+				'确定');
+		return false;
+	}else{
+		return true;
+	}
+}
+function showAlert(button) {
+	return false;
+}
+function isExit() {
+	navigator.notification.confirm('确认退出？', showExitConfirm, '退出软件', '确定,取消');
+}
+function showExitConfirm(button) {
+	if (button == 1) {
+		navigator.app.exitApp();
+	}
+}
+  
