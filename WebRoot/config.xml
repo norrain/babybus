@@ -3,9 +3,9 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.wjzb.config.soft"
-        version   = "1.1.01">
+        version   = "1.1.02">
               
-	<name>教育技术装备管理</name>        
+	<name>Equipment Management</name>        
 	<description>
 		 温江教育技术装备管理
 	</description>       
