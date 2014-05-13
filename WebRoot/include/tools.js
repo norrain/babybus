@@ -144,6 +144,25 @@ function onConfirmExit(button) {
 	 }
 }
 
+//msg：提示内容，time:吐司延迟消失时间第(可以不写，不写默认1500毫秒延迟)
+function Toast(msg, duration) {
+	duration = isNaN(duration) ? 3000 : duration;
+	var m = document.createElement('div');
+	m.innerHTML = msg;
+	m.style.cssText = "width:60%; min-width:150px; background:#000; opacity:0.5; height:40px; color:#fff; line-height:40px; text-align:center; border-radius:5px; position:fixed; top:70%; left:20%; z-index:999999; font-weight:bold;";
+	document.body.appendChild(m);
+	setTimeout(function() {
+		var d = 0.5;
+		m.style.webkitTransition = '-webkit-transform ' + d
+				+ 's ease-in, opacity ' + d + 's ease-in';
+		m.style.opacity = '0';
+		setTimeout(function() {
+			document.body.removeChild(m)
+		}, d * 1000);
+	}, duration);
+}
+
+
 //BackButton按钮  
 function onBackKeyDown(){  
 	//showAlert(location.href);
@@ -151,7 +170,12 @@ function onBackKeyDown(){
 	//showAlert("index:"+$.mobile.activePage.is('#homePage'));
 	//showAlert(" sbus:"+$.mobile.activePage.is('#search_bus'));
 	//showAlert("index1"+$.mobile.activePage.is('index1.html'));
-	if($.mobile.activePage.is('#homePage')||$.mobile.activePage.is('#loginPage')){
+	if(
+		$.mobile.activePage.is('#messagePage')
+		||$.mobile.activePage.is('#shutdownPage')
+		||$.mobile.activePage.is('#repairPage')
+		||$.mobile.activePage.is('#setupPage')
+		){
 		  //showAlert("===========");
 		 showConfirm("您确定不再多留一会儿啦？",onConfirmExit);
 	}else{
