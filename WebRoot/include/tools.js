@@ -186,12 +186,14 @@ function Toast(msg, duration) {
 
 //BackButton按钮  
 function onBackKeyDown(){  
+	 alert("退回键");
 	 var mainPage = new Array();
 	 mainPage[0] = "#messagePage";
      mainPage[1] = "#shutdownPage";
      mainPage[2] = "#repairPage";
 	 mainPage[3] = "#setupPage";
-			
+	
+	 alert($.mobile.activePage);
 	 for(var i=0;i<mainPage.length;i++){
 		 if($.mobile.activePage.is(mainPage[i])){
 		 	 alert("==");
