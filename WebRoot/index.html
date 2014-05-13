@@ -37,7 +37,7 @@
 		$(document).bind("mobileinit", function()  
 		{  
 			 $.mobile.ajaxEnable = true;
-		     $.mobile.defaultPageTransition = 'none';   //slideup
+		     $.mobile.defaultPageTransition = 'slide';   //slideup
 		     $.mobile.defaultDialogTransition = 'none'; //slide
 	  	     $.mobile.transitionFallbacks.slideout = "none"; //转场失败则用none防止闪屏
 	  	     $.mobile.page.prototype.options.domCache=true; //页面缓存
