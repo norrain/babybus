@@ -51,7 +51,7 @@ function checkConnection() {
      }
 	 alert('Connection type: ' + states[networkState]);
 }
-checkConnection();
+//checkConnection();
 
 // 显示定制警告框
 function showAlert(msg,title,btntext) {
@@ -80,7 +80,35 @@ function onConfirm(button) {
 	
 	return button==1;
 }
-	
+
+
+window.do_confirm = function(str, config, cb) {
+        if (typeof config == 'function') {
+            cb = config;
+            config = {};
+        }
+        var title = config['title'] || '教育装备管理',
+            choice = config['choice'] || ["取消","确定"];
+
+        if(isAndroid || isIDevice) {
+            navigator.notification.confirm(str, cb, title, choice);
+        } else {
+            alert("貌似不支持");
+        }
+    }
+do_confirm.OK = 2;
+do_confirm.CANCEL = 1;
+
+
+
+do_confirm('要取消关注吗', {title: '取消关注', choice: '否,是'},
+                function(choice) {
+                if (choice == do_confirm.OK) {
+                     alert(choice);
+                }
+});
+
+    
 // 显示一个定制的确认对话框
 function showConfirm(msg,onConfirmFun,title,btn) {
 	//alert(msg+"--"+onConfirmFun+"--"+title+"---"+btn);
@@ -101,21 +129,13 @@ function showConfirm(msg,onConfirmFun,title,btn) {
 		}
 }
 
-
-
-function initAPP() {
-	//if(!localStorage.getItem('firstCheck')||localStorage.getItem('firstCheck')!="true"){
-		//location.href="include/welcome/wel.html";   //是第一次登录  就欢迎
-	//}
-}
-
 //模拟confirm
-
 var confirm = function (content, title, response) {
     var html = "<div data-role='popup' id='mToast_confirm' data-theme='d' data-overlay-theme='b' style='max-width:340px;overflow:hidden;'><div class='ui-header ui-bar-a ui-corner-top'><h1 class='ui-title'>" + title + "</h1></div><div class='ui-content'><p></p>" + content + "<p></p><a data-role='button' data-inline='true' data-rel='back' data-mini='true'>取消</a><a id='mToast_confirm_response' data-role='button' data-theme='b' data-icon='check' data-inline='true' data-mini='true'>确定</a></div></div>",
-        previous = $(".ui-popup-active div[data-role=popup]"),
-        divConfirm = $("div#mToast_confirm");
+     previous = $(".ui-popup-active div[data-role=popup]"),
+     divConfirm = $("div#mToast_confirm");
     previous.popup('close');
+    
     if (divConfirm.length > 0) {
         divConfirm.remove();
     }
@@ -131,10 +151,11 @@ var confirm = function (content, title, response) {
     divConfirm.popup('open');   // -->
 };
 
+/***
 confirm('are you sure?', 'Confirm', function () {
     alert('sure');
 });
-
+**/
 
 // 处理确认退出对话框返回的结果
 function onConfirmExit(button) {
@@ -165,24 +186,22 @@ function Toast(msg, duration) {
 
 //BackButton按钮  
 function onBackKeyDown(){  
-	//showAlert(location.href);
-	//showAlert($.mobile.activePage);
-	//showAlert("index:"+$.mobile.activePage.is('#homePage'));
-	//showAlert(" sbus:"+$.mobile.activePage.is('#search_bus'));
-	//showAlert("index1"+$.mobile.activePage.is('index1.html'));
-	if(
-		$.mobile.activePage.is('#messagePage')
-		||$.mobile.activePage.is('#shutdownPage')
-		||$.mobile.activePage.is('#repairPage')
-		||$.mobile.activePage.is('#setupPage')
-		){
-		  //showAlert("===========");
-		 showConfirm("您确定不再多留一会儿啦？",onConfirmExit);
-	}else{
-		 $.mobile.back();
-	}
-	//$.mobile.activePage.is('#page1')
-}  
+	 var mainPage = new Array();
+	 mainPage[0] = "#messagePage";
+     mainPage[1] = "#shutdownPage";
+     mainPage[2] = "#repairPage";
+	 mainPage[3] = "#setupPage";
+			
+	 for(var i=0;i<mainPage.length;i++){
+		 if($.mobile.activePage.is(mainPage[i])){
+		 	 alert("==");
+			 showConfirm("您确定不再多留一会儿啦？",onConfirmExit);
+			 return;
+	     }
+	 }
+	 $.mobile.back();
+ }  
+ 
 
 function onMenuKeyDown(){
 	//window.location="#page4";
