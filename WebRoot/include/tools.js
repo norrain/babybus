@@ -47,7 +47,7 @@ function pageRefresh(){
 function goTo(page) {
 	showLoading();
 	$.mobile.changePage(page, {
-		transition : "slide"
+		transition : "none"
 	});
 }
 

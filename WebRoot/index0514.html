@@ -35,15 +35,13 @@
 	<script src="include/googleButton/google.fastbutton.js"></script>
 	<script src="include/googleButton/jquery.google.fastbutton.js"></script>
 	<script src="include/template.js"></script>
-	<script src="include/map.js" charset="utf-8"></script>
-	<script src="include/animate.js" charset="utf-8"></script>
 	<script src="include/tools.js" charset="utf-8"></script>
 	 <script>  
 	     //设置 必须引用在jqueryMobile 之前 
 		$(document).bind("mobileinit", function()  
 		{  
 			 $.mobile.ajaxEnable = true;
-		     $.mobile.defaultPageTransition = 'none';   //slideup
+		     $.mobile.defaultPageTransition = 'slide';   //slideup
 		     $.mobile.defaultDialogTransition = 'none'; //slide
 	  	     $.mobile.transitionFallbacks.slideout = "none"; //转场失败则用none防止闪屏
 	  	     $.mobile.page.prototype.options.domCache=true; //页面缓存
@@ -74,10 +72,9 @@
   <body>
   
  <!-- Home -->
-<div data-role="page"  id="indexPage" data-dom-cache="true" >
- <div style="position: relative;">
-	<div  id="frameContent" style="width:100%; z-index:1;">
-	 	<div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
+<div data-role="page"  id="messagePage" data-dom-cache="true" >
+<div id="frameContent">
+  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
     <h1>教育装备管理</h1>
   </div>
   <div  data-role="content"  class="ui-content">
@@ -96,22 +93,19 @@
 			  </div>
    	    </div>
   	</div>
-	</div>
-	</div>
+  </div>
   	<div class="frame" data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false" data-id="footer">
           <div data-role="navbar">
 		    <ul>
-		      <li><a class="ui-btn-active ui-state-persist" method="getAllMessage" data-shadow="false" data-iconshadow="false" id="messagePageNav" nid="messagePageNav"  nhref="#messagePage"  data-icon="alert" >消息</a><div class="ui-li-count"><span>4</span></div></li>
-		      <li><a data-shadow="false" method="getAllEQList" data-iconshadow="false" id="shutdownPageNav" nid="shutdownPageNav" nhref="#shutdownPage" data-icon="cloud" >设备列表</a></li>
-		      <li><a data-shadow="false" data-iconshadow="false" id="repairPageNav" nid="repairPageNav" nhref="#repairPage" data-icon="grid" >设备维修</a></li>
-		      <li><a data-shadow="false" data-iconshadow="false" id="setupPageNav" nid="setupPageNav" nhref="#setupPage" data-icon="gear" >设置</a></li>
+		      <li><a data-shadow="false" data-iconshadow="false" nid="messagePageNav"  nhref="#messagePage"  data-icon="alert" >消息</a><div class="ui-li-count"><span>4</span></div></li>
+		      <li><a data-shadow="false" data-iconshadow="false" nid="shutdownPageNav" nhref="#shutdownPage" data-icon="cloud" >设备列表</a></li>
+		      <li><a data-shadow="false" data-iconshadow="false" nid="repairPageNav" nhref="#repairPage" data-icon="grid" >设备维修</a></li>
+		      <li><a data-shadow="false" data-iconshadow="false" nid="setupPageNav" nhref="#setupPage" data-icon="info" >关于我们</a></li>
 		    </ul>
 		  </div>
    </div>
 </div>
-
-
-<!-- 消息模板  -->
+ 
 <script id="templ_message_wx" type="text/html">
       <%for(i = 0; i < rows.length; i ++) {%>
           <li>
@@ -129,50 +123,9 @@
       <%}%>
 </script>
 
-<script id="templ_page_messagePage" type="text/html">
- <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
-    <h1>教育装备管理</h1>
-  </div>
-  <div  data-role="content"  class="ui-content">
-  	  	 <div data-role="tabs">
-		      <div data-role="navbar"  data-inset="true">
-				    <ul>
-				      <li><a data-shadow="false" href="#tab_msg_wx" class="ui-btn-active" data-ajax="false" >维修设备</a></li>
-				      <li><a data-shadow="false" href="#tab_msg_kgj" data-ajax="false" >开关机</a></li>
-				    </ul>
-			  </div>
-			  <div id="tab_msg_kgj"  style="margin-top:5px;">
-			     	<ul id="list_mes_kgj" data-role="listview" data-autodividers="false" data-inset="true" data-filter="false"></ul>
-			  </div>
-			  <div id="tab_msg_wx"  style="margin-top:5px;">
-			        <ul id="list_mes_wx" data-role="listview" data-autodividers="false" data-inset="true" data-filter="false"></ul>
-			  </div>
-   	    </div>
-  	</div>
-   <script>getAllMessage();</script>
-</script> 
- 
 
-
-
-
-
-<!-- 设备列表模板 -->
-<script id="templ_list_eq" type="text/html">
-      <%for(i = 0; i < rows.length; i ++) {%>
-          <li id="<%=rows[i].equipno %>" gg="<%=rows[i].gg %>" xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>" >
-			<a>
-				 <img src="img/album-bb.jpg"/>
-    			 <h2><%=rows[i].gg %></h2>
- 				 <p><strong><%=rows[i].xh %></strong></p>
-				 <span class="ui-li-count"><%=i+1%></span>
-				 <p class="ui-li-aside"><%=rows[i].estate %>|<%=rows[i].curstate %></p>
-			</a>
-          </li>
-      <%}%>
-</script>
-
-<script id="templ_page_shutdownPage" type="text/html">
+<!-- 设备列表 -->
+<div data-role="page" id="shutdownPage" data-footer="global/footer.html">
   <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
     <h1 id="label_eq">全部设备列表</h1>
     <div class="ui-btn-right">
@@ -188,22 +141,10 @@
     <a id="freshEqList" class="ui-btn-left"  data-icon="refresh">刷新</a>
   </div>
   <div data-role="content" class="ui-content">
-   	   <ul  data-autodividers="false" id="list_eq" data-role="listview" data-inset="false"></ul>
+  	   <br/><br/>
+  	   <ul  data-autodividers="false" id="list_eq" data-role="listview" data-inset="false"></ul>
   </div>
-
-	<script>
-   		$("#freshEqList").fastClick(function(){
-			eqlist_ref = true;
-	     	getAllEQList(); //刷新列表
-	   });
-	   $("#eq_list_type").change(function(){
-			eqlist_ref = true;
-	     	getAllEQList(); //刷新列表
-	   });
-	    getAllEQList();
-	</script>
-
-</script>
+</div> 
 
 <!-- 设备列表hold -->
 <div data-role="dialog"  id="eqlist_hold">
@@ -229,11 +170,37 @@
 		});
 </script>
 
-
+<script id="templ_list_eq" type="text/html">
+      <%for(i = 0; i < rows.length; i ++) {%>
+          <li id="<%=rows[i].equipno %>" gg="<%=rows[i].gg %>" xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>" >
+			<a>
+				 <img src="img/album-bb.jpg"/>
+    			 <h2><%=rows[i].gg %></h2>
+ 				 <p><strong><%=rows[i].xh %></strong></p>
+				 <span class="ui-li-count"><%=i+1%></span>
+				 <p class="ui-li-aside"><%=rows[i].estate %>|<%=rows[i].curstate %></p>
+			</a>
+          </li>
+      <%}%>
+</script>
 
 
 
 <!-- 维修列表 -->
+<div data-role="page" id="repairPage" data-footer="global/footer.html">
+  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
+    <h1>设备维修</h1>
+    <a id="refRepair" class="ui-btn-left"  data-icon="refresh">刷新</a>
+    <a href="#repairAddPage" id="addRepair" class="ui-btn-right"  data-icon="plus">添加维修</a>
+  </div>
+  <div data-role=content class="ui-content">
+  	   <ul style="padding-top:5px;" id="list_wx" data-role="listview" data-inset="false"></ul>
+  </div>
+  
+</div> 
+<!-- 
+	<a href="javascript:alert('删除');" data-rel="popup" data-position-to="window" data-transition="pop">删除</a>
+ -->
 <script id="templ_wx" type="text/html">
       <%for(i = 0; i < rows.length; i ++) {%>
 		  <li data-role="list-divider"><%=rows[i].xh %>(<span style="font-size:10px;"><%=rows[i].curtip%></span>)<span class="ui-li-count"><%=rows[i].savetm %></span></li>
@@ -247,28 +214,6 @@
           </li>
       <%}%>
 </script>
-
-<script id="templ_page_repairPage" type="text/html">
-  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
-    <h1>设备维修</h1>
-    <a id="refRepair" class="ui-btn-left"  data-icon="refresh">刷新</a>
-    <a href="#repairAddPage" id="addRepair" class="ui-btn-right"  data-icon="plus">添加维修</a>
-  </div>
-  <div data-role=content class="ui-content">
-  	   <ul style="padding-top:5px;" id="list_wx" data-role="listview" data-inset="false"></ul>
-  </div>
-	
-	<script>
-		$("#refRepair").fastClick(function(){
-			rp_ref = true;
-	     	getAllRepairEQ(); //刷新列表
-	    });
-		getAllRepairEQ();
-	</script>
-</script>
-
- 
-
 	
 <!-- 添加维修 -->
 <div data-role="page" id="repairAddPage">
@@ -324,7 +269,7 @@
 		             <textarea cols="40" rows="8" name="_ap_gzdetail" id="_ap_gzdetail"></textarea>
 		        </li>
 		        <li class="ui-body ui-body-b">
-		              <button id="ap_submit" type="button" class="ui-btn ui-corner-all ui-btn-a">确定提交</button>
+		              <button id="ap_submit" type="submit" class="ui-btn ui-corner-all ui-btn-a">确定提交</button>
 		        </li>
 		    </ul>
 		  </form>
@@ -334,15 +279,13 @@
 
 
 
-<!-- 设置  -->
-<script id="templ_page_setupPage" type="text/html">
+<!-- 关于我们 -->
+<div data-role="page" id="setupPage" data-footer="global/footer.html">
   <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
-      <h1>设置</h1>
+      <h1>关于我们</h1>
   </div>
   <div class="content" class="ui-content">
-			
-					   
-
+		   
 		 <div class="center" style=" position:absolute;top: 30%;width: 100%;">
 		 	<center>
 		   	<p>客服电话:  <a href="tel:028-85284600">(+86)028-85284600</a></p>
@@ -353,7 +296,7 @@
 		</div>   
 		   
   </div>
-</script>
+</div> 
  
  
 	 
@@ -366,15 +309,15 @@
 	     
  		 //初始化
 	  	 $(document).on("pageinit","#messagePage",function(){
-			   //getAllMessage();
+			   getAllMessage();
 		 });
 		  //初始化
 	  	 $(document).on("pageinit","#repairPage",function(){
-			     //getAllRepairEQ();
+			     getAllRepairEQ();
 		 });
 		 //初始化
 	  	 $(document).on("pageinit","#shutdownPage",function(){
-			     //getAllEQList();
+			     getAllEQList();
 		 });
 		 
 	  	 
@@ -383,13 +326,11 @@
 	  	 */
 	  	 var message_ref = false;
 	  	 function getAllMessage(){
-	  	 
+	  	 	showLoading();
 	  	 	if($("#list_mes_wx").html()==''||message_ref){
-	  	 		showLoading();
 		  	 	jyzb.getMessage(userInfo.schoolno,"wx",showMesListWX);
 		  	}
 	  	 	if($("#list_mes_kgj").html()==''||message_ref){
-	  	 			showLoading();
 		  	 	jyzb.getMessage(userInfo.schoolno,"kgj",showMesListKGJ);
 		  	}
 	  	 }
@@ -415,15 +356,12 @@
 	  	 */
 	  	 var eqlist_ref = false;
 	  	 function getAllEQList(){
+	  	 	showLoading();
 	  	 	var eqlist_type = $("#eq_list_type").val();
-	  	 	
 	  	 	if(eqlist_type!="")
 	  	 		$("#label_eq").html(eqlist_type);
-	  	 	else
-	  	 		$("#label_eq").html("全部设备");
-	  	 			
+	  	 		
 	  	 	if($("#list_eq").html()==''||eqlist_ref){
-	  	 		showLoading();
 		  	 	jyzb.getAllEQ(userInfo.schoolno,eqlist_type,showListEQ);
 		  	}
 	  	 }
@@ -470,7 +408,6 @@
 	     	// alert(eqtype+"=="+xh+"=="+eqno+"=="+ccwx+"=="+limittime+"=="+gztype+"=="+gzdetail);
 	     	if(xh==""||gzdetail==""){
 	     		showAlert("请先把信息填写完整后再进行报修");
-	     		return false;
 	     	}else{
 	     		jyzb.addRepairEQ(EDEQNO,eqtype,xh,ccwx,limittime,eqno,gztype,gzdetail,userInfo.empid,userInfo.schoolno,showAddRPRes);
 	    	}
@@ -503,6 +440,20 @@
 			 addRepairEQ();
 			 
 	   });
-	     getAllMessage(); 
+	   $("#refRepair").fastClick(function(){
+			rp_ref = true;
+	     	getAllRepairEQ(); //刷新列表
+	     	
+	   });
+	   $("#freshEqList").fastClick(function(){
+			eqlist_ref = true;
+	     	getAllEQList()(); //刷新列表
+	     	
+	   });
+	   $("#eq_list_type").change(function(){
+			eqlist_ref = true;
+	     	getAllEQList(); //刷新列表
+	   });
+	   
   </script>
 </html>
