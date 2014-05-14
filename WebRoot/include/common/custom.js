@@ -24,6 +24,7 @@ function createFooter(page,id){
 			   //alert(nurl);
 			   showLoading();
 			   goTo(nurl);
+			   return false;
 			}
 	    });
 	}

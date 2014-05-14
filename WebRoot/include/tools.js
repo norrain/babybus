@@ -239,7 +239,7 @@ function onDeviceReady() {
 
 // 返回键
 function eventBackButton() {
-	if ($.mobile.activePage.is('#indexPage')) {
+	if ($.mobile.activePage.is('#messagePage')||$.mobile.activePage.is('#loginPage')) {
 		showAlert('再点击一次退出!');
 		document.removeEventListener("backbutton", eventBackButton, false); // 注销返回键
 		document.addEventListener("backbutton", exitApp, false);// 绑定退出事件
@@ -256,6 +256,10 @@ function eventBackButton() {
 }
 
 function exitApp() {
+	isExit();
+}
+
+function closeApp(){
 	navigator.app.exitApp();
 }
 
