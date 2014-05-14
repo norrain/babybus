@@ -173,7 +173,11 @@ if(window.location.href.indexOf("?")>0){
 
 
 //=================一些JS数据方法=============================
-
+//改变hash
+function changeHash(hashPage){
+	
+	 window.location.hash = hashPage;	
+}
 //数字约分
 function roundNumber(num) {
 	var dec = 3;
