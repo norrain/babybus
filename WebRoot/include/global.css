@@ -1,0 +1,38 @@
+    
+body {
+	-webkit-user-select: none;
+	-webkit-text-size-adjust: none;
+	font-family: helvetica;	
+	-webkit-backface-visibility: hidden;/* for иафа */
+	 backface-visibility:hidden; 
+	 -moz-backface-visibility:hidden;
+}
+.ui-page { 
+		  -webkit-user-select: none;
+	-webkit-text-size-adjust: none;
+	font-family: helvetica;	
+	-webkit-backface-visibility: hidden;/* for иафа */
+	 backface-visibility:hidden; 
+	 -moz-backface-visibility:hidden;
+}
+		
+#header{-webkit-transform:translate3d(0,0,0);}
+.pop .out .reverse{
+			 -webkit-transform:scale(.2);
+			 opacity:0;
+			 -webkit-animation-name:null;
+			 z-index:10;
+}
+.center 
+	 position:absolute;
+	 top: 30%;
+	 width: 100%;
+}
+			
+			
+.weightFont {
+	font-weight: bold;
+}
+
+
+ 

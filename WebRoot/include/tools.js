@@ -41,26 +41,7 @@ function pageRefresh(){
 	$.mobile.pageContainer.trigger("create");
 }
 
-//加载底部菜单
-function createFooter(page,id){
-	var footerUrl = page.attr("data-footer");
-	if (footerUrl) {
-		var footerHtml = '';
-		if (!footerHtml) {
-			footerHtml = urlLoadContent(footerUrl);
-			ss.setItem(footerUrl, footerHtml);
-		}
-
-		page.append(footerHtml);
-		if(id=='indexPage'){
-			var btnState =page.find('a[data-icon="home"]');
-			btnState.attr("class","ui-btn-active");
-		}else if(id=='subPage'){
-			var btnState =page.find('a[data-icon="search"]');
-			btnState.attr("class","ui-btn-active");
-		}
-	}
-}
+ 
 
 //转到页
 function goTo(page) {
@@ -127,19 +108,7 @@ function showAlert(msg) {
 }
 
 
-// 处理确认对话框返回的结果
-function onConfirm(button) {
-	alert('You selected button ' + button);
-	
-	return button==1;
-}
-
-    
-// 显示一个定制的确认对话框
-function showConfirm(msg,onConfirmFun,title,btn) {
-	 
-}
-
+ 
 //模拟confirm
 var confirm = function (content, title, response) {
     var html = "<div data-role='popup' id='mToast_confirm' data-theme='d' data-overlay-theme='b' style='max-width:340px;overflow:hidden;'><div class='ui-header ui-bar-a ui-corner-top'><h1 class='ui-title'>" + title + "</h1></div><div class='ui-content'><p></p>" + content + "<p></p><a data-role='button' data-inline='true' data-rel='back' data-mini='true'>取消</a><a id='mToast_confirm_response' data-role='button' data-theme='b' data-icon='check' data-inline='true' data-mini='true'>确定</a></div></div>",
@@ -192,9 +161,9 @@ function loadQueryString(url) {
 		var pair = valuelist[i].split("=");
 		if (pair.length > 1) {
 			Request[pair[0].toLowerCase()] = pair[1];
-		};
-	};
-};
+		}
+	}
+}
 
 if(window.location.href.indexOf("?")>0){
 	loadQueryString(window.location.href);	
@@ -292,12 +261,12 @@ function exitApp() {
 
 // 菜单键
 function eventMenuButton() {
-	myAlert('点击了菜单按钮!');
+	showAlert('点击了菜单按钮!');
 	//goTo('menu.html');
 }
 // 搜索键
 function eventSearchButton() {
-	myAlert('点击了搜索按钮!');
+	showAlert('点击了搜索按钮!');
 }
 
 /**
@@ -307,14 +276,15 @@ function eventSearchButton() {
 function checkConnection() {
 	var networkState = navigator.network.connection.type;
 	if (networkState == Connection.NONE) {
-		navigator.notification.confirm('请确认网络连接已开启,并重试', showAlert, '提示',
+		navigator.notification.confirm('请确认网络连接已开启,并重试', conAlert, '提示',
 				'确定');
 		return false;
 	}else{
 		return true;
 	}
 }
-function showAlert(button) {
+function conAlert(button) {
+	
 	return false;
 }
 function isExit() {

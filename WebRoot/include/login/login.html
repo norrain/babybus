@@ -18,9 +18,11 @@
 	 <script src="../jquery-1.8.3.min.js"></script>
 	<script src="../googleButton/google.fastbutton.js"></script>
 	<script src="../googleButton/jquery.google.fastbutton.js"></script>
-	 <script src="../tools.js" charset="utf-8"></script>
+	
 	<link rel="stylesheet" href="../jquery.mobile-1.4.2.min.css" />
 	<script src="../jquery.mobile-1.4.2.min.js"></script>
+	 <script src="../tools.js" charset="utf-8"></script>
+	
   	
   	<style type="text/css">
   		#header{-webkit-transform:translate3d(0,0,0);}
@@ -79,31 +81,36 @@
 
 
 	 
-<script type='text/javascript' src='http://192.168.0.110:8080/AWJEQ/dwr/interface/jyzb.js'></script>
-<script type='text/javascript' src='http://192.168.0.110:8080/AWJEQ/dwr/engine.js'></script>
+<script type='text/javascript' src='http://192.168.1.106:8080/AWJEQ/dwr/interface/jyzb.js'></script>
+<script type='text/javascript' src='http://192.168.1.106:8080/AWJEQ/dwr/engine.js'></script>
  
 <script type="text/javascript">
-		
+		 DWREngine.setMethod(DWREngine.ScriptTag);
+	     jyzb._path = "http://192.168.1.106:8080/AWJEQ/dwr";
+	     
+		showAlert("用户名或密码不能为空!");
 		 $("#loginBtn").fastClick(function(){
 		 		 //showLoading();
-		 		 showAlert("用户名或密码不正确 ");
 			     var uid = $("#username").val();
 	     	 	 var upwd = $("#password").val();
-	     	 	 jyzb.loginJysb(uid,upwd,showrLoginRes);
+	     	 	 if(uid==""||upwd==""){
+	     	 	 	showAlert("用户名或密码不能为空!");
+	     	 	 }else{
+	     	 	 	jyzb.loginJysb(uid,upwd,showrLoginRes);
+	     	 	 }
 		  });
 			
-		 DWREngine.setMethod(DWREngine.ScriptTag);
-	     jyzb._path = "http://192.168.0.110:8080/AWJEQ/dwr";
 	   
 	     
 	     function showrLoginRes(userInfo){
 	         hideLoading();
-	     	if(userInfo==null){
+	     	if(userInfo==null||userInfo==""){
 	     		showAlert("用户名或密码不正确 ");
 	     	}else{
 	     		//showAlert(userInfo);
 	     		window.localStorage.setItem("loginUserInfo",userInfo);
-	     		location.href="../../index.html";
+	     		goTo("../../index.html");
+	     		//location.href="../../index.html";
 	     	}
 	     }
 </script>
