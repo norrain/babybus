@@ -421,34 +421,34 @@
   <script type="text/javascript">
   	   $("#loginExit").fastClick(function(){
 			 exitApp();
-			 return false;
+			 
 	   });
 	   $(".backButton").bind("fastClick",function(e){
 		  $.mobile.back();
-		  return false;
+		  
 	  });
 	   $("#ap_submit").fastClick(function(){
 			 addRepairEQ();
-			 return false;
+			 
 	   });
 	   $("#ap_submit_top").fastClick(function(){
 			 addRepairEQ();
-			 return false;
+			 
 	   });
 	   $("#refRepair").fastClick(function(){
 			rp_ref = true;
 	     	getAllRepairEQ(); //刷新列表
-	     	return false;
+	     	
 	   });
 	   $("#freshEqList").fastClick(function(){
 			eqlist_ref = true;
 	     	getAllEQList()(); //刷新列表
-	     	return false;
+	     	
 	   });
 	   $("#eq_list_type").change(function(){
 			eqlist_ref = true;
 	     	getAllEQList(); //刷新列表
-	     	return false;
+	     	
 	   });
   </script>
 </html>

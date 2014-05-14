@@ -240,13 +240,13 @@ function onDeviceReady() {
 // 返回键
 function eventBackButton() {
 	if ($.mobile.activePage.is('#messagePage')||$.mobile.activePage.is('#loginPage')) {
-		showAlert('再点击一次退出!');
+		showAlert('再按一次退出!');
 		document.removeEventListener("backbutton", eventBackButton, false); // 注销返回键
-		document.addEventListener("backbutton", exitApp, false);// 绑定退出事件
+		document.addEventListener("backbutton", closeApp, false);// 绑定退出事件
 		// 3秒后重新注册
 		var intervalID = window.setInterval(function() {
 			window.clearInterval(intervalID);
-			document.removeEventListener("backbutton", exitApp, false); // 注销返回键
+			document.removeEventListener("backbutton", closeApp, false); // 注销返回键
 			document.addEventListener("backbutton", eventBackButton, false); // 返回键
 		}, 3000);
 	}else {
