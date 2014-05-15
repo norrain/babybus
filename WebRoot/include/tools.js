@@ -231,36 +231,6 @@ function showUrl(url) {
 
 // =========================PhoneGap==================================
 
-// 等待加载PhoneGap
-document.addEventListener("deviceready", onDeviceReady, false);
-// PhoneGap加载完毕
-function onDeviceReady() {
-	// 按钮事件
-	document.addEventListener("backbutton", eventBackButton, false); // 返回键
-	document.addEventListener("menubutton", eventMenuButton, false); // 菜单键
-	document.addEventListener("searchbutton", eventSearchButton, false); // 搜索键
-}
-
-// 返回键
-function eventBackButton() {
-	if ($.mobile.activePage.is('#indexPage')
-			|| $.mobile.activePage.is('#loginPage')) {
-		showAlert('再按一次退出!');
-		document.removeEventListener("backbutton", eventBackButton, false); // 注销返回键
-		document.addEventListener("backbutton", closeApp, false);// 绑定退出事件
-		// 3秒后重新注册
-		var intervalID = window.setInterval(function() {
-					window.clearInterval(intervalID);
-					document.removeEventListener("backbutton", closeApp, false); // 注销返回键
-					document.addEventListener("backbutton", eventBackButton,
-							false); // 返回键
-				}, 3000);
-	} else {
-		//navigator.app.backHistory();
-		//$.mobile.back();
-	}
-}
-
 function exitApp() {
 	isExit();
 }
@@ -285,27 +255,53 @@ function eventSearchButton() {
  */
 function checkConnection() {
 	var networkState = navigator.network.connection.type;
-	alert(networkState);
 	if (networkState == Connection.NONE) {
-		navigator.notification.confirm('请确认网络连接已开启,并重试', conAlert, '提示', '确定');
+		navigator.notification.confirm('请确认网络连接已开启,并重试...', function(btn){
+			return false;
+		}, '提示', '确定');
 		return false;
 	} else {
 		return true;
 	}
 }
-
-checkConnection();
-
-function conAlert(button) {
-
-	return false;
-}
+ 
 function isExit() {
-	alert("=======");
-	navigator.notification.confirm('确认退出？', showExitConfirm, '退出软件', '确定,取消');
+	navigator.notification.confirm('确认退出?',showExitConfirm, '退出软件', '确定,取消');
 }
-function showExitConfirm(button) {
-	if (button == 1) {
+function showExitConfirm(btn) {
+	if (btn == 1) {
 		navigator.app.exitApp();
+	}
+}
+
+
+// 等待加载PhoneGap
+document.addEventListener("deviceready", onDeviceReady, false);
+// PhoneGap加载完毕
+function onDeviceReady() {
+	// 按钮事件
+	document.addEventListener("backbutton", eventBackButton, false); // 返回键
+	document.addEventListener("menubutton", eventMenuButton, false); // 菜单键
+	document.addEventListener("searchbutton", eventSearchButton, false); // 搜索键
+	checkConnection();
+}
+
+// 返回键
+function eventBackButton() {
+	if ($.mobile.activePage.is('#indexPage')
+			|| $.mobile.activePage.is('#loginPage')) {
+		showAlert('再按一次退出!');
+		document.removeEventListener("backbutton", eventBackButton, false); // 注销返回键
+		document.addEventListener("backbutton", closeApp, false);// 绑定退出事件
+		// 3秒后重新注册
+		var intervalID = window.setInterval(function() {
+					window.clearInterval(intervalID);
+					document.removeEventListener("backbutton", closeApp, false); // 注销返回键
+					document.addEventListener("backbutton", eventBackButton,
+							false); // 返回键
+				}, 3000);
+	} else {
+		//navigator.app.backHistory();
+		//$.mobile.back();
 	}
 }
