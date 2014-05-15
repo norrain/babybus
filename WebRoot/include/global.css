@@ -34,5 +34,16 @@ body {
 	font-weight: bold;
 }
 
+.moreInfo{
+	clear:both;
+	text-align:center;
+	font-size:14px;
+	border-bottom:1px solid gray;
+	margin-top:5px;
+	margin-bottom:5px;
+	padding:15px;
+	width:100%;
+	
+}
 
  

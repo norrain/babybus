@@ -120,7 +120,6 @@ function slideIn(id,direct){
 		}else{
 			var nurl = $("#"+id).attr("nhref");
 			pid = replaceAll(nurl,"#","");
-			
 			showNav(pid);
 		}
     }
@@ -196,7 +195,7 @@ function slideIn(id,direct){
     	//target.css("position","static");
     	target.css("marginTop",5);
     }
-    var b = new animate(FC, {"top":"0px","left":"0px"},300,callBack).play(); 
+    var b = new animate(FC, {"top":"0px","left":"0px"},400,callBack).play(); 
 }
 
 function dialog(html){

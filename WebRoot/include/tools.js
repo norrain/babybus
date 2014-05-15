@@ -168,6 +168,11 @@ if (window.location.href.indexOf("?") > 0) {
 	//alert(notify);
 }
 
+//页面刷新
+function pageRefresh(){
+	$.mobile.pageContainer.trigger("create");
+}
+
 //=================一些JS数据方法=============================
 //改变hash
 function changeHash(hashPage) {
@@ -262,7 +267,7 @@ function checkConnection() {
 function isExit() {
 	//goTo("global/exitApp.html");
 	//navigator.notification.confirm('确认退出?',showExitConfirm, '退出软件', '确定,取消');
-	
+	confirm('确认退出?','真的不再多待一会儿啦?',null,closeApp);
 }
 function showExitConfirm(btn) {
 	if (btn == 1) {

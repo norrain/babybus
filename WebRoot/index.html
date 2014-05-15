@@ -188,7 +188,7 @@
 				 <img src="img/album-bb.jpg"/>
     			 <h2><%=rows[i].gg %></h2>
  				 <p><strong><%=rows[i].xh %></strong></p>
-				 <span class="ui-li-count"><%=i+1%></span>
+				 <span class="ui-li-count">N</span>
 				 <p class="ui-li-aside"><%=rows[i].estate %>|<%=rows[i].curstate %></p>
 			</a>
           </li>
@@ -211,6 +211,7 @@
   </div>
   <div data-role="content" class="ui-content">
    	   <ul  data-autodividers="false" id="list_eq" data-role="listview" data-inset="false"></ul>
+	   <div class="moreInfo" ><a href="javascript:;" id="moreListEQ">加载更多...</a></div>
   </div>
 	<script>
 	  $("#eq_list_type").change(function(){
@@ -221,6 +222,9 @@
 		$("#list_eq li").live("tap",function(){
 			 goTo("#eqlist_hold");
 			 //slideIn("DIALOG:eqlistHold",top);
+		});
+		$("#moreListEQ").fastClick(function(){
+			getAllEQList(eqlist_pagenum+1);
 		});
 	</script>
 </script>
@@ -472,7 +476,11 @@
 	  	 * 所有设备
 	  	 */
 	  	 var eqlist_ref = false;
-	  	 function getAllEQList(){
+	  	 var eqlist_pagenum = 1;
+	  	 function getAllEQList(pn){
+	  	 	if(!pn) pn =1;
+	  	 	eqlist_pagenum = pn;
+	  	 	
 	  	 	var eqlist_type = $("#eq_list_type").val();
 	  	 	
 	  	 	if(eqlist_type!="")
@@ -480,19 +488,21 @@
 	  	 	else
 	  	 		$("#label_eq").html("全部设备");
 	  	 			
-	  	 	if($("#list_eq").html()==''||eqlist_ref){
+	  	 	//if($("#list_eq").html()==''||eqlist_ref){
 	  	 		showLoading();
-		  	 	jyzb.getAllEQ(userInfo.schoolno,eqlist_type,showListEQ);
-		  	}
+		  	 	jyzb.getAllEQ(userInfo.schoolno,eqlist_type,pn,showListEQ);
+		  	//}
 	  	 }
 	  	 function showListEQ(resstr){
 	  	 	 var data = (new Function('return ' + resstr))();
 	     	 var html = template.render('templ_list_eq',data);
-	     	 $("#list_eq").html(html);
+	     	 if(eqlist_pagenum==1) 
+	     	 	$("#list_eq").html(html);
+	     	 else
+	     	 	$("#list_eq").append(html);
 	     	 $("#list_eq").listview('refresh');
 	     	 eqlist_ref = false;
 	     	 hideLoading();
-	     	 
 	     	 refreshPageCacheHtml("shutdownPage");
 	  	 }
 	  	 
