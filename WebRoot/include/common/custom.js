@@ -1,115 +1,5 @@
 // JavaScript Document
-var $page;
-
-//加载底部菜单
-function createFooter(page,id){
-	var footerUrl = page.attr("data-footer");
-	if (footerUrl) {
-		var footerHtml = '';
-		if (!footerHtml) {
-			footerHtml = urlLoadContent(footerUrl);
-			ss.setItem(footerUrl, footerHtml);
-		}
-
-		page.append(footerHtml);
-		//alert($("#"+id+"Nav"));
-		//$("#"+id+"Nav").attr("class","ui-btn-active ui-state-persist");
-		var btnState =page.find('a[nid="'+id+'Nav"]');
-		btnState.attr("class","ui-btn-active ui-state-persist");
-		
-		var nid = id+'Nav';
-		page.find('div[data-role="navbar"] a').fastClick(function(){
-			if($(this).attr("nid")!=null&&$(this).attr("nid")!=""){
-				if($(this).attr("nid")!=nid){
-				   var nurl = $(this).attr("nhref");
-				  //var pid = $(this).attr("nid");
-				   
-				   var target_str = getPageHtml(nurl);
-				  // alert(target_str);
-				   var target = $("#frameContent");
-				   var new_frame = $($.parseHTML(target_str));
-				   var par = target.parent();
-				   
-				   var start = par.width();
-			       new_frame.css('left', start);
-			       target.after(new_frame);
-			       target.imove(-start, 0, 200, function(){target.remove()});
-        		   new_frame.imove(-start, 0, 200);
-				   //target.imove(par.width(),0, 200,function(){target.remove()});
-				   //goTo(nurl);
-				   return false;
-				}
-			}
-	    });
-	} 
-}
-
-var pageCacheMap = new Map();
-var nowPageId = "messagePage";
-function getPageHtml(pageId){
-	if(nowPageId==pageId){
-		return;
-	}
-	nowPageId = pageId;
-	//alert(pageCacheMap.getItem(pageId));
-	if(pageCacheMap.getItem(pageId)!=null&&pageCacheMap.getItem(pageId)!=""){
-	
-		return pageCacheMap.getItem(pageId);
-	}
-	
-    var html = template.render('templ_page_'+pageId);;// $(pageId).html();
-    pageCacheMap.put(pageId,html);
-    
-	return html;
-}
-
-function refreshPageHtml(pageId){
-	 
-	 pageCacheMap.put(pageId,$("#indexPage").html());
-}
-
-function showNav(pageId){
-	$('#indexPage div[data-role="navbar"] a').each(function(){
-		$(this).removeClass("ui-btn-active");
-		$(this).removeClass("ui-state-persist");
-	});
-	//alert("#"+pageId+"Nav");
-	//$("#"+pageId+"Nav").attr("class","ui-btn-active ui-state-persist");
-	 $("#"+pageId+"Nav").addClass("ui-btn-active");
-	 $("#"+pageId+"Nav").addClass("ui-state-persist");
-}
-
-
-
-$(document).on("pagecreate", function(e) {
-	$page = $(e.target);
-	var pageId = $page.attr("id");
-	if(pageId=="indexPage"){
-		$page.find('div[data-role="navbar"] a').fastClick(function(){
-					   
-					   slideIn($(this).attr("id"));
-	        		   //new_frame.imove(-start, 0, 200);
-	        		   //alert(target.html());
-					   //target.imove(par.width(),0, 200,function(){target.remove()});
-					   //goTo(nurl);
-		 });
-		 
-		$("#indexPage").bind('DOMNodeInserted', function(e) {
-		 	  //refreshPageHtml(nowPageId);
-		 	 // alert("==");
-		     //alert('element now contains: ' + $(e.target).html());
-		});
-		 
-	}
-	
-	//$page = $(e.target);
-	//var pageId = $page.attr("id");
-	//加载底部菜单
-	//createFooter($page,pageId);
-	//$.mobile.pageContainer.trigger("create");
-	
-	/*
-	var navData = {
+var navData = {
 			    list: [
 			    	{
 			    		mtitle:"消息",
@@ -137,43 +27,135 @@ $(document).on("pagecreate", function(e) {
 			    	}
 			    ]
  }
+ 
+ 
 
-	var len = navData.list.length;
-	for(var i=0;i<len;i++){
-		$("#"+navData.list[i].mid+"Nav").fastClick(function(a){
-				//alert(navData.list[i].method);
-			     eval($(this).attr("method")+"()");
-				 slideIn($(this).attr("id"));
-		 });
-		//alert(navData.list[i].mid);
+var FC = "frameContent";   //容器
+var pageCacheMap = new Map();
+var pageCacheHtmlMap = new Map();
+var nowPageId = "messagePage";
+
+function getPageHtml(pageId){
+	 
+	nowPageId = pageId;
+	//alert(pageCacheMap.getItem(pageId));
+
+	if(pageCacheMap.getItem(pageId)!=null&&pageCacheMap.getItem(pageId)!=""){
+	  
+	   return pageCacheMap.getItem(pageId);
 	}
 	
+    var html = template.render('templ_page_'+pageId);// $(pageId).html();
+    pageCacheMap.put(pageId,html);
+    
+	return html;
+}
+/**
+ * 更新网页缓存
+ * **/
+function refreshPageCacheHtml(pageId){
+	 
+	 pageCacheHtmlMap.put(pageId,$("#indexPage").html());
+}
+
+function showNav(pageId){
+	$('#indexPage div[data-role="navbar"] a').each(function(){
+		$(this).removeClass("ui-btn-active");
+		$(this).removeClass("ui-state-persist");
+	});
+	//alert("#"+pageId+"Nav");
+	//$("#"+pageId+"Nav").attr("class","ui-btn-active ui-state-persist");
+	 $("#"+pageId+"Nav").addClass("ui-btn-active");
+	 $("#"+pageId+"Nav").addClass("ui-state-persist");
+	 
+}
+
+
+
+$(document).on("pagecreate", function(e) {
+	
+	$page = $(e.target);
+	var pageId = $page.attr("id");
+	
+ 
+	
+	//$page = $(e.target);
+	//var pageId = $page.attr("id");
+	//加载底部菜单
+	//createFooter($page,pageId);
+	//$.mobile.pageContainer.trigger("create");
+	
+	/*
+	$("#indexPage").bind('DOMNodeInserted', function(e) {
+		 	  refreshPageHtml(nowPageId);
+	});
 	*/
 	
 });
 
-function slideIn(id){
+/***
+ * 页面进入效果
+ * ***/
+function slideIn(id,direct){
+	var pid = -1;
+	//alert(id.indexOf("Nav"));
+	if(id.indexOf("Nav")==-1){
+		if(id.indexOf("DIALOG:")==-1){
+			pid = id;
+		}else{
+			pid = replaceAll(id,"DIALOG:","");
+		}
+	    //location.hash="#"+pid;
+	}else{
+		var nurl = $("#"+id).attr("nhref");
+		pid = replaceAll(nurl,"#","");
+		
+		showNav(pid);
+	}
 	
-	var FC = "frameContent";
 	
-	var nurl = $("#"+id).attr("nhref");
-	var pid = replaceAll(nurl,"#","");
+	if(nowPageId==pid){  //如果是当前菜单 则不操作
+		
+		return false;
+	}
 	
-	showNav(pid);
-					  
+	var target = $("#"+FC);				  
 	var target_str = getPageHtml(pid);
-    var target = $("#"+FC);
+	
+	
+	if(id.indexOf("DIALOG:")!=-1){
+		
+		dialog(target_str);
+		
+		return false;
+	}
+	
+	
 	var start = target.parent().width();
 	var height = $(document).height();
-	
-    target.html(target_str).trigger("create");
-    target.css("position","absolute");
-    target.css("left",start);
-    target.css("top",0);
-    target.css("width",start);
-    target.css("height","80%");
-    target.css("background","");
     
+    target.html(target_str).trigger("create");
+    
+    
+    target.css("position","absolute");
+    target.css("width",start+"px");
+    target.css("height",(height*0.5)+"px");
+    target.css("background","");
+    if(!direct||direct=="left"){
+    	target.css("top","5px");
+    	target.css("left",start+"px");
+    }else if(direct=="right"){
+    	target.css("top","5px");
+    	target.css("left",-start+"px");
+    }else if(direct=="top"){
+    	target.css("top",height+"px");
+    	target.css("left","0px");
+    }else if(direct=="down"){
+    	target.css("top",-height+"px");
+    	target.css("left","0px");
+    }
+   	
+    	
     /*
     target.animate({"top":"0px","left":"0px"},600,function(){
     	//"height":$("#frameContent").parent().height()+1000+'px'
@@ -185,17 +167,56 @@ function slideIn(id){
     var callBack = function(){
     	target.removeAttr("style");
     	//target.css("position","static");
-    	target.css("marginTop",10);
+    	target.css("marginTop",5);
     }
     var b = new animate(FC, {"top":"0px","left":"0px"},300,callBack).play(); 
-   
-  // $("#frameContent").css("position","static");
-   //$("#frameContent").css("height",$(document).height());
-   
 }
 
+function dialog(html){
+	
+	var h = '<div data-role="dialog"  id="myDialog">';
+	h+= html;
+	h+='</div>';
+	
+	$(document).append(html);
+	$("#myDialog").html(h).trigger("create");
+}
+
+function goInit(){
+ 
+}
+
+$(document).ready(function(){
+    	var len = navData.list.length;
+		for(var i=0;i<len;i++){
+			$("#"+navData.list[i].mid+"Nav").fastClick(function(a){
+					//alert(navData.list[i].method);
+				 	var ZXmethod = $(this).attr("nmethod");
+				 	if(ZXmethod){
+					 	setTimeout(function(){
+					 		eval("javascript:"+ZXmethod+"();");
+					 	},0);	 
+				 	}
+				 	
+				 	slideIn($(this).attr("id"));
+			 });
+			//alert(navData.list[i].mid);
+		}
+		
+		//leftpanel
+		$(document).on("swiperight",function(){
+		     $('#message_lpBtn').click(); 
+		});  
+});
+
+
+
 $(document).on("pagebeforeshow", function(e) {
-	 showLoading();
+	 //showLoading();
+});
+ 
+$(document).on("pageshow", function(e) {
+	 //hideLoading();
 });
  
  

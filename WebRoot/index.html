@@ -73,44 +73,48 @@
   
   <body>
   
+	
  <!-- Home -->
 <div data-role="page"  id="indexPage" data-dom-cache="true" >
+ <a id="message_lpBtn" style="display:none;" href="#leftpanel">Reveal</a>
+ <!-- /leftpane -->
+  <div data-role="panel" id="leftpanel" data-position="left" data-display="overlay" data-theme="a">
+        <h3>我只是用来测试的</h3>
+        <p>不用看我!!!我只是用来测试的 不用看我!!!我只是用来测试的</p>
+        <p>向<b>左划</b>看看</p>
+        <a  data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left ui-btn-inline">关掉这个讨厌的东东</a>
+ </div>
  <div style="position: relative;">
-	<div  id="frameContent" style="width:100%; z-index:1;">
+ <div  id="frameContent" style="width:100%; z-index:1;">
 	 	<div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
     <h1>教育装备管理</h1>
   </div>
   <div  data-role="content"  class="ui-content">
-  	  	 <div data-role="tabs">
-		      <div data-role="navbar"  data-inset="true">
-				    <ul>
-				      <li><a data-shadow="false" href="#tab_msg_wx" class="ui-btn-active" data-ajax="false" >维修设备</a></li>
-				      <li><a data-shadow="false" href="#tab_msg_kgj" data-ajax="false" >开关机</a></li>
-				    </ul>
-			  </div>
-			  <div id="tab_msg_kgj"  style="margin-top:5px;">
-			     	<ul id="list_mes_kgj" data-role="listview" data-autodividers="false" data-inset="true" data-filter="false"></ul>
-			  </div>
-			  <div id="tab_msg_wx"  style="margin-top:5px;">
-			        <ul id="list_mes_wx" data-role="listview" data-autodividers="false" data-inset="true" data-filter="false"></ul>
-			  </div>
-   	    </div>
-  	</div>
+  		<center>
+	  		<fieldset id="messageCheck" data-role="controlgroup" data-type="horizontal" style="margin:0px;">
+			    <input type="radio" name="radio-choice-h-2" id="tab_msg_wx" checked="checked" value="wx">
+			    <label for="tab_msg_wx">维修设备提醒</label>
+			    <input type="radio" name="radio-choice-h-2" id="tab_msg_kgj" value="kgj">
+			    <label for="tab_msg_kgj">非正常开关机</label>
+			</fieldset>
+		</center>
+			 <ul id="list_mes_wx" data-role="listview" data-autodividers="false" data-inset="true" data-filter="false"></ul>
+			 <ul id="list_mes_kgj" style="display:none;"  data-role="listview" data-autodividers="false" data-inset="true" data-filter="false"></ul>
+  </div>
 	</div>
-	</div>
+ </div>
   	<div class="frame" data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false" data-id="footer">
           <div data-role="navbar">
 		    <ul>
-		      <li><a class="ui-btn-active ui-state-persist" method="getAllMessage" data-shadow="false" data-iconshadow="false" id="messagePageNav" nid="messagePageNav"  nhref="#messagePage"  data-icon="alert" >消息</a><div class="ui-li-count"><span>4</span></div></li>
-		      <li><a data-shadow="false" method="getAllEQList" data-iconshadow="false" id="shutdownPageNav" nid="shutdownPageNav" nhref="#shutdownPage" data-icon="cloud" >设备列表</a></li>
-		      <li><a data-shadow="false" data-iconshadow="false" id="repairPageNav" nid="repairPageNav" nhref="#repairPage" data-icon="grid" >设备维修</a></li>
-		      <li><a data-shadow="false" data-iconshadow="false" id="setupPageNav" nid="setupPageNav" nhref="#setupPage" data-icon="gear" >设置</a></li>
+		      <li><a  id="messagePageNav"  nmethod="getAllMessage"  nhref="#messagePage"  data-icon="alert" class="ui-btn-active ui-state-persist">消息</a><div class="ui-li-count"><span>4</span></div></li>
+		      <li><a  id="shutdownPageNav" nmethod="getAllEQList"  nhref="#shutdownPage" data-icon="cloud" >设备列表</a></li>
+		      <li><a  id="repairPageNav" nmethod="getAllRepairEQ" nhref="#repairPage" data-icon="grid" >设备维修</a></li>
+		      <li><a  id="setupPageNav"  nhref="#setupPage" data-icon="gear" >设置</a></li>
 		    </ul>
 		  </div>
    </div>
 </div>
-
-
+ 
 <!-- 消息模板  -->
 <script id="templ_message_wx" type="text/html">
       <%for(i = 0; i < rows.length; i ++) {%>
@@ -134,28 +138,26 @@
     <h1>教育装备管理</h1>
   </div>
   <div  data-role="content"  class="ui-content">
-  	  	 <div data-role="tabs">
-		      <div data-role="navbar"  data-inset="true">
-				    <ul>
-				      <li><a data-shadow="false" href="#tab_msg_wx" class="ui-btn-active" data-ajax="false" >维修设备</a></li>
-				      <li><a data-shadow="false" href="#tab_msg_kgj" data-ajax="false" >开关机</a></li>
-				    </ul>
-			  </div>
-			  <div id="tab_msg_kgj"  style="margin-top:5px;">
-			     	<ul id="list_mes_kgj" data-role="listview" data-autodividers="false" data-inset="true" data-filter="false"></ul>
-			  </div>
-			  <div id="tab_msg_wx"  style="margin-top:5px;">
-			        <ul id="list_mes_wx" data-role="listview" data-autodividers="false" data-inset="true" data-filter="false"></ul>
-			  </div>
-   	    </div>
+  	  	  <center>
+	  		<fieldset id="messageCheck" data-role="controlgroup" data-type="horizontal" style="margin:0px;">
+			    <input type="radio" name="radio-choice-h-2" id="tab_msg_wx" checked="checked" value="wx">
+			    <label for="tab_msg_wx">维修设备提醒</label>
+			    <input type="radio" name="radio-choice-h-2" id="tab_msg_kgj" value="kgj">
+			    <label for="tab_msg_kgj">非正常开关机</label>
+			</fieldset>
+		</center>
+			 <ul id="list_mes_wx" data-role="listview" data-autodividers="false" data-inset="true" data-filter="false"></ul>
+			 <ul id="list_mes_kgj" style="display:none;"  data-role="listview" data-autodividers="false" data-inset="true" data-filter="false"></ul>
   	</div>
-   <script>getAllMessage();</script>
+	<script>
+	$("#messageCheck :radio").change(function (){
+		  $("#list_mes_wx").css("display","none");
+		  $("#list_mes_kgj").css("display","none");
+		  $("#list_mes_"+$(this).val()).css("display","block");
+	});
+	</script>
 </script> 
  
-
-
-
-
 
 <!-- 设备列表模板 -->
 <script id="templ_list_eq" type="text/html">
@@ -176,7 +178,7 @@
   <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
     <h1 id="label_eq">全部设备列表</h1>
     <div class="ui-btn-right">
-	    <select id="eq_list_type" data-native-menu="true" data-mini="true" data-inline="true" data-icon="carat-d"  data-iconpos="notext" >
+	    <select id="eq_list_type" data-native-menu="true" data-mini="true" data-inline="true" data-icon="bars"  data-iconpos="notext" >
 			<option selected="selected" value="">全部</option>
 			<option value="多媒体电脑">多媒体电脑</option>
 			<option value="服务器">服务器</option>
@@ -190,46 +192,40 @@
   <div data-role="content" class="ui-content">
    	   <ul  data-autodividers="false" id="list_eq" data-role="listview" data-inset="false"></ul>
   </div>
-
 	<script>
-   		$("#freshEqList").fastClick(function(){
-			eqlist_ref = true;
-	     	getAllEQList(); //刷新列表
-	   });
-	   $("#eq_list_type").change(function(){
-			eqlist_ref = true;
-	     	getAllEQList(); //刷新列表
-	   });
-	    getAllEQList();
+		$("#freshEqList").fastClick(function(){
+							eqlist_ref = true;
+					     	getAllEQList(); //刷新列表
+				    });
+					 $("#eq_list_type").change(function(){
+							eqlist_ref = true;
+					     	getAllEQList(); //刷新列表
+					});
+		var _hold_eq_id ,_hold_eq_gg,_hold_eq_xh,_hold_eq_no;
+		$("#list_eq li").live("tap",function(){
+			 goTo("#eqlist_hold");
+			 //slideIn("DIALOG:eqlistHold",top);
+		});
 	</script>
-
 </script>
 
 <!-- 设备列表hold -->
 <div data-role="dialog"  id="eqlist_hold">
-  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
-    <h1>选择您要的操作?</h1>
-  </div>
-  <div data-role=content class="ui-content">
-  		<center>
-          <a id="eqlist_hold_wx" data-role="button"   data-icon="grid">维修设备</a>
-          <a id="eqlist_hold_gj"  data-role="button"  data-icon="delete">远程关机</a>
-          <a id="eqlist_hold_check"  data-role="button"  data-icon="star">查看详细</a>
-           <a class="backButton" id="eqlist_hold_back"  data-role="button"  data-icon="back">取消返回</a>
-      </center>
-  </div>
-</div> 
-
-<script type="text/javascript">
-		var _hold_eq_id ,_hold_eq_gg,_hold_eq_xh,_hold_eq_no;
-		$("#list_eq li").live("tap",function(){
-			 goTo("#eqlist_hold");
-			_hold_eq_id =  $(this).attr("id");
-			//alert(_hold_eq_id);
-		});
+	  <div data-role="header" data-theme="b"  data-position="fixed">
+	    <h1>选择您要的操作?</h1>
+	  </div>
+	  <div data-role=content class="ui-content">
+	          <a id="eqlist_hold_wx" data-role="button"   data-icon="grid">维修设备</a>
+	          <a id="eqlist_hold_gj"  data-role="button"  data-icon="delete">远程关机</a>
+	          <a id="eqlist_hold_check"  data-role="button"  data-icon="star">查看详细</a>
+	           <a id="eqlist_hold_back"  data-role="button"  data-icon="back">取消返回</a>
+	  </div>
+</div>
+<script>
+	$("#eqlist_hold_back").fastClick(function(){
+		 $('#eqlist_hold').dialog('close');
+	});
 </script>
-
-
 
 
 
@@ -263,7 +259,6 @@
 			rp_ref = true;
 	     	getAllRepairEQ(); //刷新列表
 	    });
-		getAllRepairEQ();
 	</script>
 </script>
 
@@ -299,6 +294,10 @@
 		        <li class="ui-field-contain">
 		            <label for="textarea2">设备编号:</label>
 		            <input type="text" name="name2" id="_ap_eqno" value="" data-clear-btn="true">
+		        </li>
+		        <li class="ui-field-contain">
+		            <label>设备备注:</label>
+		            <textarea cols="40" rows="8" name="_ap_eqremarks" id="_ap_eqremarks"></textarea>
 		        </li>
 		        <li class="ui-field-contain">
 		            <label for="textarea2">限时完成:</label>
@@ -340,10 +339,50 @@
       <h1>设置</h1>
   </div>
   <div class="content" class="ui-content">
-			
-					   
+		   
+		  <ul data-role="listview" data-inset="true">
+				<li data-role="fieldcontain"><label for="flip2">是否开启离线浏览:</label>
+					<select name="flip2" id="flip2" data-role="slider">
+						<option value="false">否</option>
+						<option value="true">是</option>
+				</select></li>
+				<li data-role="fieldcontain">
+					<button  id="setpage_clearCacheBtn"  data-shadow="false" type="button" >清除缓存</button>
+					<button id="setpage_aboutUsBtn" data-shadow="false" type="button"  >关于我们</button>
+					<button  id="setpage_gologin" data-shadow="false" type="button">注销登录</button>
+				</li>
+				<li data-role="fieldcontain">
+					<button id="setpage_exitBtn" data-shadow="false" type="button" data-theme="b">退出软件</button>
+				</li>
+			</ul>
+  </div>
+	<script>
+	$("#setpage_clearCacheBtn").fastClick(function(){
+		  showAlert("清除缓存成功!");
+    });
+	$("#setpage_aboutUsBtn").fastClick(function(){
+		 slideIn("aboutus");
+    });
+	$("#setpage_exitBtn").fastClick(function(){
+		  exitApp();
+    });
+    $("#setpage_gologin").fastClick(function(){
+		  localStorage.removeItem("loginUserInfo");
+		  goTo("include/login/login.html");
+    });
+	</script>
+</script>
 
-		 <div class="center" style=" position:absolute;top: 30%;width: 100%;">
+
+<!-- style="position:absolute;top: 30%;width: 100%;" -->
+<script id="templ_page_aboutus" type="text/html">
+	
+ <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
+		<h1>关于我们</h1>
+		<a data-shadow="false" class="ui-btn-left backButton" data-icon="back">返回</a>
+  </div>
+  <div class="content" class="ui-content">
+		 <div class="center" >
 		 	<center>
 		   	<p>客服电话:  <a href="tel:028-85284600">(+86)028-85284600</a></p>
 		    <p>四川海图电子科技 版权所有</p>
@@ -351,45 +390,32 @@
 		    <p> CNCHAT.ALL Rights Reserved</p>
 		    </center>
 		</div>   
-		   
   </div>
+	<script> 
+		$(".backButton").bind("fastClick",function(e){
+		   slideIn("setupPageNav","right");
+	   });
+    </script> 
 </script>
  
  
 	 
- <script type='text/javascript' src='http://192.168.1.106:8080/AWJEQ/dwr/interface/jyzb.js'></script>
- <script type='text/javascript' src='http://192.168.1.106:8080/AWJEQ/dwr/engine.js'></script>
+ <script type='text/javascript' src='http://192.168.1.105:8080/AWJEQ/dwr/interface/jyzb.js'></script>
+ <script type='text/javascript' src='http://192.168.1.105:8080/AWJEQ/dwr/engine.js'></script>
  
 <script type="text/javascript">
 		 DWREngine.setMethod(DWREngine.ScriptTag);
-	     jyzb._path = "http://192.168.1.106:8080/AWJEQ/dwr";
-	     
- 		 //初始化
-	  	 $(document).on("pageinit","#messagePage",function(){
-			   //getAllMessage();
-		 });
-		  //初始化
-	  	 $(document).on("pageinit","#repairPage",function(){
-			     //getAllRepairEQ();
-		 });
-		 //初始化
-	  	 $(document).on("pageinit","#shutdownPage",function(){
-			     //getAllEQList();
-		 });
-		 
+	     jyzb._path = "http://192.168.1.105:8080/AWJEQ/dwr";
+	  	 DWREngine.setAsync(false);
 	  	 
 	  	  /*
 	  	 * 所有消息
 	  	 */
 	  	 var message_ref = false;
 	  	 function getAllMessage(){
-	  	 
 	  	 	if($("#list_mes_wx").html()==''||message_ref){
 	  	 		showLoading();
 		  	 	jyzb.getMessage(userInfo.schoolno,"wx",showMesListWX);
-		  	}
-	  	 	if($("#list_mes_kgj").html()==''||message_ref){
-	  	 			showLoading();
 		  	 	jyzb.getMessage(userInfo.schoolno,"kgj",showMesListKGJ);
 		  	}
 	  	 }
@@ -400,6 +426,8 @@
 	     	 $("#list_mes_wx").listview('refresh');
 	     	 hideLoading();
 	     	 message_ref = false;
+	     	 
+	     	 refreshPageCacheHtml("messagePage");
 	  	 }
 	  	 function showMesListKGJ(resstr){
 	  	 	 var data = (new Function('return ' + resstr))();
@@ -408,6 +436,8 @@
 	     	 $("#list_mes_kgj").listview('refresh');
 	     	 hideLoading();
 	     	 message_ref = false;
+	     	 
+	     	 refreshPageCacheHtml("messagePage");
 	  	 }
 	  	 
 	  	 /*
@@ -433,8 +463,9 @@
 	     	 $("#list_eq").html(html);
 	     	 $("#list_eq").listview('refresh');
 	     	 eqlist_ref = false;
-	     	 
 	     	 hideLoading();
+	     	 
+	     	 refreshPageCacheHtml("shutdownPage");
 	  	 }
 	  	 
 	  	 /*
@@ -503,6 +534,12 @@
 			 addRepairEQ();
 			 
 	   });
+	   
 	     getAllMessage(); 
+	     $("#messageCheck :radio").change(function (){
+		  $("#list_mes_wx").css("display","none");
+		  $("#list_mes_kgj").css("display","none");
+		  $("#list_mes_"+$(this).val()).css("display","block");
+	  });
   </script>
 </html>

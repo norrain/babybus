@@ -48,8 +48,7 @@
        	
 <div data-role="page" id="loginPage" >
   <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false">
-  <h1>装备管理登录</h1>
-   <a id="login_out" class="ui-btn-right"  data-icon="delete" >退出</a>
+   <h1>装备管理登录</h1>
   </div>
   <div data-role="content">
         <div class="form_wrap" id="wrapper_login">
@@ -82,21 +81,23 @@
 
 
 	 
-<script type='text/javascript' src='http://192.168.1.106:8080/AWJEQ/dwr/interface/jyzb.js'></script>
-<script type='text/javascript' src='http://192.168.1.106:8080/AWJEQ/dwr/engine.js'></script>
+<script type='text/javascript' src='http://192.168.1.105:8080/AWJEQ/dwr/interface/jyzb.js'></script>
+<script type='text/javascript' src='http://192.168.1.105:8080/AWJEQ/dwr/engine.js'></script>
  
 <script type="text/javascript">
 		 DWREngine.setMethod(DWREngine.ScriptTag);
-	     jyzb._path = "http://192.168.1.106:8080/AWJEQ/dwr";
+	     jyzb._path = "http://192.168.1.105:8080/AWJEQ/dwr";
 	     
-		showAlert("用户名或密码不能为空!");
+	     
+		 //showAlert("用户名或密码不能为空!");
 		 $("#loginBtn").fastClick(function(){
-		 		 //showLoading();
+		 		 
 			     var uid = $("#username").val();
 	     	 	 var upwd = $("#password").val();
 	     	 	 if(uid==""||upwd==""){
 	     	 	 	showAlert("用户名或密码不能为空!");
 	     	 	 }else{
+	     	 	 	showLoading();
 	     	 	 	jyzb.loginJysb(uid,upwd,showrLoginRes);
 	     	 	 }
 		  });
@@ -110,8 +111,8 @@
 	     	}else{
 	     		//showAlert(userInfo);
 	     		window.localStorage.setItem("loginUserInfo",userInfo);
-	     		goTo("../../index.html");
-	     		//location.href="../../index.html";
+	     		//goTo("../../");
+	     		location.href="../../";
 	     	}
 	     }
 </script>

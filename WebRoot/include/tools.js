@@ -45,7 +45,6 @@ function pageRefresh(){
 
 //转到页
 function goTo(page) {
-	showLoading();
 	$.mobile.changePage(page, {
 		transition : "none"
 	});
@@ -58,7 +57,7 @@ function showLoading(){
 	 $.mobile.loading('show', {  
        text: '加载中...', //加载器中显示的文字
        textVisible: true, //是否显示文字
-       theme: 'a',        //加载器主题样式a-e
+       theme: 'b',        //加载器主题样式a-e
        textonly: false,   //是否只显示文字
        html: ""//要显示的html内容，如图片等
    });  
@@ -243,7 +242,7 @@ function onDeviceReady() {
 
 // 返回键
 function eventBackButton() {
-	if ($.mobile.activePage.is('#messagePage')||$.mobile.activePage.is('#loginPage')) {
+	if ($.mobile.activePage.is('#indexPage')||$.mobile.activePage.is('#loginPage')) {
 		showAlert('再按一次退出!');
 		document.removeEventListener("backbutton", eventBackButton, false); // 注销返回键
 		document.addEventListener("backbutton", closeApp, false);// 绑定退出事件
@@ -255,7 +254,7 @@ function eventBackButton() {
 		}, 3000);
 	}else {
 	    //navigator.app.backHistory();
-	    $.mobile.back();
+	    //$.mobile.back();
 	}
 }
 
@@ -291,8 +290,12 @@ function checkConnection() {
 		return true;
 	}
 }
+
+checkConnection();
+
 function conAlert(button) {
 	
+	closeApp();
 	return false;
 }
 function isExit() {
@@ -304,3 +307,46 @@ function showExitConfirm(button) {
 	}
 }
   
+//jqueryMobile
+//加载底部菜单
+var $page;
+function createFooter(page,id){
+	var footerUrl = page.attr("data-footer");
+	if (footerUrl) {
+		var footerHtml = '';
+		if (!footerHtml) {
+			footerHtml = urlLoadContent(footerUrl);
+			ss.setItem(footerUrl, footerHtml);
+		}
+		page.append(footerHtml);
+		//alert($("#"+id+"Nav"));
+		//$("#"+id+"Nav").attr("class","ui-btn-active ui-state-persist");
+		var btnState =page.find('a[nid="'+id+'Nav"]');
+		btnState.attr("class","ui-btn-active ui-state-persist");
+		
+		var nid = id+'Nav';
+		page.find('div[data-role="navbar"] a').fastClick(function(){
+			if($(this).attr("nid")!=null&&$(this).attr("nid")!=""){
+				if($(this).attr("nid")!=nid){
+				   var nurl = $(this).attr("nhref");
+				  //var pid = $(this).attr("nid");
+				   
+				   var target_str = getPageHtml(nurl);
+				  // alert(target_str);
+				   var target = $("#frameContent");
+				   var new_frame = $($.parseHTML(target_str));
+				   var par = target.parent();
+				   
+				   var start = par.width();
+			       new_frame.css('left', start);
+			       target.after(new_frame);
+			       target.imove(-start, 0, 200, function(){target.remove()});
+        		   new_frame.imove(-start, 0, 200);
+				   //target.imove(par.width(),0, 200,function(){target.remove()});
+				   //goTo(nurl);
+				   return false;
+				}
+			}
+	    });
+	} 
+}
