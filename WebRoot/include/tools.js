@@ -4,139 +4,145 @@ var isWebOS = (/webOS/gi).test(navigator.appVersion);
 
 var IsDeviceReady = false;
 
-function date2str(_x,y) { 
-var x  = getDate(_x);
-var z = {M:x.getMonth()+1,d:x.getDate(),h:x.getHours(),m:x.getMinutes(),s:x.getSeconds()}; 
-y = y.replace(/(M+|d+|h+|m+|s+)/g,function(v) {return ((v.length>1?"0":"")+eval('z.'+v.slice(-1))).slice(-2)}); 
-return y.replace(/(y+)/g,function(v) {return x.getFullYear().toString().slice(-v.length)}); 
-} 
+function date2str(_x, y) {
+	var x = getDate(_x);
+	var z = {
+		M : x.getMonth() + 1,
+		d : x.getDate(),
+		h : x.getHours(),
+		m : x.getMinutes(),
+		s : x.getSeconds()
+	};
+	y = y.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
+				return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1)))
+						.slice(-2)
+			});
+	return y.replace(/(y+)/g, function(v) {
+				return x.getFullYear().toString().slice(-v.length)
+			});
+}
 
 //全局配置
-var global={
-	WEBSITE:"http://xxx.com/"
+var global = {
+	WEBSITE : "http://xxx.com/"
 }
 
 //localStorage缓存
 var ls = {
-	setItem : function (key,value){
-		localStorage.setItem(key,value)
+	setItem : function(key, value) {
+		localStorage.setItem(key, value)
 	},
-	getItem : function(key){
+	getItem : function(key) {
 		return localStorage.getItem(key)
 	}
 }
 
 //sessionStorage缓存
 var ss = {
-	setItem : function (key,value){
-		sessionStorage.setItem(key,value)
+	setItem : function(key, value) {
+		sessionStorage.setItem(key, value)
 	},
-	getItem : function(key){
+	getItem : function(key) {
 		return sessionStorage.getItem(key)
 	}
 }
 
 //页面刷新
-function pageRefresh(){
+function pageRefresh() {
 	$.mobile.pageContainer.trigger("create");
 }
-
- 
 
 //转到页
 function goTo(page) {
 	$.mobile.changePage(page, {
-		transition : "none"
-	});
+				transition : "none"
+			});
 }
 
-
 //显示loading
-function showLoading(){
+function showLoading() {
 	//$.mobile.showPageLoadingMsg();
-	 $.mobile.loading('show', {  
-       text: '加载中...', //加载器中显示的文字
-       textVisible: true, //是否显示文字
-       theme: 'b',        //加载器主题样式a-e
-       textonly: false,   //是否只显示文字
-       html: ""//要显示的html内容，如图片等
-   });  
-} 
+	$.mobile.loading('show', {
+				text : '加载中...', //加载器中显示的文字
+				textVisible : true, //是否显示文字
+				theme : 'b', //加载器主题样式a-e
+				textonly : false, //是否只显示文字
+				html : ""//要显示的html内容，如图片等
+			});
+}
 //隐藏loading
-function hideLoading(){
-   //$.mobile.hidePageLoadingMsg();
-	$.mobile.loading('hide');  
-} 
+function hideLoading() {
+	//$.mobile.hidePageLoadingMsg();
+	$.mobile.loading('hide');
+}
 
 //退出
-function exitApp(){
+function exitApp() {
 	onBackKeyDown();
 }
 
 //检查网络连接
 function checkConnection() {
-	var networkState =  navigator.network.connection.type;//navigator.connection.type;
+	var networkState = navigator.network.connection.type;//navigator.connection.type;
 	var states = {};
-	states[Connection.UNKNOWN]  = 'Unknownconnection';//未知连接
+	states[Connection.UNKNOWN] = 'Unknownconnection';//未知连接
 	states[Connection.ETHERNET] = 'Ethernet connection';//以太网
 	states[Connection.WIFI] = 'WiFi connection';//wifi
-	states[Connection.CELL_2G]  = 'Cell 2Gconnection';//2G
-	states[Connection.CELL_3G]  = 'Cell 3Gconnection';//3G
-	states[Connection.CELL_4G]  = 'Cell 4Gconnection';//4G
+	states[Connection.CELL_2G] = 'Cell 2Gconnection';//2G
+	states[Connection.CELL_3G] = 'Cell 3Gconnection';//3G
+	states[Connection.CELL_4G] = 'Cell 4Gconnection';//4G
 	states[Connection.CELL] = 'Cell generic connection';//蜂窝网络
 	states[Connection.NONE] = 'No network connection';
-	
-	 if (networkState == Connection.NONE) {
-            showAlert('请连接网络', '没有网络连接');
-     }
-	 alert('Connection type: ' + states[networkState]);
+
+	if (networkState == Connection.NONE) {
+		showAlert('请连接网络', '没有网络连接');
+	}
+	alert('Connection type: ' + states[networkState]);
 }
 //checkConnection();
 
 // 显示定制警告框
 function showAlert(msg) {
-	
-	$.mobile.loading('show', {  
-       text: msg, //加载器中显示的文字
-       textVisible: true, //是否显示文字
-       theme: 'b',        //加载器主题样式a-e
-       textonly: true,   //是否只显示文字
-       html: ""//要显示的html内容，如图片等
-   });  
-	setTimeout(hideLoading, 2000);	 
+
+	$.mobile.loading('show', {
+				text : msg, //加载器中显示的文字
+				textVisible : true, //是否显示文字
+				theme : 'b', //加载器主题样式a-e
+				textonly : true, //是否只显示文字
+				html : ""//要显示的html内容，如图片等
+			});
+	setTimeout(hideLoading, 2000);
 }
 
-
- 
 //模拟confirm
-var confirm = function (content, title, response) {
-    var html = "<div data-role='popup' id='mToast_confirm' data-theme='d' data-overlay-theme='b' style='max-width:340px;overflow:hidden;'><div class='ui-header ui-bar-a ui-corner-top'><h1 class='ui-title'>" + title + "</h1></div><div class='ui-content'><p></p>" + content + "<p></p><a data-role='button' data-inline='true' data-rel='back' data-mini='true'>取消</a><a id='mToast_confirm_response' data-role='button' data-theme='b' data-icon='check' data-inline='true' data-mini='true'>确定</a></div></div>",
-     previous = $(".ui-popup-active div[data-role=popup]"),
-     divConfirm = $("div#mToast_confirm");
-    previous.popup('close');
-    
-    if (divConfirm.length > 0) {
-        divConfirm.remove();
-    }
-    divConfirm = $(html).appendTo("div[data-role=page]:first");
-    divConfirm.trigger('create')    // <-- 生成popup
-        .trigger('refresh')
-        .popup()
-        .find("#mToast_confirm_response").on('fastClick', function () {
-            divConfirm.popup('close');
-            previous.popup('open');
-            response();
-        });
-    divConfirm.popup('open');   // -->
-};
+var confirm = function(content, title, response) {
+	var html = "<div data-role='popup' id='mToast_confirm' data-theme='d' data-overlay-theme='b' style='max-width:340px;overflow:hidden;'><div class='ui-header ui-bar-a ui-corner-top'><h1 class='ui-title'>"
+			+ title
+			+ "</h1></div><div class='ui-content'><p></p>"
+			+ content
+			+ "<p></p><a data-role='button' data-inline='true' data-rel='back' data-mini='true'>取消</a><a id='mToast_confirm_response' data-role='button' data-theme='b' data-icon='check' data-inline='true' data-mini='true'>确定</a></div></div>", previous = $(".ui-popup-active div[data-role=popup]"), divConfirm = $("div#mToast_confirm");
+	previous.popup('close');
 
+	if (divConfirm.length > 0) {
+		divConfirm.remove();
+	}
+	divConfirm = $(html).appendTo("div[data-role=page]:first");
+	divConfirm.trigger('create') // <-- 生成popup
+			.trigger('refresh').popup().find("#mToast_confirm_response").on(
+					'fastClick', function() {
+						divConfirm.popup('close');
+						previous.popup('open');
+						response();
+					});
+	divConfirm.popup('open'); // -->
+};
 
 // 处理确认退出对话框返回的结果
 function onConfirmExit(button) {
-	 if(button){
-	 	 navigator.app.exitApp();
-	 	 localStorage.removeItem("loginUser");
-	 }
+	if (button) {
+		navigator.app.exitApp();
+		localStorage.removeItem("loginUser");
+	}
 }
 
 //msg：提示内容，time:吐司延迟消失时间第(可以不写，不写默认1500毫秒延迟)
@@ -144,14 +150,11 @@ function Toast(msg, duration) {
 	showAlert(msg);
 }
 
- 
-
-
 //取到网络参数
 var Request = new Array();
 function loadQueryString(url) {
-	
-	var s = url.replace("#","&");
+
+	var s = url.replace("#", "&");
 	var n = s.indexOf("?");
 	if (n >= 0)
 		s = s.substring(n + 1);
@@ -164,18 +167,17 @@ function loadQueryString(url) {
 	}
 }
 
-if(window.location.href.indexOf("?")>0){
-	loadQueryString(window.location.href);	
-	notify=window.location.href;
+if (window.location.href.indexOf("?") > 0) {
+	loadQueryString(window.location.href);
+	notify = window.location.href;
 	//alert(notify);
 }
 
-
 //=================一些JS数据方法=============================
 //改变hash
-function changeHash(hashPage){
-	
-	 window.location.hash = hashPage;	
+function changeHash(hashPage) {
+
+	window.location.hash = hashPage;
 }
 //数字约分
 function roundNumber(num) {
@@ -184,51 +186,50 @@ function roundNumber(num) {
 	return result;
 }
 
- // replaceAll 方法实现
- function  replaceAll(Astr,AFindText,ARepText){  
-    var raRegExp = new RegExp(AFindText,"g");
-    
-	return Astr.replace(raRegExp,ARepText);
- }
- 
- // 通过url加载html内容
+// replaceAll 方法实现
+function replaceAll(Astr, AFindText, ARepText) {
+	var raRegExp = new RegExp(AFindText, "g");
+
+	return Astr.replace(raRegExp, ARepText);
+}
+
+// 通过url加载html内容
 var urlLoadContent = function(url) {
 	var content = "";
 	$.ajax({
-		url : url,
-		type : 'GET',
-		dataType : "html",
-		async : false,
-		success : function(html, textStatus, xhr) {
-			content = html;
-		},
-		error : function(xhr, textStatus, errorThrown) {
-			content = "";
-		}
-	});
+				url : url,
+				type : 'GET',
+				dataType : "html",
+				async : false,
+				success : function(html, textStatus, xhr) {
+					content = html;
+				},
+				error : function(xhr, textStatus, errorThrown) {
+					content = "";
+				}
+			});
 	return content;
 };
 
 //json数据转换
-function toObject(value){
+function toObject(value) {
 	return $.parseJSON(value);
 }
 
-function toJson(value){
+function toJson(value) {
 	return JSON.parse(value);
 }
 
-function toString(value){
+function toString(value) {
 	return JSON.stringify(value);
 }
 
 //在浏览器上显示组装路径
-function showUrl(url){
+function showUrl(url) {
 	document.write(url);
 }
- 
 
- // =========================PhoneGap==================================
+// =========================PhoneGap==================================
 
 // 等待加载PhoneGap
 document.addEventListener("deviceready", onDeviceReady, false);
@@ -242,19 +243,21 @@ function onDeviceReady() {
 
 // 返回键
 function eventBackButton() {
-	if ($.mobile.activePage.is('#indexPage')||$.mobile.activePage.is('#loginPage')) {
+	if ($.mobile.activePage.is('#indexPage')
+			|| $.mobile.activePage.is('#loginPage')) {
 		showAlert('再按一次退出!');
 		document.removeEventListener("backbutton", eventBackButton, false); // 注销返回键
 		document.addEventListener("backbutton", closeApp, false);// 绑定退出事件
 		// 3秒后重新注册
 		var intervalID = window.setInterval(function() {
-			window.clearInterval(intervalID);
-			document.removeEventListener("backbutton", closeApp, false); // 注销返回键
-			document.addEventListener("backbutton", eventBackButton, false); // 返回键
-		}, 3000);
-	}else {
-	    //navigator.app.backHistory();
-	    //$.mobile.back();
+					window.clearInterval(intervalID);
+					document.removeEventListener("backbutton", closeApp, false); // 注销返回键
+					document.addEventListener("backbutton", eventBackButton,
+							false); // 返回键
+				}, 3000);
+	} else {
+		//navigator.app.backHistory();
+		//$.mobile.back();
 	}
 }
 
@@ -262,7 +265,7 @@ function exitApp() {
 	isExit();
 }
 
-function closeApp(){
+function closeApp() {
 	navigator.app.exitApp();
 }
 
@@ -282,11 +285,11 @@ function eventSearchButton() {
  */
 function checkConnection() {
 	var networkState = navigator.network.connection.type;
+	alert(networkState);
 	if (networkState == Connection.NONE) {
-		navigator.notification.confirm('请确认网络连接已开启,并重试', conAlert, '提示',
-				'确定');
+		navigator.notification.confirm('请确认网络连接已开启,并重试', conAlert, '提示', '确定');
 		return false;
-	}else{
+	} else {
 		return true;
 	}
 }
@@ -294,59 +297,15 @@ function checkConnection() {
 checkConnection();
 
 function conAlert(button) {
-	
-	closeApp();
+
 	return false;
 }
 function isExit() {
+	alert("=======");
 	navigator.notification.confirm('确认退出？', showExitConfirm, '退出软件', '确定,取消');
 }
 function showExitConfirm(button) {
 	if (button == 1) {
 		navigator.app.exitApp();
 	}
-}
-  
-//jqueryMobile
-//加载底部菜单
-var $page;
-function createFooter(page,id){
-	var footerUrl = page.attr("data-footer");
-	if (footerUrl) {
-		var footerHtml = '';
-		if (!footerHtml) {
-			footerHtml = urlLoadContent(footerUrl);
-			ss.setItem(footerUrl, footerHtml);
-		}
-		page.append(footerHtml);
-		//alert($("#"+id+"Nav"));
-		//$("#"+id+"Nav").attr("class","ui-btn-active ui-state-persist");
-		var btnState =page.find('a[nid="'+id+'Nav"]');
-		btnState.attr("class","ui-btn-active ui-state-persist");
-		
-		var nid = id+'Nav';
-		page.find('div[data-role="navbar"] a').fastClick(function(){
-			if($(this).attr("nid")!=null&&$(this).attr("nid")!=""){
-				if($(this).attr("nid")!=nid){
-				   var nurl = $(this).attr("nhref");
-				  //var pid = $(this).attr("nid");
-				   
-				   var target_str = getPageHtml(nurl);
-				  // alert(target_str);
-				   var target = $("#frameContent");
-				   var new_frame = $($.parseHTML(target_str));
-				   var par = target.parent();
-				   
-				   var start = par.width();
-			       new_frame.css('left', start);
-			       target.after(new_frame);
-			       target.imove(-start, 0, 200, function(){target.remove()});
-        		   new_frame.imove(-start, 0, 200);
-				   //target.imove(par.width(),0, 200,function(){target.remove()});
-				   //goTo(nurl);
-				   return false;
-				}
-			}
-	    });
-	} 
 }
