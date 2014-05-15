@@ -102,7 +102,7 @@ function checkConnection() {
 //checkConnection();
 
 // 显示定制警告框
-function showAlert(msg) {
+function showAlert(msg,tm) {
 
 	$.mobile.loading('show', {
 				text : msg, //加载器中显示的文字
@@ -111,39 +111,34 @@ function showAlert(msg) {
 				textonly : true, //是否只显示文字
 				html : ""//要显示的html内容，如图片等
 			});
-	setTimeout(hideLoading, 2000);
+	if(!tm)
+		setTimeout(hideLoading, 2000);
+	else
+		setTimeout(hideLoading, tm);
 }
 
 //模拟confirm
-var confirm = function(content, title, response) {
-	var html = "<div data-role='popup' id='mToast_confirm' data-theme='d' data-overlay-theme='b' style='max-width:340px;overflow:hidden;'><div class='ui-header ui-bar-a ui-corner-top'><h1 class='ui-title'>"
-			+ title
-			+ "</h1></div><div class='ui-content'><p></p>"
-			+ content
-			+ "<p></p><a data-role='button' data-inline='true' data-rel='back' data-mini='true'>取消</a><a id='mToast_confirm_response' data-role='button' data-theme='b' data-icon='check' data-inline='true' data-mini='true'>确定</a></div></div>", previous = $(".ui-popup-active div[data-role=popup]"), divConfirm = $("div#mToast_confirm");
-	previous.popup('close');
-
-	if (divConfirm.length > 0) {
-		divConfirm.remove();
-	}
-	divConfirm = $(html).appendTo("div[data-role=page]:first");
-	divConfirm.trigger('create') // <-- 生成popup
-			.trigger('refresh').popup().find("#mToast_confirm_response").on(
-					'fastClick', function() {
-						divConfirm.popup('close');
-						previous.popup('open');
-						response();
-					});
-	divConfirm.popup('open'); // -->
+function confirmCancleFun(){
+	   $('#confirmDialog').popup('close');
+}
+var confirm = function(title,message,cancleFun,sureFun) {
+		$("#confirmDialog_title").html(title);
+		$("#confirmDialog_message").html(message);
+		if(!cancleFun){
+			cancleFun = confirmCancleFun;
+		}
+		$("#confirmCancleBtn").fastClick(function(){
+				cancleFun();
+		});
+	   	
+		$("#confirmSureBtn").fastClick(function(){
+			sureFun();
+		});
+		
+		$("#exitConfirmBtn").click();
 };
 
-// 处理确认退出对话框返回的结果
-function onConfirmExit(button) {
-	if (button) {
-		navigator.app.exitApp();
-		localStorage.removeItem("loginUser");
-	}
-}
+ 
 
 //msg：提示内容，time:吐司延迟消失时间第(可以不写，不写默认1500毫秒延迟)
 function Toast(msg, duration) {
@@ -256,9 +251,8 @@ function eventSearchButton() {
 function checkConnection() {
 	var networkState = navigator.network.connection.type;
 	if (networkState == Connection.NONE) {
-		navigator.notification.confirm('请确认网络连接已开启,并重试...', function(btn){
-			return false;
-		}, '提示', '确定');
+		showAlert("请确认网络连接已开启,并重试...",5000);
+		//navigator.notification.confirm('请确认网络连接已开启,并重试...', function(btn){return false;}, '提示', '确定');
 		return false;
 	} else {
 		return true;
@@ -266,7 +260,9 @@ function checkConnection() {
 }
  
 function isExit() {
-	navigator.notification.confirm('确认退出?',showExitConfirm, '退出软件', '确定,取消');
+	//goTo("global/exitApp.html");
+	//navigator.notification.confirm('确认退出?',showExitConfirm, '退出软件', '确定,取消');
+	
 }
 function showExitConfirm(btn) {
 	if (btn == 1) {
@@ -290,7 +286,7 @@ function onDeviceReady() {
 function eventBackButton() {
 	if ($.mobile.activePage.is('#indexPage')
 			|| $.mobile.activePage.is('#loginPage')) {
-		showAlert('再按一次退出!');
+		showAlert('再按一次返回键退出软件!');
 		document.removeEventListener("backbutton", eventBackButton, false); // 注销返回键
 		document.addEventListener("backbutton", closeApp, false);// 绑定退出事件
 		// 3秒后重新注册

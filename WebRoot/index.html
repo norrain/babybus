@@ -76,6 +76,8 @@
 	
  <!-- Home -->
 <div data-role="page"  id="indexPage" data-dom-cache="true" >
+
+<!-- 菜单栏 -->
  <a id="message_lpBtn" style="display:none;" href="#leftpanel">Reveal</a>
  <!-- /leftpane -->
   <div data-role="panel" id="leftpanel" data-position="left" data-display="overlay" data-theme="a">
@@ -84,6 +86,22 @@
         <p>向<b>左划</b>看看</p>
         <a  data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left ui-btn-inline">关掉这个讨厌的东东</a>
  </div>
+ 
+ <!-- 模拟确认对话框 -->
+ <a style="display:none;" id="exitConfirmBtn" href="#confirmDialog" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn  ui-btn-inline">Delete page...</a>
+ <div data-role="popup" id="confirmDialog" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="max-width:400px;">
+    <div data-role="header" data-theme="a">
+    <h1 id="confirmDialog_title">退出软件?</h1>
+    </div>
+    <div role="main" class="ui-content">
+        <h3 class="ui-title" id="confirmDialog_message">您真的不想再待一会儿啦?</h3>
+        <a id="confirmCancleBtn" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back">取 消</a>
+        <a id="confirmSureBtn" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"  data-transition="flow">确 定</a>
+    </div>
+ </div>
+
+
+ <!-- 主内容 -->
  <div style="position: relative;">
  <div  id="frameContent" style="width:100%; z-index:1;">
 	 	<div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
@@ -103,7 +121,7 @@
   </div>
 	</div>
  </div>
-  	<div class="frame" data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false" data-id="footer">
+  	<div id="myNav" class="frame" data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false" data-id="footer">
           <div data-role="navbar">
 		    <ul>
 		      <li><a  id="messagePageNav"  nmethod="getAllMessage"  nhref="#messagePage"  data-icon="alert" class="ui-btn-active ui-state-persist">消息</a><div class="ui-li-count"><span>4</span></div></li>
@@ -114,6 +132,9 @@
 		  </div>
    </div>
 </div>
+ 
+ 
+ 
  
 <!-- 消息模板  -->
 <script id="templ_message_wx" type="text/html">
@@ -187,20 +208,15 @@
 			<option value="一体机">一体机</option>
 		</select>
 	</div>
-    <a id="freshEqList" class="ui-btn-left"  data-icon="refresh">刷新</a>
   </div>
   <div data-role="content" class="ui-content">
    	   <ul  data-autodividers="false" id="list_eq" data-role="listview" data-inset="false"></ul>
   </div>
 	<script>
-		$("#freshEqList").fastClick(function(){
+	  $("#eq_list_type").change(function(){
 							eqlist_ref = true;
 					     	getAllEQList(); //刷新列表
-				    });
-					 $("#eq_list_type").change(function(){
-							eqlist_ref = true;
-					     	getAllEQList(); //刷新列表
-					});
+		 });
 		var _hold_eq_id ,_hold_eq_gg,_hold_eq_xh,_hold_eq_no;
 		$("#list_eq li").live("tap",function(){
 			 goTo("#eqlist_hold");
@@ -248,7 +264,7 @@
   <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
     <h1>设备维修</h1>
     <a id="refRepair" class="ui-btn-left"  data-icon="refresh">刷新</a>
-    <a href="#repairAddPage" id="addRepair" class="ui-btn-right"  data-icon="plus">添加维修</a>
+    <a id="addRepair" class="ui-btn-right"  data-icon="plus">添加维修</a>
   </div>
   <div data-role=content class="ui-content">
   	   <ul style="padding-top:5px;" id="list_wx" data-role="listview" data-inset="false"></ul>
@@ -259,6 +275,9 @@
 			rp_ref = true;
 	     	getAllRepairEQ(); //刷新列表
 	    });
+		$("#addRepair").fastClick(function(){
+			 slideIn("PAGE:repairAddPage");
+		});
 	</script>
 </script>
 
@@ -266,10 +285,10 @@
 
 	
 <!-- 添加维修 -->
-<div data-role="page" id="repairAddPage">
+<script id="templ_page_repairAddPage" type="text/html">
   <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
     <h1>添加维修设备</h1>
-    <a class="ui-btn-left backButton" data-icon="back">返回</a>
+    <a id="ap_addBack" class="ui-btn-left" data-icon="back">返回</a>
     <a id="ap_submit_top" class="ui-btn-right" data-icon="plus">添加</a>
   </div>
   <div class="content" class="ui-content">
@@ -297,7 +316,7 @@
 		        </li>
 		        <li class="ui-field-contain">
 		            <label>设备备注:</label>
-		            <textarea cols="40" rows="8" name="_ap_eqremarks" id="_ap_eqremarks"></textarea>
+		            <textarea cols="40" rows="3" name="_ap_eqremarks" id="_ap_eqremarks"></textarea>
 		        </li>
 		        <li class="ui-field-contain">
 		            <label for="textarea2">限时完成:</label>
@@ -320,16 +339,26 @@
 		        </li>
 		        <li class="ui-field-contain">
 		            <label for="_ap_gzdetail">故障详细:</label>
-		             <textarea cols="40" rows="8" name="_ap_gzdetail" id="_ap_gzdetail"></textarea>
+		             <textarea cols="40" rows="3" name="_ap_gzdetail" id="_ap_gzdetail"></textarea>
 		        </li>
 		        <li class="ui-body ui-body-b">
 		              <button id="ap_submit" type="button" class="ui-btn ui-corner-all ui-btn-a">确定提交</button>
 		        </li>
 		    </ul>
 		  </form>
-  </div>
 </div> 
-
+	<script>
+		 $("#ap_submit").fastClick(function(){
+			 addRepairEQ();
+	    });
+	    $("#ap_submit_top").fastClick(function(){
+			 addRepairEQ();
+	    });
+		$("#ap_addBack").fastClick(function(){
+			 slideIn("PAGEBACK:repairPage");
+		});
+	</script>
+</script>
 
 
 
@@ -364,11 +393,10 @@
 		 slideIn("aboutus");
     });
 	$("#setpage_exitBtn").fastClick(function(){
-		  exitApp();
+		 confirm('确认退出','真的不再多待一会儿啦?',null,closeApp);
     });
     $("#setpage_gologin").fastClick(function(){
-		  localStorage.removeItem("loginUserInfo");
-		  goTo("include/login/login.html");
+		  confirm('注销提示','确定注销当前账号信息?',null,reLogin);
     });
 	</script>
 </script>
@@ -525,14 +553,6 @@
   <script type="text/javascript">
 	   $(".backButton").bind("fastClick",function(e){
 		   $.mobile.back();
-	   });
-	   
-	   $("#ap_submit").fastClick(function(){
-			 addRepairEQ();
-	   });
-	   $("#ap_submit_top").fastClick(function(){
-			 addRepairEQ();
-			 
 	   });
 	   
 	     getAllMessage(); 

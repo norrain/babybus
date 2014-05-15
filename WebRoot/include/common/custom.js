@@ -99,35 +99,62 @@ $(document).on("pagecreate", function(e) {
 function slideIn(id,direct){
 	var pid = -1;
 	//alert(id.indexOf("Nav"));
-	if(id.indexOf("Nav")==-1){
-		if(id.indexOf("DIALOG:")==-1){
-			pid = id;
-		}else{
-			pid = replaceAll(id,"DIALOG:","");
-		}
-	    //location.hash="#"+pid;
-	}else{
-		var nurl = $("#"+id).attr("nhref");
-		pid = replaceAll(nurl,"#","");
+	if(id.indexOf("HTML:")!=-1){
 		
-		showNav(pid);
-	}
-	
+    }else{
+		if(id.indexOf("Nav")==-1){
+			if(id.indexOf("DIALOG:")==-1){
+				if(id.indexOf("PAGE:")==-1){
+					if(id.indexOf("PAGEBACK:")==-1){
+						pid = id;
+					}else{
+						pid = replaceAll(id,"PAGEBACK:",""); 
+					}
+				}else{
+				    pid = replaceAll(id,"PAGE:","");
+				}
+			}else{
+				pid = replaceAll(id,"DIALOG:","");
+			}
+		    //location.hash="#"+pid;
+		}else{
+			var nurl = $("#"+id).attr("nhref");
+			pid = replaceAll(nurl,"#","");
+			
+			showNav(pid);
+		}
+    }
 	
 	if(nowPageId==pid){  //如果是当前菜单 则不操作
 		
 		return false;
 	}
 	
-	var target = $("#"+FC);				  
-	var target_str = getPageHtml(pid);
+	//如果有获取数据的方法 就立即执行
+	if($("#"+pid+"Nav")){
+		var ZXmethod = $("#"+pid+"Nav").attr("nmethod");
+		 if(ZXmethod){
+			 setTimeout(function(){
+					 eval("javascript:"+ZXmethod+"();");
+				 },0);	 
+		 }
+	}
 	
 	
+	var target = $("#"+FC);
+	var target_str = "";
+	if(pid!=-1)
+	  target_str = getPageHtml(pid);
+	else
+	  target_str = replaceAll(id,"HTML:","");
+	 
 	if(id.indexOf("DIALOG:")!=-1){
-		
 		dialog(target_str);
-		
 		return false;
+	}else if(id.indexOf("PAGE:")!=-1){
+		$("#myNav").css("display","none");
+	}else if(id.indexOf("PAGEBACK:")!=-1){
+		$("#myNav").css("display","");
 	}
 	
 	
@@ -191,13 +218,6 @@ $(document).ready(function(){
 		for(var i=0;i<len;i++){
 			$("#"+navData.list[i].mid+"Nav").fastClick(function(a){
 					//alert(navData.list[i].method);
-				 	var ZXmethod = $(this).attr("nmethod");
-				 	if(ZXmethod){
-					 	setTimeout(function(){
-					 		eval("javascript:"+ZXmethod+"();");
-					 	},0);	 
-				 	}
-				 	
 				 	slideIn($(this).attr("id"));
 			 });
 			//alert(navData.list[i].mid);
@@ -206,7 +226,7 @@ $(document).ready(function(){
 		//leftpanel
 		$(document).on("swiperight",function(){
 		     $('#message_lpBtn').click(); 
-		});  
+		}); 
 });
 
 
@@ -219,5 +239,9 @@ $(document).on("pageshow", function(e) {
 	 //hideLoading();
 });
  
+function reLogin(){
+	 localStorage.removeItem("loginUserInfo");
+	 goTo("include/login/login.html");
+}
  
  
