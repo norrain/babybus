@@ -68,7 +68,9 @@
  
     <script src="include/common/custom.js"></script>
   	<link rel="stylesheet" href="include/global.css" />
-  	 
+  	 <style type="text/css">
+  	  
+  	 </style>
   </head>
   
   <body>
@@ -88,7 +90,7 @@
  </div>
  
  <!-- 模拟确认对话框 -->
- <a style="display:none;" id="exitConfirmBtn" href="#confirmDialog" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn  ui-btn-inline">Delete page...</a>
+ <a style="display:none;" id="exitConfirmBtn" href="#confirmDialog" data-rel="popup" data-position-to="window"  data-transition="none" class="ui-btn  ui-btn-inline">Delete page...</a>
  <div data-role="popup" id="confirmDialog" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="max-width:400px;">
     <div data-role="header" data-theme="a">
     <h1 id="confirmDialog_title">退出软件?</h1>
@@ -100,39 +102,28 @@
     </div>
  </div>
 
-
  <!-- 主内容 -->
  <div style="position: relative;">
- <div  id="frameContent" style="width:100%; z-index:1;">
-	 	<div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
-    <h1>教育装备管理</h1>
-  </div>
-  <div  data-role="content"  class="ui-content">
-  		<center>
-	  		<fieldset id="messageCheck" data-role="controlgroup" data-type="horizontal" style="margin:0px;">
-			    <input type="radio" name="radio-choice-h-2" id="tab_msg_wx" checked="checked" value="wx">
-			    <label for="tab_msg_wx">维修设备提醒</label>
-			    <input type="radio" name="radio-choice-h-2" id="tab_msg_kgj" value="kgj">
-			    <label for="tab_msg_kgj">非正常开关机</label>
-			</fieldset>
-		</center>
-			 <ul id="list_mes_wx" data-role="listview" data-autodividers="false" data-inset="true" data-filter="false"></ul>
-			 <ul id="list_mes_kgj" style="display:none;"  data-role="listview" data-autodividers="false" data-inset="true" data-filter="false"></ul>
-  </div>
+     <div  id="frameContent" style="width:100%; z-index:1;">
+ 
 	</div>
  </div>
   	<div id="myNav" class="frame" data-role="footer" data-position="fixed" data-theme="a" data-tap-toggle="false" data-id="footer">
           <div data-role="navbar">
 		    <ul>
-		      <li><a  id="messagePageNav"  nmethod="getAllMessage"  nhref="#messagePage"  data-icon="alert" class="ui-btn-active ui-state-persist">消息</a><div class="ui-li-count"><span>4</span></div></li>
-		      <li><a  id="shutdownPageNav" nmethod="getAllEQList"  nhref="#shutdownPage" data-icon="cloud" >设备列表</a></li>
-		      <li><a  id="repairPageNav" nmethod="getAllRepairEQ" nhref="#repairPage" data-icon="grid" >设备维修</a></li>
-		      <li><a  id="setupPageNav"  nhref="#setupPage" data-icon="gear" >设置</a></li>
+		      <li id="messagePageNavLi"><a  id="messagePageNav"  nmethod="getAllMessage"  nhref="#messagePage"  data-icon="alert" class="ui-btn-active ui-state-persist">消息</a><div class="ui-li-count"><span>4</span></div></li>
+		      <li id="shutdownPageNavLi"><a  id="shutdownPageNav" nmethod="getAllEQList"  nhref="#shutdownPage" data-icon="cloud" >设备列表</a></li>
+		      <li id="repairPageNavLi"><a  id="repairPageNav" nmethod="getAllRepairEQ" nhref="#repairPage" data-icon="grid" >设备维修</a></li>
+		      <li id="testPageNavLi"><a  id="testPageNav" nmethod="getTestList" nhref="#testPage" data-icon="eye" >实验管理</a></li>
+		      <li id="setupPageNavLi"><a  id="setupPageNav"  nhref="#setupPage" data-icon="gear" >设置</a></li>
 		    </ul>
 		  </div>
    </div>
 </div>
  
+ <!-- dialog -->
+   <a  href="#myDialog" data-role="button"  id="mydialogBtn"  data-position-to="window" data-transition="none" style="display:none;">dialog</a>
+   <div id="myDialog" data-role="dialog" class="dialog-actionsheet"  data-close-btn="none"></div>
  
  
  
@@ -183,11 +174,12 @@
 <!-- 设备列表模板 -->
 <script id="templ_list_eq" type="text/html">
       <%for(i = 0; i < rows.length; i ++) {%>
-          <li id="<%=rows[i].equipno %>" gg="<%=rows[i].gg %>" xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>" >
+          <li id="<%=rows[i].eqrepairno %>" equip="<%=rows[i].equipno %>" gg="<%=rows[i].gg %>" xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>" >
 			<a>
-				 <img src="img/album-bb.jpg"/>
+				 <img src="img/album-bb.jpg" style="margin-top:10px;"/>
     			 <h2><%=rows[i].gg %></h2>
  				 <p><strong><%=rows[i].xh %></strong></p>
+				 <p><%=rows[i].equipno %></p>
 				 <span class="ui-li-count">N</span>
 				 <p class="ui-li-aside"><%=rows[i].estate %>|<%=rows[i].curstate %></p>
 			</a>
@@ -199,7 +191,7 @@
   <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
     <h1 id="label_eq">全部设备列表</h1>
     <div class="ui-btn-right">
-	    <select id="eq_list_type" data-native-menu="true" data-mini="true" data-inline="true" data-icon="bars"  data-iconpos="notext" >
+	    <select id="eq_list_type" data-native-menu="true" data-mini="true" data-inline="true" data-icon="bullets"  data-iconpos="notext" >
 			<option selected="selected" value="">全部</option>
 			<option value="多媒体电脑">多媒体电脑</option>
 			<option value="服务器">服务器</option>
@@ -214,46 +206,67 @@
 	   <div class="moreInfo" ><a href="javascript:;" id="moreListEQ">加载更多...</a></div>
   </div>
 	<script>
-	  $("#eq_list_type").change(function(){
-							eqlist_ref = true;
-					     	getAllEQList(); //刷新列表
+	   $("#eq_list_type").change(function(){
+			 eqlist_ref = true;
+			 getAllEQList(); //刷新列表
 		 });
-		var _hold_eq_id ,_hold_eq_gg,_hold_eq_xh,_hold_eq_no;
 		$("#list_eq li").live("tap",function(){
-			 goTo("#eqlist_hold");
-			 //slideIn("DIALOG:eqlistHold",top);
+			 _hold_eq_gg = $(this).attr("gg");
+             _hold_eq_xh = $(this).attr("xh");
+			 _hold_eq_eqno = $(this).attr("eqno");
+			_hold_eq_id = $(this).attr("id");
+			_hold_eq_uip = $(this).attr("equip");
+			 showDialog("eqlist_hold");
 		});
 		$("#moreListEQ").fastClick(function(){
-			getAllEQList(eqlist_pagenum+1);
+			 getAllEQList(eqlist_pagenum+1);
 		});
 	</script>
 </script>
 
 <!-- 设备列表hold -->
-<div data-role="dialog"  id="eqlist_hold">
+<script id="templ_dialog_eqlist_hold" type="text/html">
 	  <div data-role="header" data-theme="b"  data-position="fixed">
 	    <h1>选择您要的操作?</h1>
 	  </div>
-	  <div data-role=content class="ui-content">
+	  <div data-role=content class="ui-content" style="">
 	          <a id="eqlist_hold_wx" data-role="button"   data-icon="grid">维修设备</a>
 	          <a id="eqlist_hold_gj"  data-role="button"  data-icon="delete">远程关机</a>
 	          <a id="eqlist_hold_check"  data-role="button"  data-icon="star">查看详细</a>
-	           <a id="eqlist_hold_back"  data-role="button"  data-icon="back">取消返回</a>
+	           <a id="eqlist_hold_back"  data-role="button" data-theme="b"  data-icon="back">取消返回</a>
 	  </div>
-</div>
+    </div>
 <script>
+	$("#eqlist_hold_wx").fastClick(function(){
+		 closeDialog();
+		 slideIn("repairAddPage"); 
+		  $("#_ap_eqtype").val(_hold_eq_gg);
+		  $("#_ap_xh").val(_hold_eq_xh);
+		  $("#_ap_eqno").val(_hold_eq_eqno);
+		  $("#_ap_id").val(_hold_eq_uip);
+		  
+		  	
+		  showNav("repairPage");
+	});
+	
+	$("#eqlist_hold_gj").fastClick(function(){
+		 showAlert("发送关闭电脑消息成功,请等待主机关闭!");
+		 setTimeout("closeDialog()",2000);
+	});
+	$("#eqlist_hold_check").fastClick(function(){
+		 showAlert("正在开发中....");
+	});
 	$("#eqlist_hold_back").fastClick(function(){
-		 $('#eqlist_hold').dialog('close');
+		  closeDialog();
 	});
 </script>
-
-
+</script>
 
 <!-- 维修列表 -->
 <script id="templ_wx" type="text/html">
       <%for(i = 0; i < rows.length; i ++) {%>
-		  <li data-role="list-divider"><%=rows[i].xh %>(<span style="font-size:10px;"><%=rows[i].curtip%></span>)<span class="ui-li-count"><%=rows[i].savetm %></span></li>
-          <li>
+		  <li id="data_<%=rows[i].eqrepairno %>" data-role="list-divider"><%=rows[i].xh %>(<span style="font-size:10px;"><%=rows[i].curtip%></span>)<span class="ui-li-count"><%=rows[i].savetm %></span></li>
+          <li id="<%=rows[i].eqrepairno %>" equip="<%=rows[i].equipno %>" gg="<%=rows[i].gg %>" xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>">
 			<a>
     			 <h2><%=rows[i].gg %></h2>
  				 <p><strong>故障类型:<%=rows[i].gztype%></strong></p>
@@ -262,6 +275,14 @@
 			</a>
           </li>
       <%}%>
+	  <script>
+	  		$("#list_wx li").live("tap",function(){//taphold
+				_hold_eq_id = $(this).attr("id");
+				_hold_eq_gg = $(this).attr("gg");
+				_hold_eq_xh = $(this).attr("xh");
+			  	showDialog("eqwx_hold");
+		    });
+      </script>
 </script>
 
 <script id="templ_page_repairPage" type="text/html">
@@ -273,7 +294,6 @@
   <div data-role=content class="ui-content">
   	   <ul style="padding-top:5px;" id="list_wx" data-role="listview" data-inset="false"></ul>
   </div>
-	
 	<script>
 		$("#refRepair").fastClick(function(){
 			rp_ref = true;
@@ -285,6 +305,45 @@
 	</script>
 </script>
 
+
+<!-- 设备维修操作hold -->
+<script id="templ_dialog_eqwx_hold" type="text/html">
+	  <div data-role="header" data-theme="b"  data-position="fixed">
+	    <h1>选择您要的操作?</h1>
+	  </div>
+	  <div data-role=content class="ui-content" style="">
+	          <a id="eqwx_hold_delete" data-role="button"   data-icon="delete">删除维修记录</a>
+	          <a id="eqwx_hold_df"  data-role="button"  data-icon="check">确认验收打分</a>
+	          <a id="eqwx_hold_rwx"  data-role="button"  data-icon="star">退回重新维修</a>
+	          <a id="eqwx_hold_back"  data-role="button" data-theme="b"  data-icon="back">取消返回</a>
+	  </div>
+</div>
+<script>
+	$("#eqwx_hold_delete").fastClick(function(){
+	 	jyzb.deleteRepairEQ(_hold_eq_id,function(r){
+			if(r=="true"){
+				closeDialog();
+				setTimeout(function(){
+                   showAlert("删除成功!");
+				   $("#data_"+_hold_eq_id).css("display","none")
+				   $("#"+_hold_eq_id).css("display","none")
+		        },1000);
+			}else{
+			     showAlert("删除失败,请重试");
+			}
+		});
+	});
+ 	$("#eqwx_hold_df").fastClick(function(){
+	      showAlert("打分....");
+	});
+	$("#eqwx_hold_rwx").fastClick(function(){
+	      showAlert("重新维修....");
+	});
+	$("#eqwx_hold_back").fastClick(function(){
+	 	closeDialog();
+	});
+</script>
+</script>
  
 
 	
@@ -297,6 +356,7 @@
   </div>
   <div class="content" class="ui-content">
   	<form name="_ap_form">
+			<input type="hidden" name="name2" id="_ap_id" value=""/>
 		    <ul  data-role="listview" data-inset="false">
 		    	<li class="ui-field-contain">
 		            <p><label for="name2">服务维修商:四川虹信电子有限公司</label></p>
@@ -305,20 +365,19 @@
 		        <li class="ui-field-contain">
 		            <label for="_ap_eqtype">设备类别:</label>
 		            <select name="_ap_eqtype" id="_ap_eqtype">
-		                <option value="服务器">服务器</option>
-		                <option value="办公电脑">办公电脑</option>
 		                <option value="多媒体电脑">多媒体电脑</option>
+						<option value="服务器">服务器</option>
+						<option value="办公电脑">办公电脑</option>
+						<option value="数字展台">数字展台</option>
+						<option value="一体机">一体机</option>
 		            </select>
-		        </li>
-		         <li class="ui-field-contain">
+					<div class="formSP">&nbsp;<div>
 		            <label for="name2">设备型号:</label>
 		            <input type="text" name="name2" id="_ap_xh" value="" data-clear-btn="true">
-		        </li>
-		        <li class="ui-field-contain">
+					<div class="formSP">&nbsp;<div>
 		            <label for="textarea2">设备编号:</label>
 		            <input type="text" name="name2" id="_ap_eqno" value="" data-clear-btn="true">
-		        </li>
-		        <li class="ui-field-contain">
+		         	<div class="formSP">&nbsp;<div>
 		            <label>设备备注:</label>
 		            <textarea cols="40" rows="3" name="_ap_eqremarks" id="_ap_eqremarks"></textarea>
 		        </li>
@@ -340,8 +399,7 @@
 		                <option value="2">蓝屏</option>
 		                <option value="3">其它</option>
 		            </select>
-		        </li>
-		        <li class="ui-field-contain">
+					<div class="formSP">&nbsp;<div>
 		            <label for="_ap_gzdetail">故障详细:</label>
 		             <textarea cols="40" rows="3" name="_ap_gzdetail" id="_ap_gzdetail"></textarea>
 		        </li>
@@ -360,6 +418,174 @@
 	    });
 		$("#ap_addBack").fastClick(function(){
 			 slideIn("PAGEBACK:repairPage");
+		});
+	</script>
+</script>
+
+
+<!-- 试验管理  -->
+
+<script id="templ_test" type="text/html">
+      <%for(i = 0; i < rows.length; i ++) {%>
+          <li id="test_<%=rows[i].eqytestno %>"
+				 tname="<%=rows[i].testname %>_<%=rows[i].testkm %>" teq="<%=rows[i].testeq %>" 
+				remarks="<%=rows[i].remarks %>">
+			<a>
+    			 <h2><%=rows[i].testname %>(<%=rows[i].testkm %>)</h2>
+ 				 <p><strong><%=rows[i].testtype%></strong></p>
+				 <p><%=rows[i].schoolname %> <%=rows[i].classname%></p>
+				 <p style="color:red;">预做时间:<%=rows[i].testretime%></p>
+				 <span class="ui-li-count"><%=rows[i].testgroupnum %></span>
+				<p class="ui-li-aside"><%=rows[i].savetm %></p>
+			</a>
+          </li>
+      <%}%>
+	  <script>
+	  		$("#list_test li").live("tap",function(){
+				  showDialog("testlist_hold");
+				  $("#testlist_hold_label_testname").html($(this).attr("tname"));
+				  $("#testlist_hold_label_testeq").html($(this).attr("teq"));
+				  $("#testlist_hold_label_testremarks").html($(this).attr("remarks"));
+				  if(userInfo.role=="teacher"){
+					 $("#testlist_hold_admin").css("display","none");
+				  }
+		    });
+      </script>
+</script>
+
+<script id="templ_page_testPage" type="text/html">
+  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
+      <h1>实验管理</h1>
+	   <a id="ap_test" class="ui-btn-right" data-icon="plus">添加预约</a>
+		<div class="ui-btn-left">
+	    <select id="eq_test_type" data-native-menu="true" data-mini="true" data-inline="true" data-icon="bullets"  data-iconpos="notext" >
+			<option selected="selected" value="预约">预约中</option>
+			<option value="预约失败">预约失败</option>
+			<option value="预约成功">预约成功</option>
+			<option value="布置完成">布置完成</option>
+		</select>
+	</div>
+  </div>
+  <div class="content" class="ui-content">
+		 <ul style="padding-top:5px;" id="list_test" data-role="listview" data-inset="false"></ul>
+  </div>
+ <script>
+	$("#ap_test").fastClick(function(){
+		 slideIn("testAddPage")
+	});
+	$("#eq_test_type").change(function(){
+		 getTestList();
+	});
+</script>
+</script>
+
+<!-- 实验列表hold -->
+<script id="templ_dialog_testlist_hold" type="text/html">
+	  <div data-role="header" data-theme="b"  data-position="fixed">
+	    <h1>选择您要的操作?</h1>
+	  </div>
+	  <div data-role=content class="ui-content" style="">
+			 <ul data-role="listview" data-inset="true">
+				<li data-role="fieldcontain">
+					   <p><label id="testlist_hold_label_testname"></label></p>
+					   <p><label id="testlist_hold_label_testeq"></label></p>
+					   <p><label id="testlist_hold_label_testremarks"></label></p>
+				</li>
+				<li data-role="fieldcontain" id="testlist_hold_admin">
+					 <button id="testlist_hold_pz" data-role="button"   data-icon="check">批准试验</button>
+	         		 <button id="testlist_hold_jj"  data-role="button"  data-icon="delete">拒绝试验</button>
+					<button id="testlist_hold_bz" data-role="button"   data-icon="check">布置完成</button>
+				</li>
+				<li data-role="fieldcontain">
+				    <button id="testlist_hold_back"  data-role="button" data-theme="b"  data-icon="back">取消返回</button>
+				</li>
+		</ul>
+	  </div>
+    </div>
+	<script>
+	$("#testlist_hold_pz").fastClick(function(){
+		 showAlert("批准");
+	});
+	$("#testlist_hold_jj").fastClick(function(){
+		 showAlert("拒绝");
+	});
+	$("#testlist_hold_bz").fastClick(function(){
+		 showAlert("布置完成");
+	});
+	$("#testlist_hold_back").fastClick(function(){
+		 closeDialog();
+		 slideIn("PAGEBACK:testPage","right")
+	});
+   </script>
+</script>
+
+<!-- 添加预约试验 -->
+<script id="templ_page_testAddPage" type="text/html">
+  <div data-role="header" data-theme="a"  data-position="fixed" data-tap-toggle="false" data-id="header">
+    <h1>预约试验</h1>
+    <a id="ap_addBack" class="ui-btn-left" data-icon="back">返回</a>
+    <a id="ap_submit_top" class="ui-btn-right" data-icon="plus">添加</a>
+  </div>
+  <div class="content" class="ui-content">
+  	<form name="_ap_testform">
+			<input type="hidden" name="name2" id="_ap_id" value=""/>
+		    <ul  data-role="listview" data-inset="false">
+		    	<li class="ui-field-contain">
+		            <p><label for="name2">管理员电话:<a href="tel:10286738473">10286738473</a></label></p>
+		        </li>
+		        <li class="ui-field-contain">
+		            <label for="_ap_eqtype">实验类别:</label>
+		            <select name="_ap_eqtype" id="_ap_testtype">
+		                <option value="实验类别0">实验类别0</option>
+						<option value="实验类别1">实验类别1</option>
+						<option value="实验类别2">实验类别2</option>
+						<option value="实验类别3">实验类别3</option>
+		            </select>
+					<div class="formSP">&nbsp;<div>
+					<label for="_ap_eqtype">所属科目:</label>
+		            <select name="_ap_eqtype" id="_ap_testkm">
+		                <option value="化学">化学</option>
+						<option value="数学">数学</option>
+						<option value="物理">物理</option>
+						<option value="语文">语文</option>
+		            </select>
+					<div class="formSP">&nbsp;<div>
+		            <label for="name2">设验名称:</label>
+		            <input type="text" name="name2" id="_ap_testname" value="" data-clear-btn="true">
+					<div class="formSP">&nbsp;<div>
+		            <label for="textarea2">设验组数量:</label>
+		            <input type="text" name="name2" id="_ap_testgroupnum" value="" data-clear-btn="true">
+					<div class="formSP">&nbsp;<div>
+		            <label for="textarea2">班级:</label>
+		            <input type="text" name="name2" id="_ap_classname" value="" data-clear-btn="true">
+		        </li>
+		        <li class="ui-field-contain">
+		            <label for="textarea2">预做时间:</label>
+		            <input name="mode1" id="_ap_testrtime" type="text" data-role="datebox" data-options='{"mode":"calbox", "useNewStyle":true}' />
+		       		<div class="formSP">&nbsp;<div> 
+					<label for="_ap_gzdetail">实验器材:</label>
+		             <textarea cols="40" rows="3" name="_ap_gzdetail" id="_ap_testeq"></textarea>
+					<div class="formSP">&nbsp;<div> 
+					<label for="textarea2">地址:</label>
+		            <input name="mode1" id="_ap_addr" type="text" />
+			 </li>
+		       
+		        <li class="ui-field-contain">
+		            <label for="_ap_gzdetail">备注:</label>
+		             <textarea cols="40" rows="3" name="_ap_gzdetail" id="_ap_remarks"></textarea>
+		        </li>
+		        <li class="ui-body ui-body-b">
+		              <button id="ap_test_submit" type="button" class="ui-btn ui-corner-all ui-btn-a">确定提交</button>
+		        </li>
+		    </ul>
+		  </form>
+</div> 
+	<script>
+		 $("#ap_test_submit").fastClick(function(){
+			  addTest();
+	    });
+		$("#ap_addBack").fastClick(function(){
+			 slideIn("PAGEBACK:testPage","right");
 		});
 	</script>
 </script>
@@ -440,6 +666,7 @@
 	     jyzb._path = "http://192.168.1.105:8080/AWJEQ/dwr";
 	  	 DWREngine.setAsync(false);
 	  	 
+	  	 var _hold_eq_id ,_hold_eq_uip,_hold_eq_gg,_hold_eq_xh,_hold_eq_no;
 	  	  /*
 	  	 * 所有消息
 	  	 */
@@ -452,7 +679,7 @@
 		  	}
 	  	 }
 	  	 function showMesListWX(resstr){
-	  	 	 var data = (new Function('return ' + resstr))();
+	  	 	 var data = jsonObject(resstr);
 	     	 var html = template.render('templ_message_wx',data);
 	     	 $("#list_mes_wx").html(html);
 	     	 $("#list_mes_wx").listview('refresh');
@@ -462,7 +689,7 @@
 	     	 refreshPageCacheHtml("messagePage");
 	  	 }
 	  	 function showMesListKGJ(resstr){
-	  	 	 var data = (new Function('return ' + resstr))();
+	  	 	 var data = jsonObject(resstr);
 	     	 var html = template.render('templ_message_kgj',data);
 	     	 $("#list_mes_kgj").html(html);
 	     	 $("#list_mes_kgj").listview('refresh');
@@ -494,7 +721,7 @@
 		  	//}
 	  	 }
 	  	 function showListEQ(resstr){
-	  	 	 var data = (new Function('return ' + resstr))();
+	  	 	 var data = jsonObject(resstr);
 	     	 var html = template.render('templ_list_eq',data);
 	     	 if(eqlist_pagenum==1) 
 	     	 	$("#list_eq").html(html);
@@ -518,7 +745,7 @@
 	  	 }
 	  	 
 	     function showRepairEQ(resstr){
-			 var data = (new Function('return ' + resstr))();// eval("("+resstr+")");;
+			 var data = jsonObject(resstr);
 	     	 var html = template.render('templ_wx',data);
 	     	 $("#list_wx").html(html);
 	     	 $("#list_wx").listview('refresh');
@@ -547,11 +774,56 @@
 	     function showAddRPRes(r){
 	     	 if(r=="true"){
 	     	 	document.forms._ap_form.reset();
-	     	 	//showAlert("添加成功");
 	     	 	 Toast("添加成功");
-	     	 	$.mobile.back();
-	     	 	rp_ref = true;
-	     	 	getAllRepairEQ(); //刷新列表
+	     	 }else{
+	     	 	Toast("程序出现错误,添加失败!");
+	     	 }
+	     }
+	     
+	     //实验
+	     function getTestList(){
+	     	showLoading();
+	     	var qt = $("#eq_test_type").val();
+	     	jyzb.getAllTestList(userInfo.schoolno,qt,showTestList);
+	     }
+	     function showTestList(resstr){
+	     	 var data = jsonObject(resstr);
+	     	 var html = template.render('templ_test',data);
+	     	 $("#list_test").html(html);
+	     	 $("#list_test").listview('refresh');
+	     	 hideLoading();
+	     }
+	     
+	     function addTest(){
+	     	 var testtype = $("#_ap_testtype").val();
+	     	 var testkm = $("#_ap_testkm").val();
+	     	 var testname = $("#_ap_testname").val();
+	     	 var testgn = $("#_ap_testgroupnum").val();
+	     	 var classname = $("#_ap_classname").val();
+	     	 var testrtime = $("#_ap_testrtime").val();
+	     	 var testeq = $("#_ap_testeq").val();
+	     	 var testaddr = $("#_ap_addr").val();
+	     	 var remarks = $("#_ap_remarks").val();
+	     	 
+	     	// alert(eqtype+"=="+xh+"=="+eqno+"=="+ccwx+"=="+limittime+"=="+gztype+"=="+gzdetail);
+	     	if(testname==""||testgn==""||classname==""||testrtime==""||testeq==""){
+	     		showAlert("请先把信息填写完整后再进行预约");
+	     		return false;
+	     	}else{
+	     		showLoading();
+	     		 
+	     		jyzb.addTest(userInfo.schoolno,userInfo.schoolname,userInfo.empid,
+	     		testname,testtype,testkm,'km1',testrtime,testgn,
+	     		'class1',classname,
+	     		testeq,testaddr,remarks
+	     		,showAddTestRes);
+	    	}
+	     }
+	     
+	      function showAddTestRes(r){
+	     	 if(r=="true"){
+	     	 	document.forms._ap_testform.reset();
+	     	 	Toast("预约成功,请等待回应");
 	     	 }else{
 	     	 	Toast("程序出现错误,添加失败!");
 	     	 }
@@ -564,12 +836,18 @@
 	   $(".backButton").bind("fastClick",function(e){
 		   $.mobile.back();
 	   });
-	   
-	     getAllMessage(); 
-	     $("#messageCheck :radio").change(function (){
-		  $("#list_mes_wx").css("display","none");
-		  $("#list_mes_kgj").css("display","none");
-		  $("#list_mes_"+$(this).val()).css("display","block");
-	  });
+	   if(userInfo.role=="eq"){
+	   		slideIn("messagePageNav");
+	   		if($("#testPageNavLi")){
+	   			$("#testPageNavLi").remove();
+	   		}
+	   }else{
+	   		slideIn("testPageNav");
+	   		if($("#messagePageNavLi")){
+		     	$("#messagePageNavLi").remove();
+		     	$("#shutdownPageNavLi").remove();
+		     	$("#repairPageNavLi").remove();
+		     }
+	   }
   </script>
 </html>

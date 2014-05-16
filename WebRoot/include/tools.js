@@ -4,27 +4,10 @@ var isWebOS = (/webOS/gi).test(navigator.appVersion);
 
 var IsDeviceReady = false;
 
-function date2str(_x, y) {
-	var x = getDate(_x);
-	var z = {
-		M : x.getMonth() + 1,
-		d : x.getDate(),
-		h : x.getHours(),
-		m : x.getMinutes(),
-		s : x.getSeconds()
-	};
-	y = y.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
-				return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1)))
-						.slice(-2)
-			});
-	return y.replace(/(y+)/g, function(v) {
-				return x.getFullYear().toString().slice(-v.length)
-			});
-}
-
 //全局配置
 var global = {
-	WEBSITE : "http://xxx.com/"
+	WEBSITE : "http://xxx.com/",
+	serverURL:""
 }
 
 //localStorage缓存
@@ -45,6 +28,36 @@ var ss = {
 	getItem : function(key) {
 		return sessionStorage.getItem(key)
 	}
+}
+
+function ajaxData(exeMethod){
+	$.ajax({
+			async : false,
+			url : global.serverURL + '?em='+exeMethod, // 跨域URL
+			type : 'get',
+			dataType : 'jsonp',
+			jsonp : 'jsoncallback', //默认callback
+			data : params,
+			timeout : 5000,
+			beforeSend : function() { //jsonp 方式此方法不被触发。原因可能是dataType如果指定为jsonp的话，就已经不是ajax事件了
+				showLoading();
+			},
+			success : function(json) { //客户端jquery预先定义好的callback函数，成功获取跨域服务器上的json数据后，会动态执行这个callback函数 
+				 desplay(json);
+			},
+			complete : function(XMLHttpRequest, textStatus) {
+								//alert(textStatus);
+								
+			},
+			error : function(xhr) {//请求出错处理 
+				 showAlert("请求出错(请检查相关度网络状况.)");
+		    }
+	 });
+}
+
+function jsonObject(json){
+	//eval("("+resstr+")");
+	return (new Function('return ' + json))();
 }
 
 //页面刷新
@@ -101,6 +114,23 @@ function checkConnection() {
 }
 //checkConnection();
 
+
+//f关闭所有弹出窗口
+function showDialog(dn){
+	var html = template.render('templ_dialog_'+dn);
+	
+	$('#myDialog').html(html).trigger("create");
+	$("#mydialogBtn").click();
+	//$('#myDialog').dialog('open');
+}
+function closeDialog(){
+	if($('#myDialog'))
+	   $('#myDialog').dialog('close');
+}
+function closeConfirm(){
+	if($('#confirmDialog'))
+	   $('#confirmDialog').popup('close');
+}
 // 显示定制警告框
 function showAlert(msg,tm) {
 
@@ -119,7 +149,7 @@ function showAlert(msg,tm) {
 
 //模拟confirm
 function confirmCancleFun(){
-	   $('#confirmDialog').popup('close');
+	 $('#confirmDialog').popup('close');
 }
 var confirm = function(title,message,cancleFun,sureFun) {
 		$("#confirmDialog_title").html(title);
@@ -227,6 +257,25 @@ function toString(value) {
 //在浏览器上显示组装路径
 function showUrl(url) {
 	document.write(url);
+}
+
+
+function date2str(_x, y) {
+	var x = getDate(_x);
+	var z = {
+		M : x.getMonth() + 1,
+		d : x.getDate(),
+		h : x.getHours(),
+		m : x.getMinutes(),
+		s : x.getSeconds()
+	};
+	y = y.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
+				return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1)))
+						.slice(-2)
+			});
+	return y.replace(/(y+)/g, function(v) {
+				return x.getFullYear().toString().slice(-v.length)
+			});
 }
 
 // =========================PhoneGap==================================

@@ -3,26 +3,22 @@ var navData = {
 			    list: [
 			    	{
 			    		mtitle:"消息",
-			    		icon:"alert",
-			    		method:"getAllMessage",
 			    		mid:"messagePage"
 			    	},
 			    	{
 			    		mtitle:"设备列表",
-			    		icon:"alert",
-			    		method:"getAllMessage",
 			    		mid:"shutdownPage"
 			    	},
 			    	{
 			    		mtitle:"设备维修",
-			    		icon:"alert",
-			    		method:"getAllMessage",
 			    		mid:"repairPage"
 			    	},
 			    	{
+			    		mtitle:"试验管理",
+			    		mid:"testPage"
+			    	},
+			    	{
 			    		mtitle:"设置",
-			    		icon:"alert",
-			    		method:"getAllMessage",
 			    		mid:"setupPage"
 			    	}
 			    ]
@@ -33,7 +29,7 @@ var navData = {
 var FC = "frameContent";   //容器
 var pageCacheMap = new Map();
 var pageCacheHtmlMap = new Map();
-var nowPageId = "messagePage";
+var nowPageId = "";
 
 function getPageHtml(pageId){
 	 
@@ -226,6 +222,7 @@ $(document).ready(function(){
 		$(document).on("swiperight",function(){
 		     $('#message_lpBtn').click(); 
 		}); 
+		
 });
 
 
