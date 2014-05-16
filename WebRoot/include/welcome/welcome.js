@@ -1,5 +1,5 @@
 var myScroll;
-var imgnum=5;
+var imgnum=4;
 function loaded() {
 	window.localStorage.setItem("firstCheck", "true");
 	var width = getTotalWidth();//window.screen.availWidth ;
@@ -15,7 +15,7 @@ function loaded() {
 			document.querySelector('#indicator > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
 			num = parseInt(this.currPageX + 1);
 			if (num == imgnum) {
-				location.href = "../../index.html";
+				location.href = "../login/login.html";
 			}
 
 		}

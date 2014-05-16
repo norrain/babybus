@@ -130,18 +130,31 @@
 <!-- 消息模板  -->
 <script id="templ_message_wx" type="text/html">
       <%for(i = 0; i < rows.length; i ++) {%>
-          <li>
+          <li id="<%=rows[i].eqrepairno %>" equip="<%=rows[i].equipno %>" gg="<%=rows[i].gg %>" 
+xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>"  curstate="<%=rows[i].curtip %>">
 			 <a>
 				 <h1><%=rows[i].xh %>(<span style='font-size:10px;'><%=rows[i].curtip %></span>)</h1>
 				 <p><%=rows[i].savetm %></p>
 			 </a>
           </li>
       <%}%>
+	  <script>
+	  	 $("#list_mes_wx li").live("tap",function(){
+			 _hold_eq_gg = $(this).attr("gg");
+             _hold_eq_xh = $(this).attr("xh");
+			 _hold_eq_eqno = $(this).attr("eqno");
+			_hold_eq_id = $(this).attr("id");
+			_hold_eq_uip = $(this).attr("equip");
+			_hold_eq_curstate = $(this).attr("curstate");
+			 showDialog("eqlist_hold");
+		});
+	  </script>
 </script>
 
 <script id="templ_message_kgj" type="text/html">
       <%for(i = 0; i < rows.length; i ++) {%>
-          <li><a><%=i + 1%>:<%=rows[i].xh %></a></li>
+          <li>
+			<a><%=i + 1%>:<%=rows[i].xh %></a></li>
       <%}%>
 </script>
 
@@ -174,7 +187,8 @@
 <!-- 设备列表模板 -->
 <script id="templ_list_eq" type="text/html">
       <%for(i = 0; i < rows.length; i ++) {%>
-          <li id="<%=rows[i].eqrepairno %>" equip="<%=rows[i].equipno %>" gg="<%=rows[i].gg %>" xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>" >
+          <li id="<%=rows[i].eqrepairno %>" equip="<%=rows[i].equipno %>"
+    gg="<%=rows[i].gg %>" xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>"  curstate="<%=rows[i].curtip %>">
 			<a>
 				 <img src="img/album-bb.jpg" style="margin-top:10px;"/>
     			 <h2><%=rows[i].gg %></h2>
@@ -216,6 +230,7 @@
 			 _hold_eq_eqno = $(this).attr("eqno");
 			_hold_eq_id = $(this).attr("id");
 			_hold_eq_uip = $(this).attr("equip");
+			_hold_eq_curstate = $(this).attr("curstate");
 			 showDialog("eqlist_hold");
 		});
 		$("#moreListEQ").fastClick(function(){
@@ -238,15 +253,17 @@
     </div>
 <script>
 	$("#eqlist_hold_wx").fastClick(function(){
+		if(_hold_eq_curstate=="维修完成"){
+			showAlert("操作失败:已经维修完成");
+		}else{
 		 closeDialog();
 		 slideIn("repairAddPage"); 
 		  $("#_ap_eqtype").val(_hold_eq_gg);
 		  $("#_ap_xh").val(_hold_eq_xh);
 		  $("#_ap_eqno").val(_hold_eq_eqno);
 		  $("#_ap_id").val(_hold_eq_uip);
-		  
-		  	
 		  showNav("repairPage");
+		}
 	});
 	
 	$("#eqlist_hold_gj").fastClick(function(){
@@ -658,15 +675,15 @@
  
  
 	 
- <script type='text/javascript' src='http://192.168.1.105:8080/AWJEQ/dwr/interface/jyzb.js'></script>
- <script type='text/javascript' src='http://192.168.1.105:8080/AWJEQ/dwr/engine.js'></script>
+ <script type='text/javascript' src='http://www.dd100.net:8080/AWJEQ/dwr/interface/jyzb.js'></script>
+ <script type='text/javascript' src='http://www.dd100.net:8080/AWJEQ/dwr/engine.js'></script>
  
 <script type="text/javascript">
 		 DWREngine.setMethod(DWREngine.ScriptTag);
-	     jyzb._path = "http://192.168.1.105:8080/AWJEQ/dwr";
+	     jyzb._path = "http://www.dd100.net:8080/AWJEQ/dwr";
 	  	 DWREngine.setAsync(false);
 	  	 
-	  	 var _hold_eq_id ,_hold_eq_uip,_hold_eq_gg,_hold_eq_xh,_hold_eq_no;
+	  	 var _hold_eq_id ,_hold_eq_uip,_hold_eq_gg,_hold_eq_xh,_hold_eq_no,_hold_eq_curstate;
 	  	  /*
 	  	 * 所有消息
 	  	 */
