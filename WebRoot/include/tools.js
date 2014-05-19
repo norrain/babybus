@@ -55,9 +55,9 @@ function ajaxData(exeMethod){
 	 });
 }
 
-function jsonObject(json){
-	//eval("("+resstr+")");
-	return (new Function('return ' + json))();
+function jsonObject(jsonstr){
+	//return eval("("+jsonstr+")");
+	return (new Function('return ' + jsonstr))();
 }
 
 //页面刷新

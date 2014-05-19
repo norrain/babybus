@@ -274,7 +274,7 @@ xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>"  curstate="<%=rows[i].curtip %>"
 		 showAlert("正在开发中....");
 	});
 	$("#eqlist_hold_back").fastClick(function(){
-		  closeDialog();
+			closeDialog();
 	});
 </script>
 </script>
@@ -319,6 +319,7 @@ xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>"  curstate="<%=rows[i].curtip %>"
 		$("#addRepair").fastClick(function(){
 			 slideIn("PAGE:repairAddPage");
 		});
+		 //alert("加载");
 	</script>
 </script>
 
@@ -434,7 +435,7 @@ xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>"  curstate="<%=rows[i].curtip %>"
 			 addRepairEQ();
 	    });
 		$("#ap_addBack").fastClick(function(){
-			 slideIn("PAGEBACK:repairPage");
+			 slideIn("PAGEBACK:repairPage","none");
 		});
 	</script>
 </script>
@@ -493,7 +494,7 @@ xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>"  curstate="<%=rows[i].curtip %>"
 	$("#eq_test_type").change(function(){
 		 getTestList();
 	});
-</script>
+</script>	
 </script>
 
 <!-- 实验列表hold -->
@@ -637,7 +638,7 @@ xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>"  curstate="<%=rows[i].curtip %>"
 		  showAlert("清除缓存成功!");
     });
 	$("#setpage_aboutUsBtn").fastClick(function(){
-		 slideIn("aboutus");
+		 slideIn("aboutus","left");
     });
 	$("#setpage_exitBtn").fastClick(function(){
 		 confirm('确认退出','真的不再多待一会儿啦?',null,closeApp);
@@ -645,6 +646,10 @@ xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>"  curstate="<%=rows[i].curtip %>"
     $("#setpage_gologin").fastClick(function(){
 		  confirm('注销提示','确定注销当前账号信息?',null,reLogin);
     });
+	function reLogin(){
+	  localStorage.removeItem("loginUserInfo");
+	  location.href = "include/login/login.html";
+    }
 	</script>
 </script>
 
@@ -764,6 +769,7 @@ xh="<%=rows[i].xh %>" eqno="<%=rows[i].eqno %>"  curstate="<%=rows[i].curtip %>"
 	     function showRepairEQ(resstr){
 			 var data = jsonObject(resstr);
 	     	 var html = template.render('templ_wx',data);
+	     	// alert(html);
 	     	 $("#list_wx").html(html);
 	     	 $("#list_wx").listview('refresh');
 	     	 hideLoading();
